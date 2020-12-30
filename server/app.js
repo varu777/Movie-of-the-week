@@ -7,12 +7,20 @@ require('dotenv').config()
 const port = process.env.PORT || 9000;
 
 const router = require('./routes/index');
-
-app.listen(port);
+/* Redirect http to https */
+app.get('*', function(req, res, next) {
+  if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production')
+    res.redirect('https://' + req.hostname + req.url)
+  else
+    next() /* Continue to other routes if we're not redirecting */
+});
 
 app.use(cors({credentials: true, origin: 'https://movieotw.herokuapp.com/'}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/', router);
+
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://movieotw.herokuapp.com/');
     res.header(
@@ -23,15 +31,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', router);
 
-/* Redirect http to https */
-app.get('*', function(req, res, next) {
-  if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production')
-    res.redirect('https://' + req.hostname + req.url)
-  else
-    next() /* Continue to other routes if we're not redirecting */
-});
+
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.get('/*', (req, res) => {
@@ -40,4 +41,5 @@ app.get('/*', (req, res) => {
 
 
 
+app.listen(port);
 module.exports = app;
