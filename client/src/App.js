@@ -22,8 +22,12 @@ class App extends React.Component {
       url: 'https://movieotw.herokuapp.com/HomeData'
     })
     .then((response) => {
+      window.alert(response);
+      console.log(response);
       // get motw data
       let movieOTWData = response.data.movieOTW;
+      console.log(movieOTWData);
+      console.log(movieOTWData.movieOTW);
       let movieOTW = movieOTWData.movieOTW;
       let userOTW = movieOTWData.addedBy;
       let teaser = movieOTWData.note;
