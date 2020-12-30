@@ -25,9 +25,19 @@ app.use((req, res, next) => {
 
 app.use('/', router);
 
+/* Redirect http to https */
+app.get('*', function(req, res, next) {
+  if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production')
+    res.redirect('https://' + req.hostname + req.url)
+  else
+    next() /* Continue to other routes if we're not redirecting */
+});
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
+
+
 
 module.exports = app;
