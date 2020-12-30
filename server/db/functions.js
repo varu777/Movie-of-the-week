@@ -182,6 +182,8 @@ function getHomeData() {
 
             if (movies.length == null) 
                 throw new Error("Unable to retrieve previously watched movies.");
+            
+            console.log("movie of the week: " + movieOTW);
             resolve({movieOTW, movies});
         }).catch((error) => reject(error));
     });
