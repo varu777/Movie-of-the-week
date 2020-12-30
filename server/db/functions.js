@@ -168,15 +168,19 @@ function getHomeData() {
     return new Promise((resolve, reject) => {
         var movies = []
         var movieOTW = null;
+        console.log("inside func");
         db.collection("stats").doc("stats").get().then((result) => {
             movieOTW = result.data();
+            console.log("inside stats");
         }).then(() => {
+            console.log("inside movies");
             return db.collection("movies").where("watched", "==", true).get().then((queryResults) => {
                 queryResults.forEach((doc) => {
                     movies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
                 });
             })
         }).then(() => {
+            console.log("inside final");
             if (movieOTW == null) 
                 throw new Error("Unable to retrieve movie of the week.");
 
