@@ -1,4 +1,5 @@
 const firebase = require('firebase');
+require('dotenv').config()
 
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
