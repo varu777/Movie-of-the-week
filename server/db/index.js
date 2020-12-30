@@ -13,4 +13,6 @@ firebase.initializeApp({
 });
   
 const db = firebase.firestore();
+db.enablePersistence()
+
 module.exports = db;
