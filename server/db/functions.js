@@ -173,7 +173,7 @@ function chooseMovie() {
             }
         }).then(() => {
             // randomly choose a user that hasn't been selected yet in current pool
-            userRef.get().then((queryResults) => {
+            return userRef.get().then((queryResults) => {
                 queryResults.forEach((doc) => {
                     const selected = doc.data().selected;
                     const unwatched_movies = doc.data().unwatched_movies;
@@ -199,8 +199,8 @@ function chooseMovie() {
                 db.collection("users").doc(selectedUser).update({selected: true});
 
                 return selectedUser.name;
-            })
-        .then((selectedUser) => {
+            });
+        }).then((selectedUser) => {
             return chooseMovieTransaction(selectedUser);
         })
         .then((movie) => {
