@@ -65,6 +65,15 @@ class App extends React.Component {
         {this.state.previousMovies.map((movie, i) => (
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
+
+        <p> Features/Improvements to be added soon: </p>
+        <ul> 
+          <li> Change order of/delete your suggested movies </li>
+          <li> Review movies previously watched </li>
+          <li> Redesign UI </li>
+          <li> Make UI friendly for all screen sizes </li>
+        </ul>
+        <p> Let me know of features or improvements you'd like to be added</p>
       </div>
     );
   }
