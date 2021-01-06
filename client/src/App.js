@@ -47,7 +47,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <h1> Movie Of The Week (v0.1.0)</h1>
+        <h1> Movie Of The Week (v1.0.0)</h1>
         {this.state.isMovieSelected ? 
             <div> 
               <p> Movie of the week is: {this.state.movieOTW} </p>
