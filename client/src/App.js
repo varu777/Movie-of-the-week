@@ -70,6 +70,7 @@ class App extends React.Component {
         <ul> 
           <li> Change order of/delete your suggested movies </li>
           <li> Review movies previously watched </li>
+          <li> Show a movie leaderboard filtered by highest score first </li>
           <li> Redesign UI </li>
           <li> Make UI friendly for all screen sizes </li>
         </ul>
