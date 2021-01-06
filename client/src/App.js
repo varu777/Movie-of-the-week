@@ -19,7 +19,7 @@ class App extends React.Component {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: 'https://movieotw.herokuapp.com/HomeData'
+      url: 'http://localhost:9000/HomeData'
     })
     .then((response) => {
       window.alert(response);
