@@ -4,8 +4,8 @@ var dbIndex = require('../db/functions');
 
 router.post('/SuggestMovie', function (req, res) {
     dbIndex.suggestMovie(req.body.movie, req.body.name, req.body.movieNote)
-        .then(() => {
-            res.jsonp({success: true, val: req.body.movie});
+        .then((ticketNum) => {
+            res.jsonp({success: true, val: req.body.movie, ticketNum: ticketNum});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});

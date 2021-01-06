@@ -55,7 +55,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                 });
 
                 // success
-                resolve();
+                resolve(newUserTotalMovies);
             }).catch((error) => {
                 reject (error)});
         }); 

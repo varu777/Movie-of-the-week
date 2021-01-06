@@ -22,12 +22,8 @@ class App extends React.Component {
       url: 'https://movieotw.herokuapp.com/HomeData'
     })
     .then((response) => {
-      window.alert(response);
-      console.log(response);
       // get motw data
       let movieOTWData = response.data.movieOTW;
-      console.log(movieOTWData);
-      console.log(movieOTWData.movieOTW);
       let movieOTW = movieOTWData.movieOTW;
       let userOTW = movieOTWData.addedBy;
       let teaser = movieOTWData.note;
@@ -51,7 +47,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <h1> Movie Of The Week (In Dev)</h1>
+        <h1> Movie Of The Week (v0.1.0)</h1>
         {this.state.isMovieSelected ? 
             <div> 
               <p> Movie of the week is: {this.state.movieOTW} </p>
