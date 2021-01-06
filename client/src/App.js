@@ -47,7 +47,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <h1> Movie Of The Week (In Dev)</h1>
+        <h1> Movie Of The Week (v1.0.0)</h1>
         {this.state.isMovieSelected ? 
             <div> 
               <p> Movie of the week is: {this.state.movieOTW} </p>
@@ -65,6 +65,16 @@ class App extends React.Component {
         {this.state.previousMovies.map((movie, i) => (
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
+
+        <p> Features/Improvements to be added soon: </p>
+        <ul> 
+          <li> Change order of/delete your suggested movies </li>
+          <li> Review movies previously watched </li>
+          <li> Show a movie leaderboard filtered by highest score first </li>
+          <li> Redesign UI </li>
+          <li> Make UI friendly for all screen sizes </li>
+        </ul>
+        <p> Let me know of features or improvements you'd like to be added</p>
       </div>
     );
   }

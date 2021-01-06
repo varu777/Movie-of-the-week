@@ -55,7 +55,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                 });
 
                 // success
-                resolve();
+                resolve(newUserTotalMovies);
             }).catch((error) => {
                 reject (error)});
         }); 
@@ -67,9 +67,9 @@ function suggestMovie(movie, user, note) {
         const parsedMovie = parseString(movie);
 
         // add movie and update user info
-        addMovieTransaction(parsedMovie, movie, user, note).then(() => {
+        addMovieTransaction(parsedMovie, movie, user, note).then((ticketNum) => {
             // successfully added movie
-            resolve();
+            resolve(ticketNum);
         }).catch((error) => {reject(error); }) 
     });
 }
