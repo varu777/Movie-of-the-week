@@ -81,6 +81,7 @@ function chooseMovieTransaction(user) {
             var userRef = db.collection("users").doc(user);
             var allUsersRef = db.collection("users");
             var motwIdx = db.collection("stats").doc("stats");
+            var eligible_users = []
             var chosenMovie = null;
             var user_unwatchedCount = -1;
 
@@ -129,31 +130,78 @@ function chooseMovieTransaction(user) {
     });
 }
 
+function resetUsers() {
+    return new Promise((resolve, reject) => {
+        // reset selected boolean for each user
+        var allUsersRef = db.collection("users");
+        allUsersRef.get().then((queryResults) => {
+            queryResults.forEach((user) => {
+                var userRef = db.collection("users").doc(user);
+                userRef.update({selected: false});
+            });
+
+            // reset global selected count 
+            var statsRef = db.collection("stats").doc("stats");
+            statsRef.update({selected: 0});
+            resolve();
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
 function chooseMovie() {
     return new Promise((resolve, reject) => {
         // fetch users
         var userRef = db.collection("users");
+        var statsRef = db.collection("stats").doc("stats");
+        var eligible_users = []
 
-        // find user that has been chosen the least recently
-        var max = 0;
-        var leastUser = null;
-        userRef.get().then((queryResults) => {
-            queryResults.forEach((doc) => {
-                const unselected_counter = doc.data().unselected_counter;
-                const unwatched_movies = doc.data().unwatched_movies;
-                if ((unselected_counter > max || leastUser == null) && unwatched_movies > 0) {
-                    max = unselected_counter;
-                    leastUser = doc.data();
-                }
-            });
+        // check if every user has been selected already
+        statsRef.get().then((stats) => {
+            selected = stats.data().selected;
 
-            // throw error if nobody has unwatched movies
-            if (leastUser == null) {
-                throw new Error("Every movie added has been watched.");
+            // check if everyone's selected boolean needs to be reset to false, meaning everyone has been selected for the current pool
+            if (selected == 7) {
+                return true;
             }
-        })
-        .then(() => {
-            return chooseMovieTransaction(leastUser.name);
+           
+            return false;
+        }).then((needsReset) => {
+            if (needsReset) {
+                return resetUsers();
+            }
+        }).then(() => {
+            // randomly choose a user that hasn't been selected yet in current pool
+            userRef.get().then((queryResults) => {
+                queryResults.forEach((doc) => {
+                    const selected = doc.data().selected;
+                    const unwatched_movies = doc.data().unwatched_movies;
+
+                    if (selected == false && unwatched_movies > 0) {
+                        eligible_users.push(doc.data().name);
+                    }
+                });
+
+                // no user can participate
+                if (eligible_users.length == 0) {
+                    throw new Error("Every movie added has been watched.");
+                }
+
+                // choose random user from eligible users
+                const randomIdx = Math.floor(Math.random() * (eligible_users.length - 0) + 0);
+                const selectedUser = eligible_users[randomIdx];
+
+                // increment global selected count by 1
+                db.collection("stats").doc("stats").update({selected: firebase.firestore.FieldValue.increment(1)});
+
+                // update selected user boolean to true so they're selected next time
+                db.collection("users").doc(selectedUser).update({selected: true});
+
+                return selectedUser.name;
+            })
+        .then((selectedUser) => {
+            return chooseMovieTransaction(selectedUser);
         })
         .then((movie) => {
             resolve(movie);
