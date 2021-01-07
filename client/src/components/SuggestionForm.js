@@ -11,20 +11,22 @@ class SuggestionForm extends React.Component {
 
     submitSuggestion = () => {
         if (this.state.movieSuggestion.length === 0) {
-        window.alert("Movie name cannot be empty.");
-        return;
+            window.alert("Movie name cannot be empty.");
+            return;
         }
 
         if (this.state.user.length === 0) {
-        window.alert("User not selected.");
-        return;
+            window.alert("User not selected.");
+            return;
         }
 
         const movie = this.state.movieSuggestion;
         const user = this.state.user;
+
+        const url = process.env.NODE_ENV === "production" ? process.env.REACT_HOME_URL + "/SuggestMovie" : "http://localhost:9000/SuggestMovie";
         axios({
             method: 'post',
-            url: 'https://movieotw.herokuapp.com/SuggestMovie',
+            url: url,
             data: {
                 movie: movie, 
                 name: user,

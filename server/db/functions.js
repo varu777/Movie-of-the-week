@@ -11,6 +11,8 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
             var newUserTotalMovies = -1;
             var newUserUnwatchedMovies = -1;
             var totalMovies = -1;
+            var totalParticipants = -1;
+            var userParticipating = true;
 
             // duplicate check
             transaction.get(movieRef).then((doc) => {
@@ -31,18 +33,20 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
 
                     newUserTotalMovies = doc.data().total_movies + 1;
                     newUserUnwatchedMovies = doc.data().unwatched_movies + 1;
+                    userParticipating = doc.data().participating;
                 })
             }).then(() => {
                 // now read total movie count and get new movie idx
                 return transaction.get(idxRef).then((result) => {
                     totalMovies = result.data().totalMovies;
+                    totalParticipants = result.data().participants;
                 })
             }).then(() => { // doing writes now
                 // update the user's total movie count and unwatched movie count
-                transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies});
+                transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies, participating: true});
 
                 // update overall total movie count 
-                transaction.update(idxRef, {totalMovies: totalMovies + 1});
+                transaction.update(idxRef, {totalMovies: totalMovies + 1, participants: userParticipating == false ? totalParticipants + 1 : totalParticipants});
 
                 // add to movies collection
                 transaction.set(movieRef, {
@@ -51,11 +55,11 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                     note: note, 
                     watched: false,
                     date: getDate(),
-                    movieIdx: totalMovies 
+                    movieIdx: totalMovies + 1
                 });
 
                 // success
-                resolve(newUserTotalMovies);
+                resolve(totalMovies + 1);
             }).catch((error) => {
                 reject (error)});
         }); 
@@ -67,9 +71,9 @@ function suggestMovie(movie, user, note) {
         const parsedMovie = parseString(movie);
 
         // add movie and update user info
-        addMovieTransaction(parsedMovie, movie, user, note).then((ticketNum) => {
+        addMovieTransaction(parsedMovie, movie, user, note).then((movieId) => {
             // successfully added movie
-            resolve(ticketNum);
+            resolve(movieId);
         }).catch((error) => {reject(error); }) 
     });
 }
@@ -78,11 +82,8 @@ function chooseMovieTransaction(user) {
     return db.runTransaction((transaction) => {
         return new Promise((resolve, reject) => {
             var movieRef = db.collection("movies");
-            var userRef = db.collection("users").doc(user);
-            var allUsersRef = db.collection("users");
             var motwIdx = db.collection("stats").doc("stats");
             var chosenMovie = null;
-            var user_unwatchedCount = -1;
 
             // select the unwatched movie suggested by the user that's been in the db for the longest time
             // doing reads first
@@ -101,22 +102,6 @@ function chooseMovieTransaction(user) {
                     throw new Error("User does not have any unwatched movies.");
 
             }).then(() => {
-                // increment unselected count for each user
-                return allUsersRef.get().then((results) => {
-                    results.forEach((u) => {
-                        // get value of unwatched count so it can be decremented later if user
-                        if (user === u.data().name) {
-                            user_unwatchedCount = u.data().unwatched_movies;
-                        } else {
-                            // increment unselected counter for the users that weren't selected
-                            transaction.update(db.collection("users").doc(u.data().name), {unselected_counter: u.data().unselected_counter + 1});
-                        }
-                    })
-                });
-            }).then(() => {
-                // decrement user's unwatched movies amount by 1 and reset counter
-                transaction.update(userRef, {unwatched_movies: user_unwatchedCount - 1, unselected_counter: 0});
-                
                 // update movie of the week and user
                 transaction.update(motwIdx, {movieOTW: chosenMovie.movie, note: chosenMovie.note, addedBy: user});
 
@@ -129,31 +114,86 @@ function chooseMovieTransaction(user) {
     });
 }
 
+function resetUsers() {
+    return new Promise((resolve, reject) => {
+        // reset selected boolean for each user
+        var allUsersRef = db.collection("users");
+        var newParticipants = 0;
+        allUsersRef.get().then((queryResults) => {
+            queryResults.forEach((user) => {
+                const data = user.data();
+                var userRef = db.collection("users").doc(data.name);
+                if (data.unwatched_movies > 0) {
+                    newParticipants++;
+                }
+
+                userRef.update({selected: false});
+            });
+
+            // reset global selected count 
+            var statsRef = db.collection("stats").doc("stats");
+            statsRef.update({selected: 0, participants: newParticipants});
+            resolve();
+        }).catch((error) => {
+            console.log("err");
+            reject(error);
+        });
+    });
+}
+
 function chooseMovie() {
     return new Promise((resolve, reject) => {
         // fetch users
-        var userRef = db.collection("users");
+        var allUsersRef = db.collection("users");
+        var statsRef = db.collection("stats").doc("stats");
+        var eligibleUsers = []
+        var selectedUser = null;
 
-        // find user that has been chosen the least recently
-        var max = 0;
-        var leastUser = null;
-        userRef.get().then((queryResults) => {
-            queryResults.forEach((doc) => {
-                const unselected_counter = doc.data().unselected_counter;
-                const unwatched_movies = doc.data().unwatched_movies;
-                if ((unselected_counter > max || leastUser == null) && unwatched_movies > 0) {
-                    max = unselected_counter;
-                    leastUser = doc.data();
-                }
-            });
+        // check if every user that has unwatched movies has been selected already
+        statsRef.get().then((stats) => {
+            let selected = stats.data().selected;
+            let participants = stats.data().participants;
+            let watchedMovies = stats.data().watchedMovies;
+            let totalMovies = stats.data().totalMovies;
 
-            // throw error if nobody has unwatched movies
-            if (leastUser == null) {
+            // All movies watched
+            if (totalMovies == watchedMovies) {
                 throw new Error("Every movie added has been watched.");
             }
-        })
-        .then(() => {
-            return chooseMovieTransaction(leastUser.name);
+
+            // zero participants
+            if (participants == 0) {
+                throw new Error("Nobody is participating in the current pool.");
+            }
+
+            // check if every current participant's selected boolean needs to be reset to false, meaning every participant has been selected for the current pool
+            if (selected == participants) {
+                return true;
+            }
+           
+            return false;
+        }).then((needsReset) => {
+            if (needsReset) {
+                return resetUsers();
+            }
+        }).then(() => {
+            // randomly choose a user that hasn't been selected yet in the current pool
+            return allUsersRef.get().then((queryResults) => {
+                queryResults.forEach((doc) => {
+                    const selected = doc.data().selected;
+                    const unwatched_movies = doc.data().unwatched_movies;
+
+                    if (selected == false && unwatched_movies > 0) {
+                        eligibleUsers.push(doc.data().name);
+                    }
+                });
+
+                // choose random user from eligible users
+                const randomIdx = Math.floor(Math.random() * (eligibleUsers.length - 0) + 0);
+                selectedUser = eligibleUsers[randomIdx];
+            });
+        }).then(() => {
+            return chooseMovieTransaction(selectedUser);
         })
         .then((movie) => {
             resolve(movie);
@@ -168,26 +208,21 @@ function getHomeData() {
     return new Promise((resolve, reject) => {
         var movies = []
         var movieOTW = null;
-        console.log("inside func");
         db.collection("stats").doc("stats").get().then((result) => {
             movieOTW = result.data();
-            console.log("inside stats");
         }).then(() => {
-            console.log("inside movies");
             return db.collection("movies").where("watched", "==", true).get().then((queryResults) => {
                 queryResults.forEach((doc) => {
                     movies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
                 });
             })
         }).then(() => {
-            console.log("inside final");
             if (movieOTW == null) 
                 throw new Error("Unable to retrieve movie of the week.");
 
             if (movies.length == null) 
                 throw new Error("Unable to retrieve previously watched movies.");
             
-            console.log("movie of the week: " + movieOTW);
             resolve({movieOTW, movies});
         }).catch((error) => reject(error));
     });
@@ -210,20 +245,38 @@ function watchedMovie() {
     return new Promise((resolve, reject) => {
         // getting value of movie of the week
         var previousMotw = '';
+        var userUnwatched = -1;
+        var totalParticipants = -1;
+        var globalSelected = -1;
+        var user = null;
+
         const statsRef = db.collection("stats").doc("stats");
         statsRef.get().then((result) => {
             if (result.data().movieOTW === '') 
                 throw new Error("Movie of the Week was empty.");
 
             previousMotw = result.data().movieOTW;
+            totalParticipants = result.data().participants;
+            globalSelected = result.data().selected;
+            user = result.data().addedBy;
         }).then(() => {
+            const userRef = db.collection("users").doc(user);
+            return userRef.get().then((result) => {
+                userUnwatched = result.data().unwatched_movies;
+            });
+        }).then(() => {
+            // updating user data
+            const userRef = db.collection("users").doc(user);
+            const newUnwatched = userUnwatched - 1;
+            userRef.update({unwatched_movies: newUnwatched, participating: newUnwatched == 0 ? false : true, selected: true});
+
             // clearing movie of the week
-            return statsRef.update({movieOTW: ''});
-        }).then(() => {
+            statsRef.update({movieOTW: '', addedBy: '', note: '', watchedMovies: firebase.firestore.FieldValue.increment(1), selected:  firebase.firestore.FieldValue.increment(1)});
+
             // updating movie of the week as watched
             const parsedMovie = parseString(previousMotw);
             const movieRef = db.collection("movies").doc(parsedMovie);
-            return movieRef.update({watched: true, date: getDate()});
+            movieRef.update({watched: true, date: getDate()});
         }).then(() => { 
             resolve();
         }).catch((error) => { reject(error) });

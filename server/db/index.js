@@ -1,4 +1,5 @@
 const firebase = require('firebase');
+var admin = require("firebase-admin");
 require('dotenv').config()
 
 // Initialize Cloud Firestore through Firebase
@@ -11,8 +12,7 @@ firebase.initializeApp({
     appId: process.env.DB_APP_ID, 
     measurementId: process.env.DB_MEASUREMENT_ID
 });
-  
+
 const db = firebase.firestore();
-db.enablePersistence()
 
 module.exports = db;
