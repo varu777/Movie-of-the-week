@@ -16,7 +16,6 @@ app.get('*', function(req, res, next) {
 });
 
 const env = process.env.NODE_ENV === 'production' ? 'https://movieotw.herokuapp.com/' : 'http://localhost:9000'
-console.log(env);
 app.use(cors({credentials: true, origin: env}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
