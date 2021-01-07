@@ -17,6 +17,7 @@ class App extends React.Component {
   
   componentDidMount () {
     // retrieve watched movies
+    console.log(process.env.REACT_ENV);
     const url = process.env.REACT_ENV === "production" ? process.env.REACT_HOME_URL + "/HomeData" : "http://localhost:9000/HomeData";
     axios({
       method: 'get', 
