@@ -17,10 +17,12 @@ class App extends React.Component {
   
   componentDidMount () {
     // retrieve watched movies
+    const url = process.env.REACT_ENV === "production" ? process.env.REACT_HOME_URL + "/HomeData" : "http://localhost:9000/HomeData";
     axios({
       method: 'get', 
-      url: 'http://localhost:9000/HomeData'
+      url: url
     })
+
     .then((response) => {
       // get motw data
       let movieOTWData = response.data.movieOTW;
@@ -47,7 +49,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <h1> Movie Of The Week (v1.0.0)</h1>
+        <h1> Movie Of The Week (v1.1.0)</h1>
         {this.state.isMovieSelected ? 
             <div> 
               <p> Movie of the week is: {this.state.movieOTW} </p>
