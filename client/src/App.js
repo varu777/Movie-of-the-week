@@ -17,10 +17,9 @@ class App extends React.Component {
   
   componentDidMount () {
     // retrieve watched movies
-    const url = process.env.REACT_APP_ENV === "production" ? process.env.REACT_APP_HOME_URL + "/HomeData" : "http://localhost:9000/HomeData";
     axios({
       method: 'get', 
-      url: url
+      url: "https://movieotw.herokuapp.com/HomeData"
     })
 
     .then((response) => {
