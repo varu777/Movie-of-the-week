@@ -12,12 +12,13 @@ class App extends React.Component {
     userOTW: '', 
     noteOTW: '',
     previousMovies: [],
-    isLoading: true,
+    currentPool: [],
+    isLoading: true
   }
   
   componentDidMount () {
     // retrieve watched movies
-    const url = process.env.REACT_ENV === "production" ? process.env.REACT_HOME_URL + "/HomeData" : "http://localhost:9000/HomeData";
+    const url = "http://localhost:9000/HomeData";
     axios({
       method: 'get', 
       url: url
@@ -34,7 +35,7 @@ class App extends React.Component {
       let isMovieSelected = (movieOTWData.movieOTW.length === 0) ? false : true;
       
       let movies = response.data.movies;
-      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser});
+      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser, currentPool: response.data.currentPool});
     })
     .catch((error) => {
       window.alert("Unable to load previous movies: " + error);
@@ -60,6 +61,11 @@ class App extends React.Component {
             : 
             <p> No movie selected yet for this week.</p>
         }
+
+        <h1> Current Pool </h1>
+        {this.state.currentPool.map((user, i) => (
+          <p key={i}> {user.name} - {user.suggestion} </p>
+        ))}
 
         <SuggestionForm />
 

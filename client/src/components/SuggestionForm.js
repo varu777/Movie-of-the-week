@@ -23,7 +23,7 @@ class SuggestionForm extends React.Component {
         const movie = this.state.movieSuggestion;
         const user = this.state.user;
 
-        const url = process.env.NODE_ENV === "production" ? process.env.REACT_HOME_URL + "/SuggestMovie" : "http://localhost:9000/SuggestMovie";
+        const url = "http://localhost:9000/SuggestMovie";
         axios({
             method: 'post',
             url: url,

@@ -37,12 +37,11 @@ router.get('/ChooseMovie', function (req, res) {
 router.get('/HomeData', function (req, res) {
     dbIndex.getHomeData()
         .then((data) => {
-            res.jsonp({success: true, movieOTW: data.movieOTW, movies: data.movies});
+            res.jsonp({success: true, movieOTW: data.movieOTW, movies: data.movies, currentPool: data.currentPool});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});
         }); 
 });
-
 
 module.exports = router;
