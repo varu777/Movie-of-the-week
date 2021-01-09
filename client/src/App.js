@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
+import Navbar from './components/Navbar';
+
 require('dotenv').config()
 
 class App extends React.Component {
@@ -49,6 +51,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
+        <Navbar />
         <h1> Movie Of The Week (v1.1.0)</h1>
         {this.state.isMovieSelected ? 
             <div> 
