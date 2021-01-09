@@ -13,6 +13,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
             var totalMovies = -1;
             var totalParticipants = -1;
             var userParticipating = true;
+            var suggestedMovie = '';
 
             // duplicate check
             transaction.get(movieRef).then((doc) => {
@@ -34,7 +35,8 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                     newUserTotalMovies = doc.data().total_movies + 1;
                     newUserUnwatchedMovies = doc.data().unwatched_movies + 1;
                     userParticipating = doc.data().participating;
-                })
+                    suggestedMovie = doc.data().suggestion;
+                });
             }).then(() => {
                 // now read total movie count and get new movie idx
                 return transaction.get(idxRef).then((result) => {
@@ -43,7 +45,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                 })
             }).then(() => { // doing writes now
                 // update the user's total movie count and unwatched movie count
-                transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies, participating: true});
+                transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies, participating: true, suggestion: suggestedMovie === '' ? movie : suggestedMovie});
 
                 // update overall total movie count 
                 transaction.update(idxRef, {totalMovies: totalMovies + 1, participants: userParticipating == false ? totalParticipants + 1 : totalParticipants});
@@ -208,6 +210,7 @@ function getHomeData() {
     return new Promise((resolve, reject) => {
         var movies = []
         var movieOTW = null;
+        var currentPool = []
         db.collection("stats").doc("stats").get().then((result) => {
             movieOTW = result.data();
         }).then(() => {
@@ -215,7 +218,14 @@ function getHomeData() {
                 queryResults.forEach((doc) => {
                     movies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
                 });
-            })
+            });
+        }).then(() => {
+            // get current pool of participants
+            return db.collection("users").where("participating", "==", true).where("selected", "==", false).get().then((queryResults) => {
+                queryResults.forEach((doc) => {
+                    currentPool.push({name: doc.data().name, suggestion: doc.data().suggestion});
+                });
+            });
         }).then(() => {
             if (movieOTW == null) 
                 throw new Error("Unable to retrieve movie of the week.");
@@ -223,7 +233,7 @@ function getHomeData() {
             if (movies.length == null) 
                 throw new Error("Unable to retrieve previously watched movies.");
             
-            resolve({movieOTW, movies});
+            resolve({movieOTW, movies, currentPool});
         }).catch((error) => reject(error));
     });
 }

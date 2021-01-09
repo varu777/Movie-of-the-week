@@ -15,7 +15,7 @@ app.get('*', function(req, res, next) {
     next() /* Continue to other routes if we're not redirecting */
 });
 
-const env = process.env.NODE_ENV === 'production' ? 'https://movieotw.herokuapp.com/' : 'http://localhost:9000'
+const env = process.env.NODE_ENV === 'production' ? 'https://movieotw.herokuapp.com/' : 'http://localhost:3000'
 app.use(cors({credentials: true, origin: env}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -12,7 +12,8 @@ class App extends React.Component {
     userOTW: '', 
     noteOTW: '',
     previousMovies: [],
-    isLoading: true,
+    currentPool: [],
+    isLoading: true
   }
   
   componentDidMount () {
@@ -33,7 +34,7 @@ class App extends React.Component {
       let isMovieSelected = (movieOTWData.movieOTW.length === 0) ? false : true;
       
       let movies = response.data.movies;
-      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser});
+      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser, currentPool: response.data.currentPool});
     })
     .catch((error) => {
       window.alert("Unable to load previous movies: " + error);
@@ -59,6 +60,11 @@ class App extends React.Component {
             : 
             <p> No movie selected yet for this week.</p>
         }
+
+        <h1> Current Pool </h1>
+        {this.state.currentPool.map((user, i) => (
+          <p key={i}> {user.name} - {user.suggestion} </p>
+        ))}
 
         <SuggestionForm />
 
