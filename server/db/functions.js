@@ -44,6 +44,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                     totalParticipants = result.data().participants;
                 })
             }).then(() => { // doing writes now
+
                 // update the user's total movie count and unwatched movie count
                 transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies, participating: true, suggestion: suggestedMovie === '' ? movie : suggestedMovie});
 
@@ -61,7 +62,7 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                 });
 
                 // success
-                resolve(totalMovies + 1);
+                resolve({movie: movie, ticketNum: totalMovies + 1});
             }).catch((error) => {
                 reject (error)});
         }); 
@@ -71,9 +72,10 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
 function suggestMovie(movie, user, note) {
     return new Promise((resolve, reject) => {
         const parsedMovie = parseString(movie);
+        const formattedMovie = formatString(movie);
 
         // add movie and update user info
-        addMovieTransaction(parsedMovie, movie, user, note).then((movieId) => {
+        addMovieTransaction(parsedMovie, formattedMovie, user, note).then((movieId) => {
             // successfully added movie
             resolve(movieId);
         }).catch((error) => {reject(error); }) 
@@ -208,16 +210,23 @@ function chooseMovie() {
 
 function getHomeData() {
     return new Promise((resolve, reject) => {
-        var movies = []
+        var watchedMovies = [];
+        var upcomingMovies = [];
         var movieOTW = null;
         var currentPool = []
         db.collection("stats").doc("stats").get().then((result) => {
             movieOTW = result.data();
         }).then(() => {
-            return db.collection("movies").where("watched", "==", true).get().then((queryResults) => {
+            return db.collection("movies").get().then((queryResults) => {
                 queryResults.forEach((doc) => {
-                    movies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
+                    if (doc.data().watched) 
+                        watchedMovies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
+                    else
+                        upcomingMovies.push({name: doc.data().movie, user: doc.data().addedBy});
                 });
+
+                // sort upcoming movies by date
+
             });
         }).then(() => {
             // get current pool of participants
@@ -230,10 +239,10 @@ function getHomeData() {
             if (movieOTW == null) 
                 throw new Error("Unable to retrieve movie of the week.");
 
-            if (movies.length == null) 
+            if (watchedMovie.length == null) 
                 throw new Error("Unable to retrieve previously watched movies.");
             
-            resolve({movieOTW, movies, currentPool});
+            resolve({movieOTW, upcomingMovies, watchedMovies, currentPool});
         }).catch((error) => reject(error));
     });
 }
@@ -315,6 +324,19 @@ function parseString(movie) {
     }   
 
     return parsedMovie;
+}
+
+function formatString(movie) {
+    var formattedString = "";
+    var split_movies = movie.split(" ");
+
+    for (var i = 0; i < split_movies.length; i++) {
+        formattedString += (split_movies[i].charAt(0).toUpperCase() + split_movies[i].slice(1));
+        if (i != split_movies.length - 1)
+            formattedString += " ";
+    }
+
+    return formattedString;
 }
 
 function getDate() {
