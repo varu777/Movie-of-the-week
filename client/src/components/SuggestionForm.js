@@ -25,7 +25,7 @@ class SuggestionForm extends React.Component {
 
         axios({
             method: 'post',
-            url: "http://movieotw.herokuapp.com/SuggestMovie",
+            url: "https://movieotw.herokuapp.com/SuggestMovie",
             data: {
                 movie: movie, 
                 name: user,
