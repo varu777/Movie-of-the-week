@@ -59,7 +59,8 @@ class Home extends React.Component {
               <p> Movie of the week is: {this.state.movieOTW} </p>
               <p> Added by: {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <p> Watch it <a href="#">Here</a></p> 
+              <p> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09
+">here</a></p> 
             </div> 
             : 
             <p> No movie selected yet for this week.</p>
