@@ -11,11 +11,11 @@ class Login extends React.Component {
             <h1> Login </h1>
 
             <label> email: </label>
-            <input value={() => {window.alert("sadfs");}} onChange={this.updateMovie} />
+            <input onChange={this.updateMovie} />
             <br/>
 
             <label> password: </label>
-            <input value={() => {window.alert("sadfs");}} onChange={this.updateMovie} />
+            <input onChange={this.updateMovie} />
             <br/>
 
             <button onClick={() => {window.alert("hi");}}> Login </button>            

@@ -4,8 +4,8 @@ var dbIndex = require('../db/functions');
 
 router.post('/SuggestMovie', function (req, res) {
     dbIndex.suggestMovie(req.body.movie, req.body.name, req.body.movieNote)
-        .then((ticketNum) => {
-            res.jsonp({success: true, val: req.body.movie, ticketNum: ticketNum});
+        .then((data) => {
+            res.jsonp({success: true, val: data.movie, ticketNum: data.ticketNum});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});
@@ -37,7 +37,7 @@ router.get('/ChooseMovie', function (req, res) {
 router.get('/HomeData', function (req, res) {
     dbIndex.getHomeData()
         .then((data) => {
-            res.jsonp({success: true, movieOTW: data.movieOTW, movies: data.movies, currentPool: data.currentPool});
+            res.jsonp({success: true, movieOTW: data.movieOTW, movies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});

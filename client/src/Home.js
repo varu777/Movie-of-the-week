@@ -14,6 +14,7 @@ class Home extends React.Component {
     noteOTW: '',
     previousMovies: [],
     currentPool: [],
+    upcomingMovies: [],
     isLoading: true
   }
   
@@ -35,7 +36,8 @@ class Home extends React.Component {
       let isMovieSelected = (movieOTWData.movieOTW.length === 0) ? false : true;
       
       let movies = response.data.movies;
-      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser, currentPool: response.data.currentPool});
+      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser, 
+        upcomingMovies: response.data.upcomingMovies, currentPool: response.data.currentPool});
     })
     .catch((error) => {
       window.alert("Unable to load previous movies: " + error);
@@ -65,10 +67,19 @@ class Home extends React.Component {
 
         <h1> Current Pool </h1>
         {this.state.currentPool.map((user, i) => (
-          <p key={i}> {user.name} - {user.suggestion} </p>
+          <p key={i}> {user.suggestion} - {user.name} </p>
         ))}
 
         <SuggestionForm />
+
+        <br />
+        <h1> Upcoming Movies </h1>
+        {this.state.upcomingMovies.map((movie, i) => (
+          <div>
+          <p key={i}> {movie.name} - {movie.user} </p> 
+          </div>
+        ))}
+
 
         <h1> Movies Watched so Far </h1>
         {this.state.previousMovies.map((movie, i) => (
