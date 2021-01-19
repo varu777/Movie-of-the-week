@@ -56,8 +56,8 @@ class Home extends React.Component {
         <h1> Selected Movie </h1>
         {this.state.isMovieSelected ? 
             <div> 
-              <p> Movie of the week is: {this.state.movieOTW} </p>
-              <p> Added by: {this.state.userOTW} </p>
+              <p> Movie of the week is {this.state.movieOTW} </p>
+              <p> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
               <p> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09
 ">here</a></p> 
@@ -87,14 +87,6 @@ class Home extends React.Component {
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
 
-        <p> Features/Improvements to be added soon: </p>
-        <ul> 
-          <li> Change order of/delete your suggested movies </li>
-          <li> Review movies previously watched </li>
-          <li> Show a movie leaderboard filtered by highest score first </li>
-          <li> Redesign UI </li>
-          <li> Make UI friendly for all screen sizes </li>
-        </ul>
         <p> Let me know of features or improvements you'd like to be added</p>
       </div>
     );
