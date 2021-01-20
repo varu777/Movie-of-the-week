@@ -1,5 +1,10 @@
-const db = require('./index');
-const firebase = require('firebase');
+const mongoose = require('mongoose');
+const models = require('./models');
+
+// initializing models
+const UserModel = mongoose.model('User');
+const StatModel = mongoose.model('Stat');
+const MovieModel = mongoose.model('Movie');
 
 // update database using transaction for atomicity, reads first then writes as specified by firebase
 function addMovieTransaction(parsedMovie, movie, user, note) {
