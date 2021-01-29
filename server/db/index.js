@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
+const { startSession } = require('./models/User');
 
 
 /* establishing database connection */
@@ -147,6 +148,100 @@ async function getHomeData() {
     return {movieOTW, upcomingMovies, currentPool, watchedMovies}
 }
 
+async function watchedMovie() {
+    // retrieve stats
+    let watchOTW = await StatsModel.findOne({});
+    if (watchOTW == null) throw new Error("Watch of the Week is already cleared.");
+
+    // retrieve user OTW info
+    let user = await UserModel.findOne({username: watchOTW.addedBy});
+
+    // retrieve movie otw info
+    let movie = await MovieModel.findOne({name: watchOTW.watchOTW});
+
+    // update user info
+    user.unwatched_movies = user.unwatched_movies - 1;
+    user.participating = user.unwatched_movies == 0 ? false : true;
+    user.selected = true;
+
+    // clear watch OTW
+    watchOTW.watchOTW = '';
+    watchOTW.addedBy = '';
+    watchOTW.watchedMovies = watchOTW.watchedMovie + 1;
+    watchOTW.selected = watchOTW.selected + 1;
+
+    // updating movie otw as watched
+    movie.watched = true;
+    movie.date = getDate();
+
+    // write all updates to db
+    await session.withTransaction(() => {
+        return Promise.all([user.save(), watchOTW.save(), movie.save()]);
+    });
+}
+
+async function resetUsers() {
+    // retrieve users that have unwatched movies
+    const participants = await MovieModel.find({unwatched_movies: { $gt: 0}});
+    
+    // update selected status of each one to false
+    for (user of participants) {
+        user.selected = false;
+    }
+
+    // determines size of new pool
+    const newPoolSize = participants.length;
+
+    // update stats info for new pool
+    let stats = await StatsModel.findOne({});
+    stats.selected = 0;
+    stats.totalParticipants = newPoolSize;
+
+    // write all updates to database
+    await session.withTransaction(() => {
+        return Promise.all([participants.save(), stats.save()]);
+    });
+}
+
+async function chooseMovie() {
+    // retrieve stats
+    const stats = await StatsModel.findOne({});
+    
+    // all movies watched error check
+    if (stats.watchedMovies == stats.totalMovies) throw new Error("Every movie added has been watched.");
+
+    // zero participants error check
+    if (stats.totalParticipants == 0) throw new Error("Nobody is participating in the current pool.");
+
+    // check if current pool needs to be reset
+    if (stats.selectedParticipants == stats.totalParticipants) 
+        await resetUsers();
+
+    // randomly choose user that hasn't been selected yet in the current pool
+    const candidates = UserModel.find({selected: false, unwatched_movies: {$gt: 0}});
+    const selectedUser = candidates[Math.floor(Math.random() * (candidates.length - 0) + 0)];
+
+    // retrieve all unwatched movies added by selected user
+    const userMovies = MovieModel.find({watched: false, addedBy: selectedUser.username});
+
+    // pick the movie with the lowest idx
+    let selectedMovie = null;
+    let minIdx = Number.MAX_SAFE_INTEGER;
+    for (movie of userMovies) {
+        if (movie.idx < minIdx) {
+            selectedMovie = movie;
+            minIdx = movie.idx;
+        }
+    }
+
+    // update stats to reflect new movie OTW
+    let stats = await StatsModel.findOne({});
+    stats.watchOTW = selectedMovie.name;
+    stats.addedBy = selectedMovie.addedBy;
+    stats.note = selectedMovie.note;
+
+    await stats.save();
+}   
 
 function parseString(movie) {
   // cleaning string for duplicate check
@@ -199,4 +294,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie };
