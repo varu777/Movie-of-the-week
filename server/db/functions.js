@@ -130,58 +130,6 @@ function chooseMovie() {
     });
 }
 
-function getHomeData() {
-    return new Promise((resolve, reject) => {
-        var watchedMovies = [];
-        var upcomingMovies = [];
-        var movieOTW = null;
-        var currentPool = []
-        db.collection("stats").doc("stats").get().then((result) => {
-            movieOTW = result.data();
-        }).then(() => {
-            return db.collection("movies").get().then((queryResults) => {
-                queryResults.forEach((doc) => {
-                    if (doc.data().watched) 
-                        watchedMovies.push({name: doc.data().movie, teaser: doc.data().note, addedBy: doc.data().addedBy, dateWatched: doc.data().date});
-                    else
-                        upcomingMovies.push({name: doc.data().movie, user: doc.data().addedBy});
-                });
-
-                // sort upcoming movies by date
-
-            });
-        }).then(() => {
-            // get current pool of participants
-            return db.collection("users").where("participating", "==", true).where("selected", "==", false).get().then((queryResults) => {
-                queryResults.forEach((doc) => {
-                    currentPool.push({name: doc.data().name, suggestion: doc.data().suggestion});
-                });
-            });
-        }).then(() => {
-            if (movieOTW == null) 
-                throw new Error("Unable to retrieve movie of the week.");
-
-            if (watchedMovie.length == null) 
-                throw new Error("Unable to retrieve previously watched movies.");
-            
-            resolve({movieOTW, upcomingMovies, watchedMovies, currentPool});
-        }).catch((error) => reject(error));
-    });
-}
-
-function getMovieOTW() {
-    return new Promise((resolve, reject) => {
-        db.collection("stats").doc("stats").get().then((result) => {
-            if (!result.exists)
-                throw new Error("Stats don't exist.");
-            
-            // success
-            resolve(doc.data().movieOTW);
-        })
-        .catch((error) => {reject(error);});
-    });
-}
-
 function watchedMovie() {
     return new Promise((resolve, reject) => {
         // getting value of movie of the week
@@ -275,4 +223,4 @@ function getdate() {
     return date;
 }
 
-module.exports = {chooseMovie, getHomeData, watchedMovie, getMovieOTW};
+module.exports = {chooseMovie, watchedMovie };
