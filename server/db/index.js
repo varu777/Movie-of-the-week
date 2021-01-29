@@ -108,6 +108,45 @@ async function suggestMovie(movie, user, note) {
     return {movie: formattedMovie, movieIdx: movieIdx};
 }
 
+async function getHomeData() {
+    // movie of the week query
+    const movieOTW = await StatsModel.findOne({});
+
+    // current pool query
+    const unselectedUsers = await UserModel.find({participating: true, selected: false});
+    var currentPool = [];
+    for (user of unselectedUsers) {
+        currentPool.push({
+            name: user.username, 
+            suggestion: user.suggestion
+        });
+    }
+
+    // watched movies query
+    const watchedMoviesQuery = await MovieModel.find({watched: true});
+    var watchedMovies = []
+    for (movie of watchedMoviesQuery) {
+        watchedMovies.push({
+            name: movie.username, 
+            teaser: movie.note, 
+            addedBy: movie.addedBy, 
+            dateWatched: movie.date
+        });
+    }
+
+    // upcoming movies query
+    const upcomingMoviesQuery = await MovieModel.find({watched: false});
+    var upcomingMovies = []
+    for (movie of upcomingMoviesQuery) {
+        upcomingMovies.push({
+            name: movie.name,
+            user: movie.addedBy
+        });
+    }
+
+    return {movieOTW, upcomingMovies, currentPool, watchedMovies}
+}
+
 
 function parseString(movie) {
   // cleaning string for duplicate check
@@ -160,4 +199,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie };
+module.exports = { suggestMovie, getHomeData };

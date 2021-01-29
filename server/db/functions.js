@@ -4,102 +4,6 @@ const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
 const MovieModel = require('./models/Movie');
 
-// update database using transaction for atomicity, reads first then writes as specified by firebase
-async function addMovieTransaction(parsedMovie, movie, user, note) {
-    await session.withTransaction(() => {
-        return new Promise((resolve, reject) => {
-            // checking if movie has been added
-            MovieModel.findOne({name: parsedMovie}, (err, movie) => {
-                console.log("in here");
-                console.log("Err: " + err);
-                console.log("Movie: " + movie);
-            });
-        });
-    });
-
-    /*
-    return db.runTransaction((transaction) => {
-        return new Promise((resolve, reject) => {
-            var movieRef = db.collection("movies").doc(parsedMovie);
-            var idxRef = db.collection("stats").doc("stats");
-            var userRef = db.collection("users").doc(user);
-            var newUserTotalMovies = -1;
-            var newUserUnwatchedMovies = -1;
-            var totalMovies = -1;
-            var totalParticipants = -1;
-            var userParticipating = true;
-            var suggestedMovie = '';
-
-            // duplicate check
-            transaction.get(movieRef).then((doc) => {
-                if (doc.exists) {
-                    if (doc.data().watched) {
-                        throw new Error("Movie has already been watched. Consult with the others if they'd like to rewatch it.")
-                    } else {
-                        throw new Error("Movie has been added by someone else, but has not been watched yet.");
-                    }
-                }
-            }).then(() => {     // doing reads first
-                // read user data
-                return transaction.get(userRef).then((doc) => {
-                    // error if user doesn't exist
-                    if (!doc.exists) {
-                        throw new Error("User does not exist.");
-                    }
-
-                    newUserTotalMovies = doc.data().total_movies + 1;
-                    newUserUnwatchedMovies = doc.data().unwatched_movies + 1;
-                    userParticipating = doc.data().participating;
-                    suggestedMovie = doc.data().suggestion;
-                });
-            }).then(() => {
-                // now read total movie count and get new movie idx
-                return transaction.get(idxRef).then((result) => {
-                    totalMovies = result.data().totalMovies;
-                    totalParticipants = result.data().participants;
-                })
-            }).then(() => { // doing writes now
-
-                // update the user's total movie count and unwatched movie count
-                transaction.update(userRef, {total_movies: newUserTotalMovies, unwatched_movies: newUserUnwatchedMovies, participating: true, suggestion: suggestedMovie === '' ? movie : suggestedMovie});
-
-                // update overall total movie count 
-                transaction.update(idxRef, {totalMovies: totalMovies + 1, participants: userParticipating == false ? totalParticipants + 1 : totalParticipants});
-
-                // add to movies collection
-                transaction.set(movieRef, {
-                    movie: movie,
-                    addedBy: user,
-                    note: note, 
-                    watched: false,
-                    date: getDate(),
-                    movieIdx: totalMovies + 1
-                });
-
-                // success
-                resolve({movie: movie, ticketNum: totalMovies + 1});
-            }).catch((error) => {
-                reject (error)});
-        }); 
-    });
-    */
-}
-
-async function suggestMovie(movie, user, note) {
-    const session = await db.startSession();
-    const parsedMovie = parseString(movie);
-    const formattedMovie = formatString(movie);
-    console.log("here");
-
-    await session.withTransaction(() => {
-        return addMovieTransaction(parsedMovie, formattedMovie, user, note);
-    }).then((movieId) => {
-        resolve(movieId);
-    }).catch((error) => {
-        throw error;
-    });
-}
-
 function chooseMovieTransaction(user) {
     return db.runTransaction((transaction) => {
         return new Promise((resolve, reject) => {
@@ -371,4 +275,4 @@ function getdate() {
     return date;
 }
 
-module.exports = {suggestMovie, chooseMovie, getHomeData, watchedMovie, getMovieOTW};
+module.exports = {chooseMovie, getHomeData, watchedMovie, getMovieOTW};

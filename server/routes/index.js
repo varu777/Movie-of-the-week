@@ -35,9 +35,9 @@ router.get('/ChooseMovie', function (req, res) {
 });
 
 router.get('/HomeData', function (req, res) {
-    dbIndex.getHomeData()
+    db.getHomeData()
         .then((data) => {
-            res.jsonp({success: true, movieOTW: data.movieOTW, movies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
+            res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});

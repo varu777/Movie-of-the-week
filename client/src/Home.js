@@ -22,26 +22,32 @@ class Home extends React.Component {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: "https://movieotw.herokuapp.com/HomeData"
+      url: "http://localhost:9000/HomeData"
     })
 
     .then((response) => {
       // get motw data
       let movieOTWData = response.data.movieOTW;
-      let movieOTW = movieOTWData.movieOTW;
-      let userOTW = movieOTWData.addedBy;
-      let teaser = movieOTWData.note;
 
       // display motw if it's not blank
-      let isMovieSelected = (movieOTWData.movieOTW.length === 0) ? false : true;
+      let isMovieSelected = (movieOTWData.watchOTW.length === 0) ? false : true;
       
-      let movies = response.data.movies;
-      this.setState({previousMovies: movies, isLoading: false, isMovieSelected: isMovieSelected, movieOTW: movieOTW, userOTW: userOTW, noteOTW: teaser, 
-        upcomingMovies: response.data.upcomingMovies, currentPool: response.data.currentPool});
+      let movies = response.data.watchedMovies;
+      this.setState({
+        previousMovies: movies, 
+        isMovieSelected: isMovieSelected,
+        movieOTW: movieOTWData.watchOTW,
+        userOTW: movieOTWData.addedBy, 
+        noteOTW: movieOTWData.note, 
+        upcomingMovies: response.data.upcomingMovies, 
+        currentPool: response.data.currentPool,
+        isLoading: false
+      });
     })
     .catch((error) => {
-      window.alert("Unable to load previous movies: " + error);
+      window.alert("Unable to load home data: " + error);
     })
+    this.setState({isLoading: false});
   }
 
 

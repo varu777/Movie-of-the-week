@@ -25,7 +25,7 @@ class SuggestionForm extends React.Component {
 
         axios({
             method: 'post',
-            url: "https://movieotw.herokuapp.com/SuggestMovie",
+            url: "http://localhost:9000/SuggestMovie",
             data: {
                 movie: movie, 
                 name: user,
@@ -35,7 +35,7 @@ class SuggestionForm extends React.Component {
         .then((response) => {
         if (response.data.success) {
             this.setState({movieSuggestion:'', movieNote:''});
-            window.alert("Successfully added " + response.data.val + ".\n" + "Movie ID: " + response.data.ticketNum);
+            window.alert("Successfully added " + response.data.val + ".\n" + "Movie ID: " + response.data.movieIdx);
         } else {
             // error occured
             window.alert(response.data.val);
