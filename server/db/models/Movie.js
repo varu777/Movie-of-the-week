@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema({parsedName: String, name: String, idx: Number, addedBy: String, date: String, watched: Boolean, note: String});
 
-const schema = mongoose.Schema({name: String, idx: Number, addedBy: String, date: String, idx: Number, watched: Boolean, note: String});
-const Movie = mongoose.model('Movie', schema);
-
-module.exports = { Movie };
+module.exports = mongoose.model('movies', Schema);

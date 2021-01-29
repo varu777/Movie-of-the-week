@@ -10,6 +10,4 @@ schema.methods.generateHash = (password) => {
 schema.methods.validatePassword = (password) => {
 }
 
-const User = mongoose.model('User', schema);
-
-module.exports = { User };
+module.exports = mongoose.model('users', schema);

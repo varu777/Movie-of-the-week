@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var dbIndex = require('../db/functions');
+var db = require('../db/index');
 
-router.post('/SuggestMovie', function (req, res) {
-    dbIndex.suggestMovie(req.body.movie, req.body.name, req.body.movieNote)
-        .then((data) => {
-            res.jsonp({success: true, val: data.movie, ticketNum: data.ticketNum});
-        })
-        .catch((error) => {
-            res.jsonp({success: false, val: error.toString()});
-        });
+router.post('/SuggestMovie', async function (req, res) {
+    var result = db.suggestMovie(req.body.movie, req.body.name, req.body.movieNote);
+    result.then((val) => {
+        res.jsonp({success: true, val: val.movie, movieIdx: val.movieIdx});
+    }).catch((err) => {
+        res.jsonp({success: false, val: err.toString()});
+    });
 });
 
 router.get('/WatchedMovie', function (req, res) {

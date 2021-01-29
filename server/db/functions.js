@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
-const models = require('./models');
 
-// initializing models
-const UserModel = mongoose.model('User');
-const StatModel = mongoose.model('Stat');
-const MovieModel = mongoose.model('Movie');
+const UserModel = require('./models/User');
+const StatsModel = require('./models/Stats');
+const MovieModel = require('./models/Movie');
 
 // update database using transaction for atomicity, reads first then writes as specified by firebase
-function addMovieTransaction(parsedMovie, movie, user, note) {
+async function addMovieTransaction(parsedMovie, movie, user, note) {
+    await session.withTransaction(() => {
+        return new Promise((resolve, reject) => {
+            // checking if movie has been added
+            MovieModel.findOne({name: parsedMovie}, (err, movie) => {
+                console.log("in here");
+                console.log("Err: " + err);
+                console.log("Movie: " + movie);
+            });
+        });
+    });
+
+    /*
     return db.runTransaction((transaction) => {
         return new Promise((resolve, reject) => {
             var movieRef = db.collection("movies").doc(parsedMovie);
@@ -72,18 +82,21 @@ function addMovieTransaction(parsedMovie, movie, user, note) {
                 reject (error)});
         }); 
     });
+    */
 }
 
-function suggestMovie(movie, user, note) {
-    return new Promise((resolve, reject) => {
-        const parsedMovie = parseString(movie);
-        const formattedMovie = formatString(movie);
+async function suggestMovie(movie, user, note) {
+    const session = await db.startSession();
+    const parsedMovie = parseString(movie);
+    const formattedMovie = formatString(movie);
+    console.log("here");
 
-        // add movie and update user info
-        addMovieTransaction(parsedMovie, formattedMovie, user, note).then((movieId) => {
-            // successfully added movie
-            resolve(movieId);
-        }).catch((error) => {reject(error); }) 
+    await session.withTransaction(() => {
+        return addMovieTransaction(parsedMovie, formattedMovie, user, note);
+    }).then((movieId) => {
+        resolve(movieId);
+    }).catch((error) => {
+        throw error;
     });
 }
 
@@ -307,46 +320,46 @@ function watchedMovie() {
     });
 }
 
-function parseString(movie) {
+function parsestring(movie) {
     // cleaning string for duplicate check
     var punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
-    const letters = movie.toLowerCase().split('');
+    const letters = movie.tolowercase().split('');
 
     // removing punctuation and whitespace from movie name
-    const parsedArray = letters.filter(function(letter) {
-    return punctuation.indexOf(letter) == -1; 
+    const parsedarray = letters.filter(function(letter) {
+    return punctuation.indexof(letter) == -1; 
     });
     
     // invalid length check
-    if (parsedArray.length >= 40) {
-        throw new Error("Movie length exceeded.");
+    if (parsedarray.length >= 40) {
+        throw new error("movie length exceeded.");
     }
 
     // combining filtered movie array into string
-    parsedMovie = "";
-    for (i in parsedArray) {
-        parsedMovie += parsedArray[i];
+    parsedmovie = "";
+    for (i in parsedarray) {
+        parsedmovie += parsedarray[i];
     }   
 
-    return parsedMovie;
+    return parsedmovie;
 }
 
-function formatString(movie) {
-    var formattedString = "";
+function formatstring(movie) {
+    var formattedstring = "";
     var split_movies = movie.split(" ");
 
     for (var i = 0; i < split_movies.length; i++) {
-        formattedString += (split_movies[i].charAt(0).toUpperCase() + split_movies[i].slice(1));
+        formattedstring += (split_movies[i].charat(0).touppercase() + split_movies[i].slice(1));
         if (i != split_movies.length - 1)
-            formattedString += " ";
+            formattedstring += " ";
     }
 
-    return formattedString;
+    return formattedstring;
 }
 
-function getDate() {
+function getdate() {
     // create date instance
-    var date = new Date().toString();
+    var date = new date().tostring();
     var split_date = date.split(" ");
     date = "";
     for (i in split_date) {
