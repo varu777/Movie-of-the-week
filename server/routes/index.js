@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var dbIndex = require('../db/functions');
 var db = require('../db/index');
 
 router.post('/SuggestMovie', async function (req, res) {
