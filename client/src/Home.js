@@ -28,6 +28,7 @@ class Home extends React.Component {
     .then((response) => {
       // get motw data
       let movieOTWData = response.data.movieOTW;
+      console.log(movieOTWData);
 
       // display motw if it's not blank
       let isMovieSelected = (movieOTWData.watchOTW.length === 0) ? false : true;

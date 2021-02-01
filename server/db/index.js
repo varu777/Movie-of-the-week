@@ -149,9 +149,11 @@ async function getHomeData() {
 }
 
 async function watchedMovie() {
+    const session = await db.startSession();
+
     // retrieve stats
     let watchOTW = await StatsModel.findOne({});
-    if (watchOTW == null) throw new Error("Watch of the Week is already cleared.");
+    if (watchOTW.watchOTW.length === 0) throw new Error("Watch of the Week is already cleared.");
 
     // retrieve user OTW info
     let user = await UserModel.findOne({username: watchOTW.addedBy});
@@ -167,8 +169,8 @@ async function watchedMovie() {
     // clear watch OTW
     watchOTW.watchOTW = '';
     watchOTW.addedBy = '';
-    watchOTW.watchedMovies = watchOTW.watchedMovie + 1;
-    watchOTW.selected = watchOTW.selected + 1;
+    watchOTW.watchedMovies = watchOTW.watchedMovies + 1;
+    watchOTW.selectedParticipants = watchOTW.selectedParticipants + 1;
 
     // updating movie otw as watched
     movie.watched = true;
@@ -218,11 +220,17 @@ async function chooseMovie() {
         await resetUsers();
 
     // randomly choose user that hasn't been selected yet in the current pool
-    const candidates = UserModel.find({selected: false, unwatched_movies: {$gt: 0}});
+    const candidates = await UserModel.find({selected: false, unwatched_movies: {$gt: 0}});
+
+    if (candidates.length == 0) {
+        console.log("No candidates were found.");
+        throw new Error("Internal Server error occured.");
+    }
+
     const selectedUser = candidates[Math.floor(Math.random() * (candidates.length - 0) + 0)];
 
     // retrieve all unwatched movies added by selected user
-    const userMovies = MovieModel.find({watched: false, addedBy: selectedUser.username});
+    const userMovies = await MovieModel.find({watched: false, addedBy: selectedUser.username});
 
     // pick the movie with the lowest idx
     let selectedMovie = null;
@@ -235,12 +243,13 @@ async function chooseMovie() {
     }
 
     // update stats to reflect new movie OTW
-    let stats = await StatsModel.findOne({});
     stats.watchOTW = selectedMovie.name;
     stats.addedBy = selectedMovie.addedBy;
     stats.note = selectedMovie.note;
 
     await stats.save();
+
+    return selectedMovie.name;
 }   
 
 function parseString(movie) {

@@ -13,7 +13,7 @@ router.post('/SuggestMovie', async function (req, res) {
 });
 
 router.get('/WatchedMovie', function (req, res) {
-    dbIndex.watchedMovie()
+    db.watchedMovie()
         .then(() => {
             res.jsonp({success: true, val: "Movie of the Week has been cleared."});
         })
@@ -24,7 +24,7 @@ router.get('/WatchedMovie', function (req, res) {
 });
 
 router.get('/ChooseMovie', function (req, res) {
-    dbIndex.chooseMovie()
+    db.chooseMovie()
         .then((movie) => {
             res.jsonp({success: true, val: movie + " has been chosen."});
         })
