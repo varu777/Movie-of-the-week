@@ -15,98 +15,54 @@ db.once('open', err => {
   console.log("connected to db");
 });
 
-
-// update database using transaction for atomicity, reads first then writes as specified by firebase
-function addMovieTransaction(parsedMovie, movieName, user, note) {
-    return new Promise( (resolve, reject) => {
-        // will contain user info
-        var userResult = null;
-
-        // will contain database info
-        var statsResult = null;
-
-        // checking if movie has been added
-        MovieModel.findOne({parsedName: parsedMovie}, (err, movie) => {
-            if (err) 
-                reject(new Error(err));
-
-            else if (movie != null)  
-                reject(new Error("Movie already inserted."));
-
-        }).then(() => { // read user data
-            return UserModel.findOne({username: user}, (err, user) => {
-                if (err) 
-                    reject(new Error(err));
-                
-                else if (user == null) {
-                    reject(new Error("User not found."));
-                }
-
-                // grabbing relevant user data 
-                userResult = user;
-            });
-        }).then(() => { // read database stats
-            return StatsModel.findOne({}, (err, stats) => {
-                if (err) {
-                    console.log("Unable to retrieve database stats.");
-                    reject(new Error(err));
-                }
-
-                else if (stats == null) {
-                    console.log("Unable to retrieve database stats.");
-                    reject(new Error("Internal error occured."));
-                }
-
-                statsResult = stats;
-            });
-        }).then(() => { // write data to db
-            // update stats 
-            statsResult.totalMovies = statsResult.totalMovies + 1;
-            statsResult.totalParticipants = userResult.participating == false ? statsResult.totalParticipants + 1 : statsResult.totalParticipants;
-
-            // update the user's total movie count and unwatched movie count
-            userResult.total_movies = userResult.total_movies + 1;
-            userResult.unwatched_movies = userResult.unwatched_movies + 1;
-            userResult.participating = true;
-            userResult.suggestion = userResult.suggestion === "" ? movieName : userResult.suggestion;
-
-
-            // create new object for movies collection
-            const movie = new MovieModel({
-                parsedName: parsedMovie,
-                name: movieName, 
-                idx: statsResult.totalMovies, 
-                addedBy: user, 
-                date: getDate(),
-                watched: false,
-                note: note
-            });
-            // complete all updates
-            Promise.all([statsResult.save(), userResult.save(), movie.save()])
-            .then(() => {
-                resolve({movieIdx: statsResult.totalMovies});
-            }).catch((error) => {
-                reject(new Error(error));
-            });
-        });
-    });
-}
-
 async function suggestMovie(movie, user, note) {
     const session = await db.startSession();
     const parsedMovie = parseString(movie);
     const formattedMovie = formatString(movie);
 
-    // moviedIdx of movie if successfully added
-    var movieIdx = -1;
+    // checking if movie has been added
+    const duplicate = await MovieModel.findOne({parsedName: parsedMovie});
+    if (duplicate != null) throw new Error("Movie is already inserted.");
 
-    await session.withTransaction(() => {
-        return addMovieTransaction(parsedMovie, formattedMovie, user, note).then((result) => {
-            movieIdx = result.movieIdx;
-        });
+    // retrieve user info
+    let userResult = await UserModel.findOne({username: user});
+    if (userResult == null) throw new Error("User not found.");
+
+    // retrieve stats
+    let statsResult = await StatsModel.findOne({});
+    if (statsResult == null) {
+        console.log("unable to retrive stats.");
+        throw new Error("Internal server error.");
+    }
+
+    // update stats 
+    statsResult.totalMovies = statsResult.totalMovies + 1;
+    statsResult.totalParticipants = userResult.participating == false ? statsResult.totalParticipants + 1 : statsResult.totalParticipants;
+
+    // update the user's total movie count and unwatched movie count
+    userResult.total_movies = userResult.total_movies + 1;
+    userResult.unwatched_movies = userResult.unwatched_movies + 1;
+    userResult.participating = true;
+    userResult.suggestion = userResult.suggestion === "" ? formattedMovie : userResult.suggestion;
+
+
+    // create new object for movies collection
+    const added_movie = new MovieModel({
+        parsedName: parsedMovie,
+        name: formattedMovie, 
+        idx: statsResult.totalMovies, 
+        addedBy: user, 
+        date: getDate(),
+        watched: false,
+        note: note
     });
 
-    return {movie: formattedMovie, movieIdx: movieIdx};
+    // complete all updates
+    await session.withTransaction(() => {
+        return Promise.all([statsResult.save(), userResult.save(), added_movie.save()]);
+    });
+
+    return ({movie: formattedMovie, movieIdx: statsResult.totalMovies});
 }
 
 async function getHomeData() {
@@ -114,7 +70,7 @@ async function getHomeData() {
     const movieOTW = await StatsModel.findOne({});
 
     // current pool query
-    const unselectedUsers = await UserModel.find({participating: true, selected: false});
+    const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
     var currentPool = [];
     for (user of unselectedUsers) {
         currentPool.push({
