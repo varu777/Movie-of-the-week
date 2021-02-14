@@ -79,7 +79,7 @@ async function getHomeData() {
     }
 
     // watched movies query
-    var watchedMovies = await getWatchedMovies(2);
+    var watchedMovies = await getWatchedMovies(0);
 
     // retrieve upcoming movies
     var upcomingMoviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
