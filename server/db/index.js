@@ -115,7 +115,7 @@ async function getWatchedMovies(filterBy) {
             name: movie.name, 
             teaser: movie.note, 
             addedBy: movie.addedBy, 
-            dateWatched: (months[date.getMonth()-1] + ' ' + date.getDate() + ', ' + date.getFullYear())
+            dateWatched: (months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear())
         });
     }
 
