@@ -79,14 +79,13 @@ async function getHomeData() {
     }
 
     // watched movies query
-    console.log("after");
     var watchedMovies = await getWatchedMovies(2);
-    console.log("here");
+
     // retrieve upcoming movies
     var upcomingMoviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
     var upcomingMovies = []
     for (movie of upcomingMoviesQuery) {
-        movies.push({
+        upcomingMovies.push({
             name: movie.name,
             user: movie.addedBy
         });
