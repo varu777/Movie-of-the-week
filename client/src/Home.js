@@ -93,6 +93,10 @@ class Home extends React.Component {
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
 
+        <label> Filtered by </label>
+        <select name="Name" defaultValue="Choose here" onChange={this.updateUser}>
+        <option value={"Date-Descending"}>Date-Descending</option>
+        </select>
         <br />
       </div>
     );
