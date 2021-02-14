@@ -5,6 +5,7 @@ const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
 const { startSession } = require('./models/User');
 
+const WatchEnum = Object.freeze({"watched": 0, "upcoming": 1, "date-asc": 2, "date-desc": 3});
 
 /* establishing database connection */
 mongoose.connect(process.env.DB_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -52,7 +53,7 @@ async function suggestMovie(movie, user, note) {
         name: formattedMovie, 
         idx: statsResult.totalMovies, 
         addedBy: user, 
-        date: getDate(),
+        date: new Date(),
         watched: false,
         note: note
     });
@@ -80,28 +81,47 @@ async function getHomeData() {
     }
 
     // watched movies query
-    const watchedMoviesQuery = await MovieModel.find({watched: true});
-    var watchedMovies = []
-    for (movie of watchedMoviesQuery) {
-        watchedMovies.push({
-            name: movie.name, 
-            teaser: movie.note, 
-            addedBy: movie.addedBy, 
-            dateWatched: movie.date
-        });
-    }
+    var watchedMovies = await getWatchedMovies(2);
 
-    // upcoming movies query
-    const upcomingMoviesQuery = await MovieModel.find({watched: false}).sort('name');
+    // retrieve upcoming movies
+    var upcomingMoviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
     var upcomingMovies = []
     for (movie of upcomingMoviesQuery) {
-        upcomingMovies.push({
+        movies.push({
             name: movie.name,
             user: movie.addedBy
         });
     }
-
     return {movieOTW, upcomingMovies, currentPool, watchedMovies}
+}
+
+async function getWatchedMovies(filterBy) {
+    // contains final list of movies
+    var movies = []
+
+    // determine filter type
+    var moviesQuery = [];
+    if (filterBy === 0) {
+        moviesQuery = await MovieModel.find({watched: true}).sort({date: -1});
+    } else if (filterBy === 1) {
+        moviesQuery = await MovieModel.find({watched: true}).sort({date: 1});
+    } else { // sort by movie name
+        moviesQuery = await MovieModel.find({watched: true}).sort({name: 1});
+    }
+
+    // format date properly
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    for (movie of moviesQuery) {
+        const date = movie.date;
+        movies.push({
+            name: movie.name, 
+            teaser: movie.note, 
+            addedBy: movie.addedBy, 
+            dateWatched: (months[date.getMonth()-1] + ' ' + date.getDate() + ', ' + date.getFullYear())
+        });
+    }
+
+    return movies;
 }
 
 async function watchedMovie() {

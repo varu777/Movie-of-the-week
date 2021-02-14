@@ -28,7 +28,6 @@ class Home extends React.Component {
     .then((response) => {
       // get motw data
       let movieOTWData = response.data.movieOTW;
-      console.log(movieOTWData);
 
       // display motw if it's not blank
       let isMovieSelected = (movieOTWData.watchOTW.length === 0) ? false : true;
@@ -94,7 +93,7 @@ class Home extends React.Component {
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
 
-        <p> Let me know of features or improvements you'd like to be added</p>
+        <br />
       </div>
     );
   }
