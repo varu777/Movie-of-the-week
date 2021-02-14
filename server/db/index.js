@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
-const { startSession } = require('./models/User');
 
-const WatchEnum = Object.freeze({"watched": 0, "upcoming": 1, "date-asc": 2, "date-desc": 3});
 
 /* establishing database connection */
 mongoose.connect(process.env.DB_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -81,8 +79,9 @@ async function getHomeData() {
     }
 
     // watched movies query
+    console.log("after");
     var watchedMovies = await getWatchedMovies(2);
-
+    console.log("here");
     // retrieve upcoming movies
     var upcomingMoviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
     var upcomingMovies = []
