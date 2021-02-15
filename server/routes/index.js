@@ -43,4 +43,14 @@ router.get('/HomeData', function (req, res) {
         }); 
 });
 
+router.post('/SortWatched', function (req, res) {
+   db.getWatchedMovies(req.body.sortBy)
+        .then((movies) => {
+            res.jsonp({movies});
+        })
+        .catch((error) => {
+            res.jsonp({success: false, val: error.toString()});
+        });
+});
+
 module.exports = router;

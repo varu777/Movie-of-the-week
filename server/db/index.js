@@ -79,7 +79,7 @@ async function getHomeData() {
     }
 
     // watched movies query
-    var watchedMovies = await getWatchedMovies(0);
+    var watchedMovies = await getWatchedMovies('recent');
 
     // retrieve upcoming movies
     var upcomingMoviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
@@ -99,9 +99,9 @@ async function getWatchedMovies(filterBy) {
 
     // determine filter type
     var moviesQuery = [];
-    if (filterBy === 0) {
+    if (filterBy === 'recent') {
         moviesQuery = await MovieModel.find({watched: true}).sort({date: -1});
-    } else if (filterBy === 1) {
+    } else if (filterBy === 'oldest') {
         moviesQuery = await MovieModel.find({watched: true}).sort({date: 1});
     } else { // sort by movie name
         moviesQuery = await MovieModel.find({watched: true}).sort({name: 1});
@@ -277,4 +277,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getWatchedMovies };

@@ -22,7 +22,7 @@ class Home extends React.Component {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: "https://movieotw.herokuapp.com/HomeData"
+      url: "http://localhost:9000/HomeData"
     })
 
     .then((response) => {
@@ -48,6 +48,24 @@ class Home extends React.Component {
       window.alert("Unable to load home data: " + error);
     })
     this.setState({isLoading: false});
+  }
+  
+  updateWatchedSort = (event) => {
+    // gets newly selected filter type
+    let sortBy = event.target.value;
+
+    // sort watched movies array by new filter
+    axios({
+      method: 'post',
+      url: "http://localhost:9000/SortWatched",
+      data: {
+          sortBy: sortBy
+      }
+    }).then((response) => {
+      this.setState({previousMovies: response.data.movies});
+    }).catch((error) => {
+      window.alert("Unable to apply filter: " + error);
+    });
   }
 
 
@@ -89,14 +107,18 @@ class Home extends React.Component {
 
 
         <h1> Movies Watched so Far </h1>
+        <label style={{marginRight: '.5vw'}}> Sort by </label>
+        <select name="Name" defaultValue="Date-Descending" onChange={this.updateWatchedSort}>
+        <option value={"recent"}>Recent First</option>
+        <option value={"oldest"}>Oldest First</option>
+        <option value={"name"}>Movie Name</option>
+        <option disabled={true} value={"o-rating"}>Overall Ratings</option>
+        <option disabled={true} value={"u-rating"}>My Ratings</option>
+        </select>
         {this.state.previousMovies.map((movie, i) => (
           <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
 
-        <label> Filtered by </label>
-        <select name="Name" defaultValue="Choose here" onChange={this.updateUser}>
-        <option value={"Date-Descending"}>Date-Descending</option>
-        </select>
         <br />
       </div>
     );
