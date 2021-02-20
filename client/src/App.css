@@ -34,6 +34,11 @@ a {
   color: salmon;
 }
 
+a:hover {
+  color: salmon;
+  text-decoration: none;
+}
+
 .bottom-text {
   padding-bottom: 1vw;
 }
@@ -56,7 +61,7 @@ a {
 
 .motw-container {
   background-color: #001a33;
-  width: 30vw; 
+  width: 25vw; 
   text-align: center; 
   margin: auto; 
   margin-top: 35px;
