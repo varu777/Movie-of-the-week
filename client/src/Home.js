@@ -78,7 +78,7 @@ class Home extends React.Component {
       <div className="App">
         <CustomNavbar />
         {this.state.isMovieSelected ? 
-            <div className="motw-container"> 
+            <div className="motw-container borders"> 
               <h1 className="title"> Movie of the Week</h1>
               <h3> Friday | February 19, 2021</h3>
               <img style={{marginTop: '1vw', height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"></img> 
