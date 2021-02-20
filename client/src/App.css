@@ -36,7 +36,6 @@ label {
 
 a {
   color: salmon;
-  text-decoration: underline;
 }
 
 .description-container {
@@ -48,7 +47,6 @@ a {
 
 a:hover {
   color: salmon;
-  text-decoration: underline;
 }
 
 .bottom-text {

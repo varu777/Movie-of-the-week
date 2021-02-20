@@ -82,7 +82,7 @@ class Home extends React.Component {
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
               <h4> February 19, 2021</h4>
-              <p> Location: <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
+              <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
               <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"></img> 
