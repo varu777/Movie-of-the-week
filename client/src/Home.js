@@ -95,21 +95,13 @@ class Home extends React.Component {
         }
 
         <div className="center">
-        <br />
-        <h1> Upcoming Movies </h1>
-        {this.state.upcomingMovies.map((movie, i) => (
-          <div>
-          <p key={i}> {movie.name} - {movie.user} </p> 
-          </div>
-        ))}
 
         <SuggestionForm />
+
         <h1 > Current Pool </h1>
         {this.state.currentPool.map((user, i) => (
           <p key={i}> {user.suggestion} - {user.name} </p>
         ))}
-
-
 
 
         <h1> Movies Watched so Far </h1>
@@ -124,6 +116,19 @@ class Home extends React.Component {
         {this.state.previousMovies.map((movie, i) => (
           <PreviousMovie className="watched-container" key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
+
+        <br />
+        <h1> Upcoming Movies </h1>
+        {this.state.upcomingMovies.map((movie, i) => (
+          <div>
+          <p key={i}> {movie.name} - {movie.user} </p> 
+          </div>
+        ))}
+
+
+
+
+
 
         <br />
       </div>
