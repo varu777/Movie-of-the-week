@@ -77,26 +77,26 @@ class Home extends React.Component {
     return (
       <div className="App">
         <CustomNavbar />
-        <h1> Selected Movie </h1>
         {this.state.isMovieSelected ? 
-            <div> 
-              <p> Movie of the week is {this.state.movieOTW} </p>
+            <div style={{backgroundColor: '#001a33', width: '30vw', textAlign: 'center', margin: 'auto', marginTop: '35px'}}> 
+              <br/>
+              <h1 className="title"> Movie of the Week</h1>
+              <h3> Friday | February 19, 2021</h3>
+              <img style={{marginTop: '1vw', height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"></img> 
+              <h1 className="title"> {this.state.movieOTW} </h1>
+              <div style={{width: '80%', margin: 'auto', textAlign: 'left'}}>
+                <p> Jack Torrance (Jack Nicholson) becomes winter caretaker at the isolated Overlook Hotel in Colorado, hoping to cure his writer's block. He settles in along with his wife, Wendy (Shelley Duvall), and his son, Danny (Danny Lloyd), who is plagued by psychic premonitions. As Jack's writing goes nowhere and Danny's visions become more disturbing, Jack discovers the hotel's dark secrets and begins to unravel into a homicidal maniac hell-bent on terrorizing his family. </p>
+              </div>
               <p> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <p> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09
-">here</a></p> 
+              <p> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">here</a></p> 
+              <br/>
             </div> 
             : 
             <p> No movie selected yet for this week.</p>
         }
 
-        <h1> Current Pool </h1>
-        {this.state.currentPool.map((user, i) => (
-          <p key={i}> {user.suggestion} - {user.name} </p>
-        ))}
-
-        <SuggestionForm />
-
+        <div className="center">
         <br />
         <h1> Upcoming Movies </h1>
         {this.state.upcomingMovies.map((movie, i) => (
@@ -104,6 +104,14 @@ class Home extends React.Component {
           <p key={i}> {movie.name} - {movie.user} </p> 
           </div>
         ))}
+
+        <SuggestionForm />
+        <h1 > Current Pool </h1>
+        {this.state.currentPool.map((user, i) => (
+          <p key={i}> {user.suggestion} - {user.name} </p>
+        ))}
+
+
 
 
         <h1> Movies Watched so Far </h1>
@@ -120,6 +128,7 @@ class Home extends React.Component {
         ))}
 
         <br />
+      </div>
       </div>
     );
   }

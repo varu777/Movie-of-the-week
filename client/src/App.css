@@ -1,5 +1,43 @@
+body {
+  background-color: black;
+}
+
 .App {
+  margin: auto;
+}
+
+p {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+h1 {
+  color: Salmon;
+}
+
+h3 {
+  color: white;
+}
+
+h4 {
+  color: white;
+}
+
+label {
+  color: white;
+}
+
+.center {
+  margin: 'auto';
   text-align: center;
+}
+
+.title {
+  padding-top: 20px;
+  color: salmon;
 }
 
 .App-logo {

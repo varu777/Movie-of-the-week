@@ -5,13 +5,13 @@ import { LinkContainer } from 'react-router-bootstrap';
 class CustomNavbar extends React.Component {
     render() {
         return (
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">Movie Of The Week</Navbar.Brand>
+            <Navbar bg="dark" expand="lg">
+                <Navbar.Brand style={{color: 'salmon'}}href="#home">Movie Of The Week</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Nav.Link href="#home">Leaderboard</Nav.Link>
-                    <Nav.Link href="#home">Suggestions</Nav.Link>
+                    <Nav.Link style={{color: 'white'}} href="#home">Leaderboard</Nav.Link>
+                    <Nav.Link style={{color: 'white'}} href="#home">Suggestions</Nav.Link>
 
                     </Nav>
                     <Form inline>
