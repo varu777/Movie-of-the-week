@@ -6,7 +6,7 @@ class CustomNavbar extends React.Component {
     render() {
         return (
             <Navbar bg="dark" expand="lg">
-                <Navbar.Brand style={{color: 'salmon'}}href="#home">Movie Of The Week</Navbar.Brand>
+                <Navbar.Brand style={{color: 'salmon'}}href="#home">MOTW</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
