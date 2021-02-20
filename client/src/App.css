@@ -72,7 +72,7 @@ a:hover {
 
 .motw-container {
   background-color: #001a33;
-  width: 20vw; 
+  width: 23vw; 
   text-align: center; 
   margin: auto; 
   margin-top: 35px;
@@ -129,13 +129,17 @@ a:hover {
     font-size: 4vw;
   }
 
+  h4 {
+    font-size: 4vw;
+  }
+
   p {
     font-size: 3vw;   
   }
 
   .motw-container{
     background-color: #001a33;
-    width: 75vw; 
+    width: 80vw; 
     text-align: center; 
     margin: auto; 
     margin-top: 20px;
