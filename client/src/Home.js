@@ -78,8 +78,7 @@ class Home extends React.Component {
       <div className="App">
         <CustomNavbar />
         {this.state.isMovieSelected ? 
-            <div style={{backgroundColor: '#001a33', width: '30vw', textAlign: 'center', margin: 'auto', marginTop: '35px'}}> 
-              <br/>
+            <div className="motw-container"> 
               <h1 className="title"> Movie of the Week</h1>
               <h3> Friday | February 19, 2021</h3>
               <img style={{marginTop: '1vw', height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"></img> 
@@ -89,8 +88,7 @@ class Home extends React.Component {
               </div>
               <p> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <p> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">here</a></p> 
-              <br/>
+              <p className="bottom-text"> Watch it <a href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">here</a></p> 
             </div> 
             : 
             <p> No movie selected yet for this week.</p>
@@ -124,7 +122,7 @@ class Home extends React.Component {
         <option disabled={true} value={"u-rating"}>My Ratings</option>
         </select>
         {this.state.previousMovies.map((movie, i) => (
-          <PreviousMovie key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
+          <PreviousMovie className="watched-container" key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
         ))}
 
         <br />

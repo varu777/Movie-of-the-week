@@ -30,6 +30,22 @@ label {
   color: white;
 }
 
+a {
+  color: salmon;
+}
+
+.bottom-text {
+  padding-bottom: 1vw;
+}
+
+.motw-container {
+  background-color: #001a33;
+  width: 30vw; 
+  text-align: center; 
+  margin: auto; 
+  margin-top: 35px;
+}
+
 .center {
   margin: 'auto';
   text-align: center;
@@ -49,32 +65,50 @@ label {
   justify-content: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
-  color: #61dafb;
+  color: salmon;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+
+/* For Tablets */
+@media screen and (min-width: 600px) and (max-width: 1400px) {
+  .motw-container{
+    background-color: #001a33;
+    width: 50vw; 
+    text-align: center; 
+    margin: auto; 
+    margin-top: 35px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .bottom-text {
+    padding-bottom: 2vw;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 6vw;
+  }
+
+  h3 {
+    font-size: 4vw;
+  }
+
+  p {
+    font-size: 3vw;   
+  }
+
+  .motw-container{
+    background-color: #001a33;
+    width: 80vw; 
+    text-align: center; 
+    margin: auto; 
+    margin-top: 35px;
+  }
+
+  .bottom-text {
+    padding-bottom: 5vw;
   }
 }
