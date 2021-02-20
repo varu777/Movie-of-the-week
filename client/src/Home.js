@@ -71,12 +71,13 @@ class Home extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <h1 style={{textAlign: 'center'}}> Loading... </h1>
+      return <h1 className="title"> Loading... </h1>
     }
 
     return (
       <div className="App">
         <CustomNavbar />
+        <h1 className="title">Selected Movie </h1>
         {this.state.isMovieSelected ? 
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
