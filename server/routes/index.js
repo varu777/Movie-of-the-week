@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db/index');
+var passport = require('passport');
+var db = require('../db/index')
 
 router.post('/SuggestMovie', async function (req, res) {
     var result = db.suggestMovie(req.body.movie, req.body.name, req.body.movieNote);
@@ -51,6 +52,27 @@ router.post('/SortWatched', function (req, res) {
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});
         });
+});
+
+router.post('/login', (req, res, next) => { passport.authenticate('local',
+    (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+      
+        if (!user) {
+            res.send({success: false, message: 'Incorrect login.'});
+        }
+      
+        req.logIn(user, function(err) {
+            if (err) {
+                return next(err);
+            }
+        
+            res.send({success: true})
+        });
+      
+    })(req, res, next);
 });
 
 module.exports = router;

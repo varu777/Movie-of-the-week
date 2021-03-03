@@ -1,18 +1,7 @@
 require('dotenv').config()
-const mongoose = require('mongoose');
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
-
-
-/* establishing database connection */
-mongoose.connect(process.env.DB_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', err => {
-  console.log("connected to db");
-});
 
 async function suggestMovie(movie, user, note) {
     const session = await db.startSession();

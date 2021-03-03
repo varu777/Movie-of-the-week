@@ -15,14 +15,15 @@ class Home extends React.Component {
     previousMovies: [],
     currentPool: [],
     upcomingMovies: [],
-    isLoading: true
+    isLoading: true,
+    loggedIn: false
   }
   
   componentDidMount () {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: "https://movieotw.herokuapp.com/HomeData"
+      url: "http://localhost:9000/HomeData"
     })
 
     .then((response) => {
@@ -57,7 +58,7 @@ class Home extends React.Component {
     // sort watched movies array by new filter
     axios({
       method: 'post',
-      url: "https://movieotw.herokuapp.com/SortWatched",
+      url: "http://localhost:9000/SortWatched",
       data: {
           sortBy: sortBy
       }

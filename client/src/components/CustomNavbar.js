@@ -3,6 +3,16 @@ import { Navbar, NavDropdown, Nav, Button, Form, FormControl } from 'react-boots
 import { LinkContainer } from 'react-router-bootstrap';
 
 class CustomNavbar extends React.Component {
+    state = {
+        loggedIn: false
+    }
+
+    componentDidMount() {
+        // check if logged in 
+        sessionStorage.setItem('loggedIn', false);
+        this.setState({loggedIn: sessionStorage.getItem('loggedIn')});
+    }
+
     render() {
         return (
             <Navbar bg="dark" expand="lg">
@@ -15,11 +25,27 @@ class CustomNavbar extends React.Component {
 
                     </Nav>
                     <Form inline>
-                    <LinkContainer to="/login">
-                        <Button color="blue" variant="secondary">
-                            Login
-                        </Button>
-                    </LinkContainer>
+                    
+                    {this.state.loggedIn ? 
+                        <>
+                        <LinkContainer to="/profile">
+                            <Button color="blue" variant="secondary">
+                              Profile 
+                            </Button>
+                        </LinkContainer>
+                        <LinkContainer to="/profile">
+                            <Button color="blue" variant="secondary">
+                              Logout    
+                            </Button>
+                        </LinkContainer>
+                        </>
+                        :
+                        <LinkContainer to="/login">
+                            <Button color="green" variant="secondary">
+                               Login 
+                            </Button>
+                        </LinkContainer>
+                    }
                     </Form>
                 </Navbar.Collapse>
             </Navbar>
