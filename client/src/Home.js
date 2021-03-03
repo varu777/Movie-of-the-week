@@ -95,7 +95,7 @@ class Home extends React.Component {
               </div>
             </div> 
             : 
-            <p> No movie selected yet for this week.</p>
+            <p style={{textAlign: 'center'}}> No movie selected yet for this week.</p>
         }
 
         <div className="center">
