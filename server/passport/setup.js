@@ -9,7 +9,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
-	UserModel.loadOne({$or: [{username: username }, {email: username}]}).then(function(user) {
+	UserModel.loadOne({$or: [{email: username}, {username: username}]}).then(function(user) {
         done(null, user);
     }).catch(function(err) {
         done(err, null);
@@ -18,7 +18,7 @@ passport.deserializeUser(function(username, done) {
 
 passport.use(new localStrategy(
   async function(username, password, done){
-    var user = await UserModel.findOne({ username: username });
+    var user = await UserModel.findOne({$or: [{email: username}, {username: username}] });
 
     // user not found check
     if (user == null) {

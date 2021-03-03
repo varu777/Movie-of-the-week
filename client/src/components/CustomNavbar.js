@@ -9,8 +9,7 @@ class CustomNavbar extends React.Component {
 
     componentDidMount() {
         // check if logged in 
-        sessionStorage.setItem('loggedIn', false);
-        this.setState({loggedIn: sessionStorage.getItem('loggedIn')});
+        this.setState({loggedIn: (sessionStorage.getItem('loggedIn') === 'true')});
     }
 
     render() {

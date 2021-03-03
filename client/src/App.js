@@ -17,7 +17,7 @@ class App extends React.Component {
   }
   
   componentDidMount () {
-    if (sessionStorage.getItem('loggedIn') == null) 
+    if (sessionStorage.getItem('loggedIn') == null)
       sessionStorage.setItem('loggedIn', false);
   }
 

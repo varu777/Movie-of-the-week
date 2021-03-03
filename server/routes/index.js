@@ -54,6 +54,9 @@ router.post('/SortWatched', function (req, res) {
         });
 });
 
+router.get('/logOut',);
+
+
 router.post('/login', (req, res, next) => { passport.authenticate('local',
     (err, user, info) => {
         if (err) {
