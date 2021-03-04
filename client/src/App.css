@@ -4,6 +4,7 @@ body {
 
 .App {
   margin: auto;
+  width: 75%;
 }
 
 .addedBy {
@@ -78,6 +79,10 @@ a:hover {
   margin-bottom: 2vw;
 }
 
+.suggestion-container {
+  background-color: grey;
+}
+
 .center {
   margin: 'auto';
   text-align: center;
@@ -121,6 +126,10 @@ a:hover {
 
 
 @media screen and (max-width: 600px) {
+  .App {
+    width: 100%;
+  }
+
   h1 {
     font-size: 6vw;
   }

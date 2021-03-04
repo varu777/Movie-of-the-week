@@ -1,7 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var db = require('../db/index')
+var db = require('../db/index');
+
+function isLoggedIn(req, res, next) {
+    if (req.user) {
+        return next();
+    }
+
+    res.jsonp({success: false, isLoggedIn: false});
+}
 
 router.post('/SuggestMovie', async function (req, res) {
     var result = db.suggestMovie(req.body.movie, req.body.name, req.body.movieNote);
@@ -34,7 +42,7 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
-router.get('/HomeData', function (req, res) {
+router.get('/HomeData', isLoggedIn, function (req, res) {
     db.getHomeData()
         .then((data) => {
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
@@ -54,7 +62,23 @@ router.post('/SortWatched', function (req, res) {
         });
 });
 
-router.get('/logOut',);
+router.get('/loadSuggestions', isLoggedIn, function (req, res, next) {
+    db.getSuggestions(req.user)
+        .then((movies) => { 
+            res.jsonp({movies});
+        })
+        .catch((error) => {
+            res.jsonp({success: false, val: error.toString()});
+        })
+});
+
+router.get('/logout', function (req, res, next) {
+    req.logOut();
+    res.clearCookie('connect.sid');
+    req.session.destroy(function (err) {
+        res.jsonp({success: true});
+    });
+});
 
 
 router.post('/login', (req, res, next) => { passport.authenticate('local',

@@ -39,7 +39,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
     next();
 });
-app.use(cookieParser());
+app.use(cookieParser('hi'));
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -47,6 +47,7 @@ app.use(session({
   secret: 'hi',
   saveUninitialized: false,
   resave: false, // TODO: look into whether store uses touch method 
+  cookie: {maxAge: new Date().getTime() + (60 * 1000)},
   store: MongoStore.create({
     mongoUrl: process.env.DB_CONNECTION_URL,
   })

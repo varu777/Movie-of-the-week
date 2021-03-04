@@ -215,6 +215,12 @@ async function chooseMovie() {
     return selectedMovie.name;
 }   
 
+async function getSuggestions(user) {
+    // get all unwatched movies from user
+    var movies = await MovieModel.find({watched: false, addedBy: user.username}).sort('idx');
+    return movies;
+}
+
 function parseString(movie) {
   // cleaning string for duplicate check
   var punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
@@ -266,4 +272,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getWatchedMovies };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getWatchedMovies, getSuggestions };

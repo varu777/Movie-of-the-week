@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import Home from './Home';
 import Login from './pages/Login';
+import Suggestions from './pages/Suggestions';
+import Profile from './pages/Profile';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,8 +19,8 @@ class App extends React.Component {
   }
   
   componentDidMount () {
-    if (sessionStorage.getItem('loggedIn') == null)
-      sessionStorage.setItem('loggedIn', false);
+    if (localStorage.getItem('loggedIn') == null)
+      localStorage.setItem('loggedIn', false);
   }
 
 
@@ -27,6 +29,8 @@ class App extends React.Component {
       <Router>
         <Route path="/" exact render={(props) => <Home />} />
         <Route path="/login" exact render={(props) => <Login />} />
+        <Route path="/suggestions" exact render={(props) => <Suggestions />} />
+        <Route path="/profile" exact render={(props) => <Profile />} />
       </Router>
     );
   }

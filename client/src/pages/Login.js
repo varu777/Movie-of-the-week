@@ -34,7 +34,8 @@ class Login extends React.Component {
             data: {
                 username: this.state.user,
                 password: this.state.password
-            }
+            },
+            withCredentials: true
           }).then((response) => {
               // login failed
               if (!response.data.success) {
@@ -42,7 +43,7 @@ class Login extends React.Component {
                 return;
               }
 
-              sessionStorage.setItem('loggedIn', true); 
+              localStorage.setItem('loggedIn', true); 
               this.props.history.push('/');
           }).catch((error) => {
             window.alert("Error signing in: " + error);

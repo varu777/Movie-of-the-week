@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
 import CustomNavbar from './components/CustomNavbar';
@@ -23,10 +24,17 @@ class Home extends React.Component {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: "http://localhost:9000/HomeData"
+      url: "http://localhost:9000/HomeData",
+      withCredentials: true
     })
 
     .then((response) => {
+      // user not signed in
+      if (response.data.isLoggedIn != null && !response.data.isLoggedIn) {
+        this.props.history.push('/login');
+        return;
+      }
+
       // get motw data
       let movieOTWData = response.data.movieOTW;
 
@@ -48,7 +56,7 @@ class Home extends React.Component {
     .catch((error) => {
       window.alert("Unable to load home data: " + error);
     })
-    this.setState({isLoading: false});
+    this.setState({isLoading: false, loggedIn: true});
   }
   
   updateWatchedSort = (event) => {
@@ -61,7 +69,8 @@ class Home extends React.Component {
       url: "http://localhost:9000/SortWatched",
       data: {
           sortBy: sortBy
-      }
+      },
+      withCredentials: true
     }).then((response) => {
       this.setState({previousMovies: response.data.movies});
     }).catch((error) => {
@@ -71,7 +80,7 @@ class Home extends React.Component {
 
 
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || !this.state.loggedIn) {
       return <h1 className="title"> Loading... </h1>
     }
 
@@ -96,7 +105,7 @@ class Home extends React.Component {
               </div>
             </div> 
             : 
-            <p> No movie selected yet for this week.</p>
+            <p style={{textAlign: 'center'}}> No movie selected yet for this week.</p>
         }
 
         <div className="center">
@@ -134,4 +143,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);

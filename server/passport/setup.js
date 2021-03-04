@@ -9,7 +9,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
-	UserModel.loadOne({$or: [{email: username}, {username: username}]}).then(function(user) {
+	UserModel.findOne({$or: [{email: username}, {username: username}]}).then(function(user) {
         done(null, user);
     }).catch(function(err) {
         done(err, null);
