@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import axios from 'axios';
 import CustomNavbar from '../components/CustomNavbar';
 import '../css/Suggestions.css';
@@ -46,4 +47,4 @@ class Suggestions extends React.Component {
    }
 }
 
-export default Suggestions;
+export default withRouter(Suggestions);

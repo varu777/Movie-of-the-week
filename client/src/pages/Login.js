@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import CustomNavbar from '../components/CustomNavbar';
+import '../css/Login.css';
 import { withRouter } from 'react-router';
 
 class Login extends React.Component {
@@ -8,7 +10,8 @@ class Login extends React.Component {
         password: ''
     }
 
-    loginUser = () => {
+    loginUser = (e) => {
+        e.preventDefault();
         // both fields empty check
         if (this.state.user.length == 0 && this.state.password.length == 0) {
             window.alert("Both fields cannot be empty.");
@@ -63,18 +66,21 @@ class Login extends React.Component {
     render() {
         return (
             <>
-                <h1> Login </h1>
-                <label> email or username: </label>
-                <input onChange={this.updateUser} />
-                <br/>
+                <CustomNavbar />
+                <div className="login-container">
+                    <h1 className="title"> Login </h1>
+                    <form onSubmit={this.loginUser}>
+                        <input placeholder="Email or Username" onChange={this.updateUser} />
+                        <br/>
 
-                <label> password: </label>
-                <input type="password" onChange={this.updatePass} />
-                <br/>
-
-                <button onClick={this.loginUser}> Login </button>            
-                <button onClick={() => {this.setState({recoverPassword: true})}}> Sign Up </button>
-                <button onClick={() => {this.setState({recoverPassword: true})}}> Forgot Username/Password </button>
+                        <input type="password" placeholder="Password" onChange={this.updatePass} />
+                        <br/>
+                        <br/>
+                        <button type="submit"> Login </button>            
+                        <button onClick={() => {this.setState({recoverPassword: true})}}> Sign Up </button>
+                        <button onClick={() => {this.setState({recoverPassword: true})}}> Forgot Username/Password </button>
+                    </form>
+                </div>
 
             </>
         );

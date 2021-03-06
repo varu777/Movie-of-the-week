@@ -42,7 +42,7 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
-router.get('/HomeData', isLoggedIn, function (req, res) {
+router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
