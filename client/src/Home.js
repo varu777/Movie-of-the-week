@@ -2,12 +2,14 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import { withRouter } from 'react-router';
+import { LoginContext } from './App';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
 import CustomNavbar from './components/CustomNavbar';
 
 
 class Home extends React.Component {
+  contextType = LoginContext;
   state = {
     isMovieSelected: false,
     movieOTW: '',
@@ -50,13 +52,14 @@ class Home extends React.Component {
         noteOTW: movieOTWData.note, 
         upcomingMovies: response.data.upcomingMovies, 
         currentPool: response.data.currentPool,
-        isLoading: false
+        isLoading: false,
       });
     })
     .catch((error) => {
       window.alert("Unable to load home data: " + error);
     })
-    this.setState({isLoading: false, loggedIn: true});
+
+    this.setState({loggedIn: this.context});
   }
   
   updateWatchedSort = (event) => {
@@ -80,7 +83,7 @@ class Home extends React.Component {
 
 
   render() {
-    if (this.state.isLoading || !this.state.loggedIn) {
+    if (this.state.isLoading) {
       return <h1 className="title"> Loading... </h1>
     }
 
@@ -142,5 +145,7 @@ class Home extends React.Component {
     );
   }
 }
+
+Home.contextType = LoginContext;
 
 export default withRouter(Home);

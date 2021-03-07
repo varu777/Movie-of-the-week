@@ -42,6 +42,10 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
+router.get('/isLoggedIn', function (req, res) {
+   res.jsonp({isLoggedIn: req.user != null});
+});
+
 router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {

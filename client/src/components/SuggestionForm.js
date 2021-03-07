@@ -1,13 +1,20 @@
 import React from 'react';
 import axios from 'axios';
+import { LoginContext } from '../App';
 import '../css/SuggestionForm.css';
 
 class SuggestionForm extends React.Component {
+    contextType = LoginContext;
     state = {
         movieSuggestion: '', 
         user: '', 
-        movieNote: '' 
+        movieNote: '',
+        loggedIn: false
     };
+
+    componentDidMount() {
+        this.setState({loggedIn: this.context});
+    }
 
     submitSuggestion = () => {
         if (this.state.movieSuggestion.length === 0) {
@@ -71,6 +78,8 @@ class SuggestionForm extends React.Component {
                 <input value={this.state.movieSuggestion} onChange={this.updateMovie} />
                 <br/>
 
+                {this.logged ? <></> : 
+                <>
                 <label> Suggested By: </label>
                 <select name="Name" defaultValue="Choose here" onChange={this.updateUser}>
                 <option value="Choose here" disabled hidden>Choose here</option>
@@ -83,6 +92,8 @@ class SuggestionForm extends React.Component {
                 <option value={process.env.REACT_APP_NAME_7}>{process.env.REACT_APP_NAME_7}</option>
                 </select>
                 <br/>
+                </>
+                 }   
 
                 <label> Teaser Note (optional): </label>
                 <textarea value={this.state.movieNote} onChange={this.updateNote} />
@@ -93,5 +104,7 @@ class SuggestionForm extends React.Component {
         );
     }
 }
+
+SuggestionForm.context = { LoginContext };
 
 export default SuggestionForm;
