@@ -85,12 +85,12 @@ class Home extends React.Component {
               <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BOGRlZTdhOGYtODc5NS00YmJkLTkzN2UtZDMyYmRhZWM1NTQwXkEyXkFqcGdeQXVyMzU4Nzk4MDI@._V1_SX300.jpg"></img> 
+              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_SX300.jpg"></img> 
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
-                <p> Sexual deviant Frank (Sean Chapman) inadvertently opens a portal to hell when he tinkers with a box he bought while abroad. The act unleashes gruesome beings called Cenobites, who tear Frank's body apart. When Frank's brother (Andrew Robinson) and his wife, Julia (Clare Higgins), move into Frank's old house, they accidentally bring what is left of Frank back to life. Frank then convinces Julia, his one-time lover, to lure men back to the house so he can use their blood to reconstruct himself. </p>
+                <p> Following world war, London is a police state occupied by a fascist government, and a vigilante known only as V (Hugo Weaving) uses terrorist tactics to fight the oppressors of the world in which he now lives. When V saves a young woman named Evey (Natalie Portman) from the secret police, he discovers an ally in his fight against England's oppressors. </p>
 
-                <p> Genre: Horror, Thriller | Runtime: 94 min | Rated R</p>
+                <p> Genre: Action, Drama, Sci-Fi, Thriller | Runtime: 132 min | Rated R</p>
 
               </div>
             </div> 
