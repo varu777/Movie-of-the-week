@@ -88,7 +88,7 @@ class Home extends React.Component {
               <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZjU5OWVlN2EtODNlYy00MjhhLWI0MDUtMTA3MmQ5MGMwYTZmXkEyXkFqcGdeQXVyNjE5MTM4MzY@._V1_SX300.jpg"></img> 
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
-                <p> Ed and Lorraine Warren travel to North London to help a single mother raising four children alone in a house plagued by a supernatural spirit. </p>
+                <p> In 1977, paranormal investigators Ed (Patrick Wilson) and Lorraine Warren come out of a self-imposed sabbatical to travel to Enfield, a borough in north London. There, they meet Peggy Hodgson, an overwhelmed single mother of four who tells the couple that something evil is in her home. Ed and Lorraine believe her story when the youngest daughter starts to show signs of demonic possession. As the Warrens try to help the besieged girl, they become the next targets of the malicious spirit. </p>
 
                 <p> Genre: Horror, Mystery, Thriller | Runtime: 134 min | Rated R</p>
 
