@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthProvider, UpdateAuthContext } from '../components/Auth';
 import axios from 'axios';
 import CustomNavbar from '../components/CustomNavbar';
 import '../css/Login.css';
@@ -7,7 +8,7 @@ import { withRouter } from 'react-router';
 class Login extends React.Component {
     state = {
         user: '',
-        password: ''
+        password: '',
     }
 
     loginUser = (e) => {
@@ -47,7 +48,12 @@ class Login extends React.Component {
               }
 
               localStorage.setItem('loggedIn', true); 
-              this.props.history.push('/');
+
+              let updateAuth = this.context;
+              updateAuth().then(() => {
+                this.props.history.push('/');
+              });
+
           }).catch((error) => {
             window.alert("Error signing in: " + error);
           });
@@ -86,5 +92,7 @@ class Login extends React.Component {
         );
     }
 }
+
+Login.contextType = UpdateAuthContext;
 
 export default withRouter(Login);

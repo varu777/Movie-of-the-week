@@ -6,7 +6,8 @@ import '../css/Suggestions.css';
 
 class Suggestions extends React.Component {
    state = {
-       movies: []
+    isLoading: true, 
+    movies: []
    }
 
    componentDidMount() {
@@ -23,7 +24,7 @@ class Suggestions extends React.Component {
           return;
         }
 
-        this.setState({movies: response.data.movies});
+        this.setState({movies: response.data.movies, isLoading: false});
   
       })
       .catch((error) => {
@@ -32,18 +33,22 @@ class Suggestions extends React.Component {
    } 
 
    render() {
-       return (
-            <>  
-            <CustomNavbar />
-            <h1 className="suggestion-title"> My Suggestions </h1>
-            {this.state.movies.map((movie, i) => (
-                <div className="suggestion-container">
-                    <p key={i}> {movie.name} - {movie.date} </p>
-                    <button> Delete </button>
-                </div>
-            ))}
-            </>
-       );
+     if (this.state.isLoading) {
+       return <CustomNavbar loading={true} />
+     }
+
+    return (
+        <>  
+        <CustomNavbar />
+        <h1 className="suggestion-title"> My Suggestions </h1>
+        {this.state.movies.map((movie, i) => (
+            <div className="suggestion-container">
+                <p key={i}> {movie.name} - {movie.date} </p>
+                <button> Delete </button>
+            </div>
+        ))}
+        </>
+    );
    }
 }
 

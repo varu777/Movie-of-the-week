@@ -3,33 +3,35 @@ import { withRouter } from 'react-router';
 import { Navbar, NavDropdown, Nav, Button, Form, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import { LinkContainer } from 'react-router-bootstrap';
+import { LoginContext } from '../components/Auth';
 
 class CustomNavbar extends React.Component {
     state = {
-        loggedIn: false
+        loggedIn: this.context
     }
 
     logout = () => {
         axios({
             method: 'get',
-            url: "http://localhost:9000/logout",
-            withCredentials: true
+            url: 'http://localhost:9000/logout',
+            withCredentials: true,
+            loggedIn: this.context 
         }).then((response) => {
             if (!response.data.success) {
                 window.alert("Unable to logout, please try again.");
                 return;
             }
-            localStorage.setItem('loggedIn', false);
+
             this.setState({loggedIn: false});
-            this.props.history.push('/login');
+            localStorage.setItem('loggedIn', false);
+            window.location.reload();
         }).catch((error) => {
             window.alert("Unable to logout: " + error);
         });
     }
 
     componentDidMount() {
-        // check if logged in 
-        this.setState({loggedIn: (localStorage.getItem('loggedIn') === 'true')});
+        this.setState({loggedIn: this.context})
     }
 
     render() {
@@ -45,7 +47,13 @@ class CustomNavbar extends React.Component {
                     </Nav>
                     <Form inline>
                     
-                    {this.state.loggedIn ? 
+                    {this.props.loading == null && !this.state.loggedIn ? 
+                        <LinkContainer to="/login">
+                            <Button color="green" variant="secondary">
+                               Login 
+                            </Button>
+                        </LinkContainer>
+                        :
                         <>
                         <LinkContainer style={{marginRight: '5px'}} to="/profile">
                             <Button color="blue" variant="secondary">
@@ -56,12 +64,6 @@ class CustomNavbar extends React.Component {
                             Logout    
                         </Button>
                         </>
-                        :
-                        <LinkContainer to="/login">
-                            <Button color="green" variant="secondary">
-                               Login 
-                            </Button>
-                        </LinkContainer>
                     }
                     </Form>
                 </Navbar.Collapse>
@@ -69,5 +71,6 @@ class CustomNavbar extends React.Component {
         );
     }
 }
+CustomNavbar.contextType = LoginContext
 
 export default withRouter(CustomNavbar);

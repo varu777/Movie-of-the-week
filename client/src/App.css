@@ -4,7 +4,6 @@ body {
 
 .App {
   margin: auto;
-  width: 75%;
 }
 
 .addedBy {
@@ -77,6 +76,7 @@ a:hover {
   margin: auto; 
   margin-top: 15px;
   margin-bottom: 2vw;
+  min-height: 40vw;
 }
 
 .suggestion-container {

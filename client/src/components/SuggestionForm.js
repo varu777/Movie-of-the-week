@@ -1,10 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { LoginContext } from '../App';
 import '../css/SuggestionForm.css';
 
 class SuggestionForm extends React.Component {
-    contextType = LoginContext;
     state = {
         movieSuggestion: '', 
         user: '', 
@@ -78,7 +76,7 @@ class SuggestionForm extends React.Component {
                 <input value={this.state.movieSuggestion} onChange={this.updateMovie} />
                 <br/>
 
-                {this.logged ? <></> : 
+                {localStorage.getItem('loggedIn') == 'true' ? <></> : 
                 <>
                 <label> Suggested By: </label>
                 <select name="Name" defaultValue="Choose here" onChange={this.updateUser}>
@@ -105,6 +103,5 @@ class SuggestionForm extends React.Component {
     }
 }
 
-SuggestionForm.context = { LoginContext };
 
 export default SuggestionForm;
