@@ -47,7 +47,7 @@ app.use(session({
   secret: 'hi',
   saveUninitialized: false,
   resave: false, // TODO: look into whether store uses touch method 
-  cookie: {maxAge: 60000},
+  cookie: {maxAge: 12096e5},
   store: MongoStore.create({
     mongoUrl: process.env.DB_CONNECTION_URL,
   })
