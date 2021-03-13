@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.8e597eb1.chunk.css",
-    "main.js": "/static/js/main.69d177ec.chunk.js",
-    "main.js.map": "/static/js/main.69d177ec.chunk.js.map",
+    "main.js": "/static/js/main.b08580c5.chunk.js",
+    "main.js.map": "/static/js/main.b08580c5.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.7d7195f9.js",
     "runtime-main.js.map": "/static/js/runtime-main.7d7195f9.js.map",
     "static/js/2.1b531d97.chunk.js": "/static/js/2.1b531d97.chunk.js",
@@ -11,12 +11,13 @@
     "static/js/3.81885c14.chunk.js.map": "/static/js/3.81885c14.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.8e597eb1.chunk.css.map": "/static/css/main.8e597eb1.chunk.css.map",
-    "static/js/2.1b531d97.chunk.js.LICENSE.txt": "/static/js/2.1b531d97.chunk.js.LICENSE.txt"
+    "static/js/2.1b531d97.chunk.js.LICENSE.txt": "/static/js/2.1b531d97.chunk.js.LICENSE.txt",
+    "static/media/justice-league.dae56ed4.jpg": "/static/media/justice-league.dae56ed4.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.7d7195f9.js",
     "static/js/2.1b531d97.chunk.js",
     "static/css/main.8e597eb1.chunk.css",
-    "static/js/main.69d177ec.chunk.js"
+    "static/js/main.b08580c5.chunk.js"
   ]
 }
