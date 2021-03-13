@@ -4,6 +4,7 @@ import axios from 'axios';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
 import CustomNavbar from './components/CustomNavbar';
+import coverimg from './justice-league.jpg';
 
 
 class Home extends React.Component {
@@ -85,12 +86,13 @@ class Home extends React.Component {
               <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_SX300.jpg"></img> 
+              <img style={{height: '45%', width: '45%'}} src={coverimg}></img> 
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
-                <p> Following world war, London is a police state occupied by a fascist government, and a vigilante known only as V (Hugo Weaving) uses terrorist tactics to fight the oppressors of the world in which he now lives. When V saves a young woman named Evey (Natalie Portman) from the secret police, he discovers an ally in his fight against England's oppressors. </p>
+                <p> In ZACK SNYDER'S JUSTICE LEAGUE, determined to ensure Superman's (Henry Cavill) ultimate sacrifice was not in vain, Bruce Wayne (Ben Affleck) aligns forces with Diana Prince (Gal Gadot) with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions. The task proves more difficult than Bruce imagined, as each of the recruits must face the demons of their own pasts to transcend that which has held them back, allowing them to come together, finally forming an unprecedented league of heroes. Now united, Batman (Affleck), Wonder Woman (Gadot), Aquaman (Jason Momoa), Cyborg (Ray Fisher) and The Flash (Ezra Miller) may be too late to save the planet from Steppenwolf, DeSaad and Darkseid and their dreadful intentions.
+</p>
 
-                <p> Genre: Action, Drama, Sci-Fi, Thriller | Runtime: 132 min | Rated R</p>
+                <p> Genre: Action, Adventure, Fantasy | Runtime: 242 min | Rated R</p>
 
               </div>
             </div> 
