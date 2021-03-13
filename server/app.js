@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const router = require('./routes/index');
 
+
 /* establishing database connection */
 mongoose.connect(process.env.DB_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;

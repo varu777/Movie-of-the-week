@@ -75,17 +75,17 @@ class Login extends React.Component {
                 <CustomNavbar />
                 <div className="login-container">
                     <h1 className="title"> Login </h1>
+                    <p> Note: MOTW uses httpOnly cookies for a better user experience. The only user information the cookie contains is an encryption of their username. </p>
                     <form onSubmit={this.loginUser}>
-                        <input placeholder="Email or Username" onChange={this.updateUser} />
+                        <input placeholder="Email or User Name" onChange={this.updateUser} />
                         <br/>
 
                         <input type="password" placeholder="Password" onChange={this.updatePass} />
                         <br/>
                         <br/>
                         <button type="submit"> Login </button>            
-                        <button onClick={() => {this.setState({recoverPassword: true})}}> Sign Up </button>
-                        <button onClick={() => {this.setState({recoverPassword: true})}}> Forgot Username/Password </button>
                     </form>
+
                 </div>
 
             </>
