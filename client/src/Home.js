@@ -82,7 +82,7 @@ class Home extends React.Component {
         {this.state.isMovieSelected ? 
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
-              <h4> March 6, 2021</h4>
+              <h4> March 19, 2021</h4>
               <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
