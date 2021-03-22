@@ -77,7 +77,7 @@ class Login extends React.Component {
                     <h1 className="title"> Login </h1>
                     <p> Note: MOTW uses httpOnly cookies for a better user experience. The only user information the cookie contains is an encryption of their username. </p>
                     <form onSubmit={this.loginUser}>
-                        <input placeholder="Email or User Name" onChange={this.updateUser} />
+                        <input placeholder="Username or Email" onChange={this.updateUser} />
                         <br/>
 
                         <input type="password" placeholder="Password" onChange={this.updatePass} />

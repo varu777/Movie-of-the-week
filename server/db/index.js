@@ -221,6 +221,17 @@ async function getSuggestions(user) {
     return movies;
 }
 
+async function updateEmail(user, email) {
+    // find user in db
+    let user = UserModel.findOne({ });
+
+    // update their email 
+
+    // save change
+
+    // return result
+}
+
 function parseString(movie) {
   // cleaning string for duplicate check
   var punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
