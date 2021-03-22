@@ -4,7 +4,6 @@ import axios from 'axios';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
 import CustomNavbar from './components/CustomNavbar';
-import coverimg from './justice-league.jpg';
 
 
 class Home extends React.Component {
@@ -82,17 +81,16 @@ class Home extends React.Component {
         {this.state.isMovieSelected ? 
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
-              <h4> March 19, 2021</h4>
+              <h4> March 26, 2021</h4>
               <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <img style={{height: '45%', width: '45%'}} src={coverimg}></img> 
+              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZmYzMzU4NjctNDI0Mi00MGExLWI3ZDQtYzQzYThmYzc2ZmNjXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_SX300.jpg%22"></img> 
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
-                <p> In ZACK SNYDER'S JUSTICE LEAGUE, determined to ensure Superman's (Henry Cavill) ultimate sacrifice was not in vain, Bruce Wayne (Ben Affleck) aligns forces with Diana Prince (Gal Gadot) with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions. The task proves more difficult than Bruce imagined, as each of the recruits must face the demons of their own pasts to transcend that which has held them back, allowing them to come together, finally forming an unprecedented league of heroes. Now united, Batman (Affleck), Wonder Woman (Gadot), Aquaman (Jason Momoa), Cyborg (Ray Fisher) and The Flash (Ezra Miller) may be too late to save the planet from Steppenwolf, DeSaad and Darkseid and their dreadful intentions.
-</p>
+                <p> Legends collide in "Godzilla vs. Kong" as these mythic adversaries meet in a spectacular battle for the ages, with the fate of the world hanging in the balance. Kong and his protectors undertake a perilous journey to find his true home, and with them is Jia, a young orphaned girl with whom he has formed a unique and powerful bond. But they unexpectedly find themselves in the path of an enraged Godzilla, cutting a swath of destruction across the globe. The epic clash between the two titans--instigated by unseen forces--is only the beginning of the mystery that lies deep within the core of the Earth.</p>
 
-                <p> Genre: Action, Adventure, Fantasy | Runtime: 242 min | Rated R</p>
+                <p> Genre: Action, Sci-Fi, Thriller | Runtime: 113 min | Rated PG-13</p>
 
               </div>
             </div> 
