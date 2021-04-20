@@ -42,7 +42,7 @@ class CustomNavbar extends React.Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                     <Nav.Link style={{color: 'white'}} href="#home">Leaderboard</Nav.Link>
-                    <Nav.Link style={{color: 'white'}} href="/Suggestions">Suggestions</Nav.Link>
+                    <Nav.Link style={{color: 'white'}} href="#suggestions">Suggestions</Nav.Link>
 
                     </Nav>
                     <Form inline>
