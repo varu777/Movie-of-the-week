@@ -46,7 +46,7 @@ mongoUtil.connectToServer(function(err, client) {
     secret: 'hi',
     saveUninitialized: false,
     resave: false, // TODO: look into whether store uses touch method 
-    cookie: {maxAge: 12096e5},
+    cookie: {maxAge: 18144e5}, // 3 weeks
     store: MongoStore.create({
       mongoUrl: process.env.DB_CONNECTION_URL,
     })
