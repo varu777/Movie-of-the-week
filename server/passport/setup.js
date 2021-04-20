@@ -5,11 +5,11 @@ const localStrategy = require('passport-local');
 
 passport.serializeUser(function(user, done) {
     if (user)
-        done(null, user.username);
+        done(null, user._id);
 });
 
-passport.deserializeUser(function(username, done) {
-	UserModel.findOne({$or: [{email: username}, {username: username}]}).then(function(user) {
+passport.deserializeUser(function(id, done) {
+	UserModel.findOne({_id: id}).then(function(user) {
         done(null, user);
     }).catch(function(err) {
         done(err, null);
@@ -32,7 +32,6 @@ passport.use(new localStrategy(
         return done(null, false, { message: 'Incorrect password.' });
     }
         
-
     return done(null, user);
 }
 ));

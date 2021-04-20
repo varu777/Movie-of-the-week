@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const router = require('./routes/index');
+const userRouter = require('./routes/User');
 
 
 /* establishing database connection */
@@ -66,6 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', router);
+app.use('/user', userRouter);
 
 app.listen(port);
 

@@ -2,6 +2,7 @@ require('dotenv').config()
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
+var bcrypt = require('bcrypt');
 
 async function suggestMovie(movie, user, note) {
     const session = await db.startSession();
@@ -221,16 +222,40 @@ async function getSuggestions(user) {
     return movies;
 }
 
-async function updateEmail(user, email) {
-    // find user in db
-    let user = UserModel.findOne({ });
-
+async function updateEmail(user, newEmail) {
     // update their email 
+    user.email = newEmail;
 
     // save change
-
-    // return result
+    await user.save();
 }
+
+async function updatePassword(user, oldPassword, newPassword) {
+    // check if passwords match
+    var result = await bcrypt.compare(oldPassword, user.password);
+
+    if (!result) 
+        throw new Error("Incorrect password entered.")
+    
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newPassword, salt);
+
+    // update their email 
+    user.password = hash;
+
+    // save change
+    await user.save();
+}
+
+async function updateUsername(user, newUsername) {
+    // update their email 
+    user.username = newUsername;
+
+    // save change
+    await user.save();
+}
+
 
 function parseString(movie) {
   // cleaning string for duplicate check
@@ -283,4 +308,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getWatchedMovies, getSuggestions };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getWatchedMovies, getSuggestions, updateEmail, updateUsername, updatePassword };

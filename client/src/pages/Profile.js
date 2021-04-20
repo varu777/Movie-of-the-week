@@ -7,6 +7,7 @@ class Profile extends React.Component {
       email: '',
       currentPassword: '',
       newPassword: '',
+      confirmNewPassword: '',
       username: ''
    }
 
@@ -18,12 +19,16 @@ class Profile extends React.Component {
       this.setState({username: event.target.value});
    }
 
-   updateOldPassword = (event) => {
-      this.setState({oldPassword: event.target.value});
+   updateCurrentPassword = (event) => {
+      this.setState({currentPassword: event.target.value});
    }
 
    updateNewPassword = (event) => {
       this.setState({newPassword: event.target.value});
+   }
+
+   updateConfirmNewPassword = (event) => {
+      this.setState({confirmNewPassword: event.target.value});
    }
 
    submitEmailUpdate = () => {
@@ -39,7 +44,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'http://localhost:9000/updateEmail',
+         url: 'http://localhost:9000/user/updateEmail',
          data: {
              email: this.state.email
          },
@@ -47,8 +52,9 @@ class Profile extends React.Component {
        }).then((response) => {
           if (response.data.success) {
             window.alert('Email has successfully updated.');
+            this.setState({email:''});
           } else {
-            window.alert("Email did not update, please try again.");
+            window.alert("Email did not update: " + response.data.val);
           }
        }).catch((error) => {
          window.alert("Unable to update email: " + error);
@@ -63,7 +69,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'http://localhost:9000/updateUsername',
+         url: 'http://localhost:9000/user/updateUsername',
          data: {
              username: this.state.username
          },
@@ -71,6 +77,7 @@ class Profile extends React.Component {
        }).then((response) => {
           if (response.data.success) {
             window.alert('Username has successfully updated.');
+            this.setState({username:''});
           } else {
             window.alert("Username did not update, please try again.");
           }
@@ -91,23 +98,27 @@ class Profile extends React.Component {
          return;
       }
 
-      if (this.state.currentPassword !== this.state.newPassword) {
-         window.alert("Current and new passwords did not match. Please try again.");
+      if (this.state.confirmNewPassword !== this.state.newPassword) {
+         window.alert("New passwords did not match. Please try again.");
          return;
       }
 
       axios({
          method: 'post',
-         url: 'http://localhost:9000/updatePassword',
+         url: 'http://localhost:9000/user/updatePassword',
          data: {
-             password: this.state.password
+             newPassword: this.state.newPassword,
+             currPassword: this.state.currentPassword
          },
          withCredentials: true
        }).then((response) => {
           if (response.data.success) {
             window.alert('Password has successfully updated.');
+            this.setState({currentPassword:''});
+            this.setState({newPassword:''});
+            this.setState({confirmNewPassword:''});
           } else {
-            window.alert("Password did not update, please try again.");
+            window.alert("Password did not update: " + response.data.val);
           }
        }).catch((error) => {
          window.alert("Unable to update password: " + error);
@@ -119,24 +130,24 @@ class Profile extends React.Component {
         <>
         <CustomNavbar />
         <h1> Update Email </h1>
-        <input onChange={this.updateEmail} /> 
+        <input value={this.state.email} onChange={this.updateEmail} /> 
         <br/>
-        <button onClick={this.updatePassword}>Update Email </button>
+        <button onClick={this.submitEmailUpdate}>Update Email </button>
         <h1> Update User Name </h1>
-        <input onChange={this.updateUsername} /> 
+        <input value={this.state.username} onChange={this.updateUsername} /> 
         <br/>
-        <button onClick={this.updatePassword}>Update Username</button>
+        <button onClick={this.submitUsernameUpdate}>Update Username</button>
         <h1> Update Password </h1>
         <label> Current password </label>
-        <input onChange={this.updatePassword} /> 
+        <input value={this.state.currentPassword} type="password" onChange={this.updateCurrentPassword} /> 
         <br/>
         <label> New Password </label> 
-        <input onChange={this.updatePassword} /> 
+        <input value={this.state.newPassword} type="password" onChange={this.updateNewPassword} /> 
         <br/>
         <label> Confirm New Password </label> 
-        <input onChange={this.updatePassword} /> 
+        <input value={this.state.confirmNewPassword} type="password" onChange={this.updateConfirmNewPassword} /> 
         <br/>
-        <button onClick={this.updatePassword}>Update Password </button>
+        <button onClick={this.submitPasswordUpdate}>Update Password </button>
         </>
      );
    } 
