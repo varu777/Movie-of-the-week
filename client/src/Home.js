@@ -106,6 +106,11 @@ class Home extends React.Component {
         }
 
         <div className="center">
+        <h1> Statistics </h1>
+        <p>Movies Watched: {this.state.previousMovies.length} </p>
+        <p>Upcoming Movies: {this.state.upcomingMovies.length} </p>
+        <p>Current Pool Size: {this.state.currentPool.length} </p>
+        <p>Members: 8 </p>
 
         <SuggestionForm />
 
