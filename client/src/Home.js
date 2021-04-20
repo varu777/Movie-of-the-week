@@ -81,16 +81,16 @@ class Home extends React.Component {
         {this.state.isMovieSelected ? 
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
-              <h4> March 26, 2021</h4>
+              <h4> April 23, 2021 </h4>
               <p> Location: <a style={{textDecoration: 'underline'}}href="https://zoom.us/j/97457711739?pwd=Z2x3K3l5OUVTQVJmNDBkRGNqWHdjZz09">Zoom Theatre</a></p> 
               <p className="addedBy"> Added by {this.state.userOTW} </p>
               {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BZmYzMzU4NjctNDI0Mi00MGExLWI3ZDQtYzQzYThmYzc2ZmNjXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_SX300.jpg%22"></img> 
+              <img style={{height: '45%', width: '45%'}} src="https://m.media-amazon.com/images/M/MV5BY2ZlNWIxODMtN2YwZi00ZjNmLWIyN2UtZTFkYmZkNDQyNTAyXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_SX300.jpg"></img> 
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
-                <p> Legends collide in "Godzilla vs. Kong" as these mythic adversaries meet in a spectacular battle for the ages, with the fate of the world hanging in the balance. Kong and his protectors undertake a perilous journey to find his true home, and with them is Jia, a young orphaned girl with whom he has formed a unique and powerful bond. But they unexpectedly find themselves in the path of an enraged Godzilla, cutting a swath of destruction across the globe. The epic clash between the two titans--instigated by unseen forces--is only the beginning of the mystery that lies deep within the core of the Earth.</p>
+                <p> In "Mortal Kombat," MMA fighter Cole Young, accustomed to taking a beating for money, is unaware of his heritage--or why Outworld's Emperor Shang Tsung has sent his best warrior, Sub-Zero, an otherworldly Cryomancer, to hunt Cole down. Fearing for his family's safety, Cole goes in search of Sonya Blade at the direction of Jax, a Special Forces Major who bears the same strange dragon marking Cole was born with. Soon, he finds himself at the temple of Lord Raiden, an Elder God and the protector of Earthrealm, who grants sanctuary to those who bear the mark. Here, Cole trains with experienced warriors Liu Kang, Kung Lao and rogue mercenary Kano, as he prepares to stand with Earth's greatest champions against the enemies of Outworld in a high stakes battle for the universe. But will Cole be pushed hard enough to unlock his arcana--the immense power from within his soul--in time to save not only his family, but to stop Outworld once and for all?</p>
 
-                <p> Genre: Action, Sci-Fi, Thriller | Runtime: 113 min | Rated PG-13</p>
+                <p> Genre: Fantasy, Action, Adventure | Runtime: 1hr 50m | Rated R</p>
 
               </div>
             </div> 
