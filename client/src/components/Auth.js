@@ -13,7 +13,7 @@ const AuthProvider = ({children}) => {
     let updateAuth = function () {
         return axios({
             method: 'get', 
-            url: "http://localhost:9000/isLoggedIn",
+            url: "https://movieotw.herokuapp.com/isLoggedIn",
             withCredentials: true
           })
         .then((response) => {

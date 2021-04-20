@@ -34,7 +34,7 @@ class Login extends React.Component {
         // attempt to sign in user
         axios({
             method: 'post',
-            url: "http://localhost:9000/login",
+            url: "https://movieotw.herokuapp.com/login",
             data: {
                 username: this.state.user,
                 password: this.state.password
