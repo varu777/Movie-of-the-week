@@ -17,6 +17,8 @@ const AuthProvider = ({children}) => {
             withCredentials: true
           })
         .then((response) => {
+            console.log(response);
+            window.alert(response.data.isLoggedIn);
             if (response.data.isLoggedIn) {
                 setLoginStatus(true);
             } else {

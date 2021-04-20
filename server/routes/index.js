@@ -43,6 +43,9 @@ router.get('/ChooseMovie', function (req, res) {
 });
 
 router.get('/isLoggedIn', function (req, res) {
+   console.log("in heress");
+   console.log(req.user);
+   console.log(req.user != null);
    res.jsonp({isLoggedIn: req.user != null});
 });
 
@@ -100,7 +103,6 @@ router.post('/login', (req, res, next) => { passport.authenticate('local',
                 return next(err);
             }
             
-            console.log("in here");
             res.send({success: true})
         });
       

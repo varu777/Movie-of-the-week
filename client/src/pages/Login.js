@@ -48,7 +48,6 @@ class Login extends React.Component {
               }
 
               localStorage.setItem('loggedIn', true); 
-
               let updateAuth = this.context;
               updateAuth().then(() => {
                 this.props.history.push('/');
