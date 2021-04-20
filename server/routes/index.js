@@ -1,9 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var db = require('../db/index');
 
-router.post('/SuggestMovie', async function (req, res) {
-    var result = db.suggestMovie(req.body.movie, req.body.name, req.body.movieNote);
+function isLoggedIn(req, res, next) {
+    if (req.user) {
+        return next();
+    }
+    
+    res.jsonp({success: false, isLoggedIn: false});
+}
+
+router.post('/SuggestMovie', isLoggedIn, function (req, res) {
+    var result = db.suggestMovie(req.body.movie, req.user._id, req.body.movieNote);
     result.then((val) => {
         res.jsonp({success: true, val: val.movie, movieIdx: val.movieIdx});
     }).catch((err) => {
@@ -33,6 +42,10 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
+router.get('/isLoggedIn', function (req, res) {
+   res.jsonp({isLoggedIn: req.user != null});
+});
+
 router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {
@@ -44,13 +57,53 @@ router.get('/HomeData', function (req, res) {
 });
 
 router.post('/SortWatched', function (req, res) {
-   db.getWatchedMovies(req.body.sortBy)
+   db.getMovies(req.body.sortBy)
         .then((movies) => {
             res.jsonp({movies});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});
         });
+});
+
+router.get('/loadSuggestions', isLoggedIn, function (req, res) {
+    db.getSuggestions(req.user)
+        .then((movies) => { 
+            res.jsonp({movies});
+        })
+        .catch((error) => {
+            res.jsonp({success: false, val: error.toString()});
+        })
+});
+
+router.get('/logout', function (req, res, next) {
+    req.logOut();
+    res.clearCookie('connect.sid');
+    req.session.destroy(function (err) {
+        res.jsonp({success: true});
+    });
+});
+
+
+router.post('/login', (req, res, next) => { passport.authenticate('local',
+    (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+      
+        if (!user) {
+            res.send({success: false, message: 'Incorrect login.'});
+        }
+      
+        req.logIn(user, function(err) {
+            if (err) {
+                return next(err);
+            }
+        
+            res.send({success: true})
+        });
+      
+    })(req, res, next);
 });
 
 module.exports = router;

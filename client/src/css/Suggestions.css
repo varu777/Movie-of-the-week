@@ -1,0 +1,9 @@
+body {
+    margin: auto;
+    width: 75%;
+}
+
+.suggestion-title {
+    text-align: center;
+    margin-top: 2%;
+}

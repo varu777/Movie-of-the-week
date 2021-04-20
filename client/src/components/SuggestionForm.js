@@ -5,9 +5,13 @@ import '../css/SuggestionForm.css';
 class SuggestionForm extends React.Component {
     state = {
         movieSuggestion: '', 
-        user: '', 
-        movieNote: '' 
+        movieNote: '',
+        loggedIn: false
     };
+
+    componentDidMount() {
+        this.setState({loggedIn: this.context});
+    }
 
     submitSuggestion = () => {
         if (this.state.movieSuggestion.length === 0) {
@@ -15,22 +19,15 @@ class SuggestionForm extends React.Component {
             return;
         }
 
-        if (this.state.user.length === 0) {
-            window.alert("User not selected.");
-            return;
-        }
-
         const movie = this.state.movieSuggestion;
-        const user = this.state.user;
-
         axios({
             method: 'post',
             url: "https://movieotw.herokuapp.com/SuggestMovie",
             data: {
                 movie: movie, 
-                name: user,
                 movieNote: this.state.movieNote
-            }
+            },
+            withCredentials: true
         })
         .then((response) => {
         if (response.data.success) {
@@ -71,6 +68,8 @@ class SuggestionForm extends React.Component {
                 <input value={this.state.movieSuggestion} onChange={this.updateMovie} />
                 <br/>
 
+                {localStorage.getItem('loggedIn') == 'true' ? <></> : 
+                <>
                 <label> Suggested By: </label>
                 <select name="Name" defaultValue="Choose here" onChange={this.updateUser}>
                 <option value="Choose here" disabled hidden>Choose here</option>
@@ -83,6 +82,8 @@ class SuggestionForm extends React.Component {
                 <option value={process.env.REACT_APP_NAME_7}>{process.env.REACT_APP_NAME_7}</option>
                 </select>
                 <br/>
+                </>
+                 }   
 
                 <label> Teaser Note (optional): </label>
                 <textarea value={this.state.movieNote} onChange={this.updateNote} />
@@ -93,5 +94,6 @@ class SuggestionForm extends React.Component {
         );
     }
 }
+
 
 export default SuggestionForm;

@@ -76,6 +76,11 @@ a:hover {
   margin: auto; 
   margin-top: 15px;
   margin-bottom: 2vw;
+  min-height: 40vw;
+}
+
+.suggestion-container {
+  background-color: grey;
 }
 
 .center {
@@ -121,6 +126,10 @@ a:hover {
 
 
 @media screen and (max-width: 600px) {
+  .App {
+    width: 100%;
+  }
+
   h1 {
     font-size: 6vw;
   }
