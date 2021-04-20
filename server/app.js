@@ -2,7 +2,7 @@ require('dotenv').config()
 const express  = require('express');
 const app   = express();
 var session = require('express-session');
-const MongoStore = require('connect-mongo').default;
+const MongoStore = require('connect-mongo');
 const path = require('path');
 const cors = require('cors');
 const port = process.env.PORT || 9000;
@@ -51,12 +51,11 @@ mongoUtil.connectToServer(function(err, client) {
       mongoUrl: process.env.DB_CONNECTION_URL,
     })
   }));
-  /*
+
   app.use(express.static(path.join(__dirname, '../client/build')));
   app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
-  */
 
 
   const passport = require('./passport/setup');
