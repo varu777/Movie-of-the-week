@@ -99,7 +99,8 @@ router.post('/login', (req, res, next) => { passport.authenticate('local',
             if (err) {
                 return next(err);
             }
-        
+            
+            console.log("in here");
             res.send({success: true})
         });
       
