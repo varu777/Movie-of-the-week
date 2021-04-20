@@ -7,12 +7,12 @@ function isLoggedIn(req, res, next) {
     if (req.user) {
         return next();
     }
-
+    
     res.jsonp({success: false, isLoggedIn: false});
 }
 
-router.post('/SuggestMovie', async function (req, res) {
-    var result = db.suggestMovie(req.body.movie, req.body.name, req.body.movieNote);
+router.post('/SuggestMovie', isLoggedIn, function (req, res) {
+    var result = db.suggestMovie(req.body.movie, req.user._id, req.body.movieNote);
     result.then((val) => {
         res.jsonp({success: true, val: val.movie, movieIdx: val.movieIdx});
     }).catch((err) => {
@@ -57,7 +57,7 @@ router.get('/HomeData', function (req, res) {
 });
 
 router.post('/SortWatched', function (req, res) {
-   db.getWatchedMovies(req.body.sortBy)
+   db.getMovies(req.body.sortBy)
         .then((movies) => {
             res.jsonp({movies});
         })
@@ -66,7 +66,7 @@ router.post('/SortWatched', function (req, res) {
         });
 });
 
-router.get('/loadSuggestions', isLoggedIn, function (req, res, next) {
+router.get('/loadSuggestions', isLoggedIn, function (req, res) {
     db.getSuggestions(req.user)
         .then((movies) => { 
             res.jsonp({movies});

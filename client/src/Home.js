@@ -117,7 +117,7 @@ class Home extends React.Component {
         <h1> Upcoming Movies </h1>
         {this.state.upcomingMovies.map((movie, i) => (
           <div>
-          <p key={i}> {movie.name} - {movie.user} </p> 
+          <p key={i}> {movie.name} - {movie.addedBy} </p> 
           </div>
         ))}
 

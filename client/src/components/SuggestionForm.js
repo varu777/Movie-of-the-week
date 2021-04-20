@@ -5,7 +5,6 @@ import '../css/SuggestionForm.css';
 class SuggestionForm extends React.Component {
     state = {
         movieSuggestion: '', 
-        user: '', 
         movieNote: '',
         loggedIn: false
     };
@@ -20,22 +19,15 @@ class SuggestionForm extends React.Component {
             return;
         }
 
-        if (this.state.user.length === 0) {
-            window.alert("User not selected.");
-            return;
-        }
-
         const movie = this.state.movieSuggestion;
-        const user = this.state.user;
-
         axios({
             method: 'post',
             url: "http://localhost:9000/SuggestMovie",
             data: {
                 movie: movie, 
-                name: user,
                 movieNote: this.state.movieNote
-            }
+            },
+            withCredentials: true
         })
         .then((response) => {
         if (response.data.success) {
