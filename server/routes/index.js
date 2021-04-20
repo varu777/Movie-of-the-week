@@ -42,7 +42,7 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
-router.get('/isLoggedIn', function (req, res) {
+router.get('/loginCheck', function (req, res) {
    console.log("in heress");
    console.log(req.user);
    console.log(req.user != null);
