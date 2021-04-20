@@ -19,11 +19,10 @@ const AuthProvider = ({children}) => {
         .then((response) => {
             console.log(response);
             console.log("hi");
-            console.log(response);
+            console.log(response.data);
             if (response.data.isLoggedIn) {
                 setLoginStatus(true);
             } else {
-                window.alert("setting to false")
                 setLoginStatus(false);
             }
             setLoadingStatus(false);

@@ -90,6 +90,7 @@ router.get('/logout', function (req, res, next) {
 
 router.post('/login', (req, res, next) => { passport.authenticate('local',
     (err, user, info) => {
+        console.log("long");
         if (err) {
             return next(err);
         }
