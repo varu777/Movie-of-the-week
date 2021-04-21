@@ -43,15 +43,13 @@ router.get('/ChooseMovie', function (req, res) {
 });
 
 router.get('/loginCheck', function (req, res) {
-   console.log("in heress");
-   console.log(req.user);
-   console.log(req.user != null);
    res.jsonp({isLoggedIn: req.user != null});
 });
 
 router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {
+            console.log("in here");
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
