@@ -103,7 +103,7 @@ async function getMovies(filterBy) {
 
         // find user that added movie
         var user = movie.addedBy
-        if (!movie.addedBy.contains('Everyone')) {
+        if (!user.includes('Everyone')) {
             user = await UserModel.findOne({'_id': movie.addedBy});
             user = user.username;
         }
