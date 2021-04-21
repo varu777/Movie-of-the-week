@@ -54,16 +54,13 @@ mongoUtil.connectToServer(function(err, client) {
     })
   }));
 
-  app.use('/', router);
-  app.use('/user', userRouter);
-
-
-
   app.use(express.static(path.join(__dirname, '../client/build')));
   app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
 
+  app.use('/', router);
+  app.use('/user', userRouter);
 
   const passport = require('./passport/setup');
   app.use(passport.initialize());
