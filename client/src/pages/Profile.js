@@ -133,7 +133,7 @@ class Profile extends React.Component {
         <input value={this.state.email} onChange={this.updateEmail} /> 
         <br/>
         <button onClick={this.submitEmailUpdate}>Update Email </button>
-        <h1> Update User Name </h1>
+        <h1> Update Username </h1>
         <input value={this.state.username} onChange={this.updateUsername} /> 
         <br/>
         <button onClick={this.submitUsernameUpdate}>Update Username</button>
