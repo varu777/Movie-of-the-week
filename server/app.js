@@ -59,12 +59,12 @@ mongoUtil.connectToServer(function(err, client) {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
 
-  app.use('/', router);
-  app.use('/user', userRouter);
-
   const passport = require('./passport/setup');
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use('/', router);
+  app.use('/user', userRouter);
 
   app.listen(port);
   
