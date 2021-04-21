@@ -27,7 +27,7 @@ mongoUtil.connectToServer(function(err, client) {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
     else
       next() /* Continue to other routes if we're not redirecting */
-    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 
   const env = process.env.NODE_ENV === 'production' ? 'https://movieotw.herokuapp.com/' : 'http://localhost:3000'
