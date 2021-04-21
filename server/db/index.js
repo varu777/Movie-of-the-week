@@ -112,7 +112,7 @@ async function getMovies(filterBy) {
         movies.push({
             name: movie.name, 
             teaser: movie.note, 
-            addedBy: (movie.addedBy === 'Everyone') ? movie.addedBy : user.username, 
+            addedBy: user, 
             dateWatched: (months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear())
         });
     }
