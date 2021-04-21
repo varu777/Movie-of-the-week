@@ -111,7 +111,7 @@ class Home extends React.Component {
         <p>Movies Watched: {this.state.previousMovies.length} </p>
         <p>Upcoming Movies: {this.state.upcomingMovies.length} </p>
         <p>Current Pool Size: {this.state.currentPool.length} </p>
-        <p>Members: 8 </p>
+        <p>Members: 7 </p>
 
         <SuggestionForm />
 
