@@ -85,8 +85,8 @@ class Login extends React.Component {
                         <button type="submit"> Login </button>            
                     </form>
                     <br/>
-                    <p> First time login: Sign in with your name (e.g. Jason) as the username and '123abc' as the password. You can change both fields in the profile settings after signing in and also add an email. :)</p>
-                    <p> Passwords are encrypted btw so nobody can see them! The website uses a token that only contains a user's randomly generated user id. Only the server has access to that token.</p>
+                    <p> First time login: Sign in with your name (e.g. Jason) as the username and '123abc' as the password. After signing in, you can change both fields and add an email in the profile settings. :)</p>
+                    <p> Passwords are encrypted btw so nobody can see them! The website uses a token that just contains a user's randomly generated user id. Only the server has access to that token.</p>
                     <p> Hi.</p>
                     <p> - straw_hat_jay </p>
 
