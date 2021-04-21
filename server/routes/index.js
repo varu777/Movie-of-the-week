@@ -54,6 +54,7 @@ router.get('/HomeData', function (req, res) {
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
+            console.log(error.toString());
             res.jsonp({success: false, val: error.toString()});
         }); 
 });
