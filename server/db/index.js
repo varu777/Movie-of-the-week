@@ -102,7 +102,7 @@ async function getMovies(filterBy) {
         const date = movie.date;
 
         // find user that added movie
-        var user = await UserModel.findOne({_id: ObjectId(movie.addedBy)});
+        var user = await UserModel.findOne({'_id': movie.addedBy});
 
         // format data
         movies.push({
