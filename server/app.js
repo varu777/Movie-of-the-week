@@ -21,13 +21,12 @@ mongoUtil.connectToServer(function(err, client) {
 
   /* Redirect http to https */
   app.get('*', function(req, res, next) {
-    /*
-    if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production')
-      res.redirect('https://' + req.hostname + req.url)
-    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+    if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production') {
+      console.log('https://' + req.hostname + req.url);
+      res.redirect('https://' + req.hostname + req.url);
+    }
     else
       next() /* Continue to other routes if we're not redirecting */
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 
   const env = process.env.NODE_ENV === 'production' ? 'https://movieotw.herokuapp.com/' : 'http://localhost:3000'
