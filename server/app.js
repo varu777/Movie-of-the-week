@@ -54,6 +54,11 @@ mongoUtil.connectToServer(function(err, client) {
     })
   }));
 
+  app.use('/', router);
+  app.use('/user', userRouter);
+
+
+
   app.use(express.static(path.join(__dirname, '../client/build')));
   app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
@@ -63,9 +68,6 @@ mongoUtil.connectToServer(function(err, client) {
   const passport = require('./passport/setup');
   app.use(passport.initialize());
   app.use(passport.session());
-
-  app.use('/', router);
-  app.use('/user', userRouter);
 
   app.listen(port);
   
