@@ -7,3 +7,18 @@ body {
     text-align: center;
     margin-top: 2%;
 }
+
+
+/* For Tablets */
+@media screen and (min-width: 600px) and (max-width: 1400px) {
+    body {
+        width: 100%;
+    }
+  }
+  
+  
+  @media screen and (max-width: 600px) {
+      body {
+          width: 100%;
+      }
+  }
