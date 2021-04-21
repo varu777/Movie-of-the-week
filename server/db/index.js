@@ -102,13 +102,17 @@ async function getMovies(filterBy) {
         const date = movie.date;
 
         // find user that added movie
-        var user = await UserModel.findOne({'_id': movie.addedBy});
+        var user = movie.addedBy
+        if (movie.addedBy !== 'Everyone') {
+            user = await UserModel.findOne({'_id': movie.addedBy});
+            user = user.username;
+        }
 
         // format data
         movies.push({
             name: movie.name, 
             teaser: movie.note, 
-            addedBy: user.username, 
+            addedBy: (movie.addedBy === 'Everyone') ? movie.addedBy : user.username, 
             dateWatched: (months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear())
         });
     }
