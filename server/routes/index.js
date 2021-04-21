@@ -47,6 +47,7 @@ router.get('/loginCheck', function (req, res) {
 });
 
 router.get('/HomeData', function (req, res) {
+    console.log("asdfasdf");
     db.getHomeData()
         .then((data) => {
             console.log("in here");
