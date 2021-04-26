@@ -5,13 +5,11 @@ import Login from './pages/Login';
 import Suggestions from './pages/Suggestions';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './components/Auth';
-import axios from 'axios';
 import Profile from './pages/Profile';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
-import CustomNavbar from './components/CustomNavbar';
 
 require('dotenv').config()
 

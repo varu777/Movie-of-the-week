@@ -13,7 +13,7 @@ class CustomNavbar extends React.Component {
     logout = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:9000/logout',
+            url: 'https://movieotw.herokuapp.com/logout',
             withCredentials: true,
             loggedIn: this.context 
         }).then((response) => {

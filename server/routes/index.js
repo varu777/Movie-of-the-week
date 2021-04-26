@@ -42,16 +42,19 @@ router.get('/ChooseMovie', function (req, res) {
         });
 });
 
-router.get('/isLoggedIn', function (req, res) {
+router.get('/loginCheck', function (req, res) {
    res.jsonp({isLoggedIn: req.user != null});
 });
 
 router.get('/HomeData', function (req, res) {
+    console.log("asdfasdf");
     db.getHomeData()
         .then((data) => {
+            console.log("in here");
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
+            console.log(error.toString());
             res.jsonp({success: false, val: error.toString()});
         }); 
 });
@@ -87,6 +90,7 @@ router.get('/logout', function (req, res, next) {
 
 router.post('/login', (req, res, next) => { passport.authenticate('local',
     (err, user, info) => {
+        console.log("long");
         if (err) {
             return next(err);
         }
@@ -99,7 +103,7 @@ router.post('/login', (req, res, next) => { passport.authenticate('local',
             if (err) {
                 return next(err);
             }
-        
+            
             res.send({success: true})
         });
       

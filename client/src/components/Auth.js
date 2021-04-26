@@ -13,10 +13,13 @@ const AuthProvider = ({children}) => {
     let updateAuth = function () {
         return axios({
             method: 'get', 
-            url: "http://localhost:9000/isLoggedIn",
+            url: "https://movieotw.herokuapp.com/loginCheck",
             withCredentials: true
           })
         .then((response) => {
+            console.log(response);
+            console.log("hi");
+            console.log(response.data);
             if (response.data.isLoggedIn) {
                 setLoginStatus(true);
             } else {

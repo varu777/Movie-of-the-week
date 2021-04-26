@@ -21,8 +21,10 @@ mongoUtil.connectToServer(function(err, client) {
 
   /* Redirect http to https */
   app.get('*', function(req, res, next) {
-    if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production')
-      res.redirect('https://' + req.hostname + req.url)
+    if (req.headers['x-forwarded-proto'] != 'https' && process.env.NODE_ENV === 'production') {
+      console.log('https://' + req.hostname + req.url);
+      res.redirect('https://' + req.hostname + req.url);
+    }
     else
       next() /* Continue to other routes if we're not redirecting */
   });
@@ -46,18 +48,11 @@ mongoUtil.connectToServer(function(err, client) {
     secret: 'hi',
     saveUninitialized: false,
     resave: false, // TODO: look into whether store uses touch method 
-    cookie: {maxAge: 12096e5},
+    cookie: {maxAge: 18144e5}, // 3 weeks
     store: MongoStore.create({
       mongoUrl: process.env.DB_CONNECTION_URL,
     })
   }));
-  /*
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
-  */
-
 
   const passport = require('./passport/setup');
   app.use(passport.initialize());
@@ -65,6 +60,14 @@ mongoUtil.connectToServer(function(err, client) {
 
   app.use('/', router);
   app.use('/user', userRouter);
+
+
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
+
+
 
   app.listen(port);
   
