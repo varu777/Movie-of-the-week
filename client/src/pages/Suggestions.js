@@ -13,7 +13,7 @@ class Suggestions extends React.Component {
    componentDidMount() {
     axios({
         method: 'get', 
-        url: "https://movieotw.herokuapp.com/loadSuggestions",
+        url: "http://localhost:9000/loadSuggestions",
         withCredentials: true
       })
   

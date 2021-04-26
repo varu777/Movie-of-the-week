@@ -44,7 +44,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updateEmail',
+         url: 'http://localhost:9000/user/updateEmail',
          data: {
              email: this.state.email
          },
@@ -69,7 +69,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updateUsername',
+         url: 'http://localhost:9000/user/updateUsername',
          data: {
              username: this.state.username
          },
@@ -105,7 +105,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updatePassword',
+         url: 'http://localhost:9000/user/updatePassword',
          data: {
              newPassword: this.state.newPassword,
              currPassword: this.state.currentPassword
