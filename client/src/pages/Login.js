@@ -85,9 +85,6 @@ class Login extends React.Component {
                         <button type="submit"> Login </button>            
                     </form>
                     <br/>
-                    <p> First time login: Sign in with your name (e.g. Jason) as the username and '123abc' as the password. After signing in, you can change both fields and add an email in the profile settings. Passwords are encrypted btw! :)</p>
-                    <p> Hi.</p>
-                    <p> - straw_hat_jay </p>
 
                 </div>
 
