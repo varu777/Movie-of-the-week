@@ -265,16 +265,6 @@ async function updateUsername(user, newUsername) {
 }
 
 async function updateMovie(name, addedBy, teaser, description, rating, runtime, genre, posterLink) {
-    
-    console.log(name);
-    console.log(addedBy);
-    console.log(teaser);
-    console.log(description);
-    console.log(rating);
-    console.log(runtime);
-    console.log(genre);
-    console.log(posterLink);
-
     // movie of the week query
     var movieOTW = await StatsModel.findOne({});
     
