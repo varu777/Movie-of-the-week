@@ -264,6 +264,34 @@ async function updateUsername(user, newUsername) {
     await user.save();
 }
 
+async function updateMovie(name, addedBy, teaser, description, rating, runtime, genre, posterLink) {
+    
+    console.log(name);
+    console.log(addedBy);
+    console.log(teaser);
+    console.log(description);
+    console.log(rating);
+    console.log(runtime);
+    console.log(genre);
+    console.log(posterLink);
+
+    // movie of the week query
+    var movieOTW = await StatsModel.findOne({});
+    
+    // update stats 
+    movieOTW.runtime     = runtime;
+    movieOTW.genre       = genre;
+    movieOTW.posterLink  = posterLink;
+    movieOTW.watchOTW    = name;
+    movieOTW.addedBy     = addedBy;
+    movieOTW.note        = teaser;
+    movieOTW.description = description;
+    movieOTW.rating      = rating;
+
+    // save change
+    await movieOTW.save();
+}
+
 
 function parseString(movie) {
   // cleaning string for duplicate check
@@ -316,4 +344,4 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie };

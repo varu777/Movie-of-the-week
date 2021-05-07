@@ -47,10 +47,8 @@ router.get('/loginCheck', function (req, res) {
 });
 
 router.get('/HomeData', function (req, res) {
-    console.log("asdfasdf");
     db.getHomeData()
         .then((data) => {
-            console.log("in here");
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {
@@ -90,7 +88,6 @@ router.get('/logout', function (req, res, next) {
 
 router.post('/login', (req, res, next) => { passport.authenticate('local',
     (err, user, info) => {
-        console.log("long");
         if (err) {
             return next(err);
         }

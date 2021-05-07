@@ -15,6 +15,7 @@ const cookieParser = require('cookie-parser');
 mongoUtil.connectToServer(function(err, client) {
   const router = require('./routes/index');
   const userRouter = require('./routes/User');
+  const movieRouter = require('./routes/Movie');
 
   // report error if one exists
   if (err) console.log(err);
@@ -60,6 +61,7 @@ mongoUtil.connectToServer(function(err, client) {
 
   app.use('/', router);
   app.use('/user', userRouter);
+  app.use('/movie', movieRouter);
 
 
   app.use(express.static(path.join(__dirname, '../client/build')));
