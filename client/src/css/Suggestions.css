@@ -8,6 +8,10 @@ body {
     margin-top: 2%;
 }
 
+.suggestion-container {
+    margin-bottom: 10px;
+}
+
 
 /* For Tablets */
 @media screen and (min-width: 600px) and (max-width: 1400px) {

@@ -29,4 +29,24 @@ router.post('/updatePassword', async function (req, res) {
     }
 });
 
+router.post('/enterPool', async function (req, res) {
+    try {
+        await db.updatePoolStatus(req.user, true);
+        req.user.participating = true;
+        res.jsonp({success: true});
+    } catch (error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
+});
+
+router.post('/leavePool', async function (req, res) {
+    try {
+        await db.updatePoolStatus(req.user, false);
+        req.user.participating = false;
+        res.jsonp({success: true});
+    } catch (error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
+});
+
 module.exports = router;

@@ -80,7 +80,7 @@ async function getHomeData() {
     return {movieOTW, upcomingMovies, currentPool, watchedMovies}
 }
 
-async function getMovies(filterBy) {
+async function getMovies(filterBy, user=new ObjectId()){
     // contains final list of movies
     var movies = []
 
@@ -92,19 +92,20 @@ async function getMovies(filterBy) {
         moviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
     } else if (filterBy === 'oldest') {
         moviesQuery = await MovieModel.find({watched: true}).sort({date: 1});
+    } else if (filterBy === 'with') {
+        moviesQuery = await MovieModel.find({watched: false, addedBy: {$eq: user._id}}).sort({name: 1});
+    } else if (filterBy === 'without') {
+        moviesQuery = await MovieModel.find({watched: false, addedBy: {$ne: user._id}}).sort({name: 1});
     } else { // sort by movie name
         moviesQuery = await MovieModel.find({watched: true}).sort({name: 1});
     }
 
     // format date properly
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     for (movie of moviesQuery) {
-        const date = movie.date;
-
         // find user that added movie
-        var user = movie.addedBy
-        if (!user.includes('Everyone')) {
-            user = await UserModel.findOne({'_id': movie.addedBy});
+        var user = movie.addedBy;
+        if (typeof user !== String) {
+            user = await UserModel.findOne({_id: movie.addedBy});
             user = user.username;
         }
 
@@ -113,7 +114,8 @@ async function getMovies(filterBy) {
             name: movie.name, 
             teaser: movie.note, 
             addedBy: user, 
-            dateWatched: (months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear())
+            date: movie.date,
+            idx: movie.idx
         });
     }
 
@@ -225,9 +227,52 @@ async function chooseMovie() {
 }   
 
 async function getSuggestions(user) {
-    // get all unwatched movies from user
-    var movies = await MovieModel.find({watched: false, addedBy: user.username}).sort('idx');
-    return movies;
+    // unwatched movies from user
+    var userMovies  = await getMovies('with', user);
+
+    // unwatched movies from everyone else
+    var otherMovies = await getMovies('without', user);
+
+    //user's current choice
+    var currentChoice = null;
+    for (movie of userMovies) {
+        if (currentChoice == null || movie.idx < currentChoice.idx)
+            currentChoice = movie;
+    }
+
+    return {userMovies, otherMovies, currentChoice};
+}
+
+async function updatePoolStatus(user, participating) {
+    var user = await UserModel.findOne({_id: user._id});
+    user.participating = participating;
+    await user.save();
+}
+
+async function updateSuggestion(prevSuggestion, newSuggestion) {
+    const session = await db.startSession();
+
+    // retrieving movie data
+    var prevMovie = await MovieModel.findOne({name: prevSuggestion});
+    var newMovie  = await MovieModel.findOne({name: newSuggestion});
+
+    if (prevMovie == null || newMovie == null) {
+        throw new Error("One of the movie searches came back null");
+    }
+
+    // swapping indexes
+    let temp = prevMovie.idx;
+    prevMovie.idx = newMovie.idx;
+    newMovie.idx  = temp;
+
+    // write idx updates to database
+    await session.withTransaction(() => {
+        return Promise.all([prevMovie.save(), newMovie.save()]);
+    });
+}
+
+async function removeSuggestion(movie) {
+    await MovieModel.deleteOne({name: movie});
 }
 
 async function updateEmail(user, newEmail) {
@@ -334,4 +379,5 @@ function getDate() {
   return date;
 }
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie };
+
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie, removeSuggestion, updatePoolStatus, updateSuggestion };

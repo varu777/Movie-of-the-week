@@ -128,7 +128,6 @@ class Profile extends React.Component {
    render() {
      return (
         <>
-        <CustomNavbar />
         <h1> Update Email </h1>
         <input value={this.state.email} onChange={this.updateEmail} /> 
         <br/>

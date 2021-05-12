@@ -43,7 +43,7 @@ router.get('/ChooseMovie', function (req, res) {
 });
 
 router.get('/loginCheck', function (req, res) {
-   res.jsonp({isLoggedIn: req.user != null});
+   res.jsonp({isLoggedIn: req.user != null, currentUser: req.user});
 });
 
 router.get('/HomeData', function (req, res) {
@@ -69,8 +69,8 @@ router.post('/SortWatched', function (req, res) {
 
 router.get('/loadSuggestions', isLoggedIn, function (req, res) {
     db.getSuggestions(req.user)
-        .then((movies) => { 
-            res.jsonp({movies});
+        .then(({userMovies, otherMovies, currentChoice}) => { 
+            res.jsonp({enteredPool: req.user.participating, userMovies: userMovies, otherMovies: otherMovies, currentChoice: currentChoice});
         })
         .catch((error) => {
             res.jsonp({success: false, val: error.toString()});

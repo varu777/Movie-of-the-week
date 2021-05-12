@@ -12,4 +12,24 @@ router.post('/updateMovie', async function (req, res) {
     }
 });
 
+router.post('/updateSuggestion', async function (req, res) {
+    try {
+        await db.updateSuggestion(req.body.previous, req.body.new);
+        await db.updatePoolStatus(req.user, true);
+        req.participating = true;
+        res.jsonp({success: true});
+    } catch (error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
+});
+
+router.post('/removeSuggestion', async function (req, res) {
+    try {
+        await db.removeSuggestion(req.body.movie)
+        res.jsonp({success: true});
+    } catch (Error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
+});
+
 module.exports = router;

@@ -1,8 +1,10 @@
 import  React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import CustomNavbar from '../components/CustomNavbar';
+import { use } from 'passport';
 
-const LoginContext = React.createContext(false);
+
+const LoginContext      = React.createContext({loggedin: false, currentUser: {}});
 const UpdateAuthContext = React.createContext(true);
 
 const AuthProvider = ({children}) => {
@@ -17,19 +19,16 @@ const AuthProvider = ({children}) => {
             withCredentials: true
           })
         .then((response) => {
-            console.log(response);
-            console.log("hi");
-            console.log(response.data);
             if (response.data.isLoggedIn) {
-                setLoginStatus(true);
+                setLoginStatus({loggedIn: true, currentUser: response.data.currentUser});
             } else {
-                setLoginStatus(false);
+                setLoginStatus({loggedIn: false, currentUser: {}});
             }
             setLoadingStatus(false);
         })
         .catch((error) => {
             window.alert("Unable to load home data: " + error);
-            setLoginStatus(false);
+            setLoginStatus({loggedIn: false, currentUser: {}});
             setLoadingStatus(false);
         })
     }
@@ -39,7 +38,11 @@ const AuthProvider = ({children}) => {
     }, [])
 
     if (loading) {
-        return <CustomNavbar loading={true}/>
+        console.log("here");
+        return (
+            // render nothing if auth check hasn't finished yet
+            <> </>
+        );
     }
 
     return (

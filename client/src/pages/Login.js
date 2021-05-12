@@ -50,8 +50,8 @@ class Login extends React.Component {
               localStorage.setItem('loggedIn', true); 
               let updateAuth = this.context;
               updateAuth().then(() => {
-                console.log("pushing to login");
                 this.props.history.push('/');
+                window.location.reload();
               });
 
           }).catch((error) => {
@@ -72,7 +72,6 @@ class Login extends React.Component {
     render() {
         return (
             <>
-                <CustomNavbar />
                 <div className="login-container">
                     <h1 className="title"> Login </h1>
                     <form onSubmit={this.loginUser}>

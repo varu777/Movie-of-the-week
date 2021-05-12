@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import SuggestionForm from './components/SuggestionForm';
 import PreviousMovie from './components/PreviousMovie';
 import CustomNavbar from './components/CustomNavbar';
+import formatDate from './utils/dateFormatterUtil';
 
 
 class Home extends React.Component {
@@ -84,12 +85,9 @@ class Home extends React.Component {
 
 
   render() {
-    if (this.state.isLoading && !this.state.imgLoaded) {
-      return <CustomNavbar loading={true} />
-    }
+
     return (
       <>
-      <CustomNavbar />
       <div style={{display: this.state.imgLoaded == true ? 'block' : 'none'}} className="App">
         <h1 className="title">Selected Movie </h1>
 
@@ -145,7 +143,7 @@ class Home extends React.Component {
         <option disabled={true} value={"u-rating"}>My Ratings</option>
         </select>
         {this.state.previousMovies.map((movie, i) => (
-          <PreviousMovie className="watched-container" key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={movie.dateWatched} />
+          <PreviousMovie className="watched-container" key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
         ))}
         <br />
       </div>
