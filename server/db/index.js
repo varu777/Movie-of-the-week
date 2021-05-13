@@ -62,7 +62,7 @@ async function getHomeData() {
     const movieOTW = await StatsModel.findOne({});
 
     // find user 
-    const user = await UserModel.findOne({_id: movieOTW.addedBy});
+    let user = await UserModel.findOne({_id: movieOTW.addedBy});
     user = user.username;
 
     // current pool query
@@ -76,10 +76,10 @@ async function getHomeData() {
     }
 
     // watched movies query
-    var watchedMovies = await getMovies('recent');
+    const watchedMovies = await getMovies('recent');
 
     // retrieve upcoming movies
-    var upcomingMovies = await getMovies('upcoming');
+    const upcomingMovies = await getMovies('upcoming');
 
     return {movieOTW, user, upcomingMovies, currentPool, watchedMovies}
 }
@@ -295,7 +295,6 @@ async function updatePassword(user, oldPassword, newPassword) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(newPassword, salt);
 
-    // update their email 
     user.password = hash;
 
     // save change
@@ -303,7 +302,6 @@ async function updatePassword(user, oldPassword, newPassword) {
 }
 
 async function updateUsername(user, newUsername) {
-    // update their email 
     user.username = newUsername;
 
     // save change
