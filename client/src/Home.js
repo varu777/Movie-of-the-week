@@ -72,7 +72,7 @@ class Home extends React.Component {
     // sort watched movies array by new filter
     axios({
       method: 'post',
-      url: "http://localhost:9000/SortWatched",
+      url: "https://movieotw.herokuapp.com/SortWatched",
       data: {
           sortBy: sortBy
       },
