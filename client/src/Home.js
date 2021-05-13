@@ -56,6 +56,7 @@ class Home extends React.Component {
         isLoading: false,
         imgLoaded: false 
       });
+      console.log(movieOTWData.userOTW);
     })
     .catch((error) => {
       window.alert("Unable to load home data: " + error);
