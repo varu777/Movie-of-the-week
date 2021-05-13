@@ -121,10 +121,11 @@ class Home extends React.Component {
 
         <SuggestionForm />
 
+        {/*
         <h1 > Current Pool </h1>
         {this.state.currentPool.map((user, i) => (
           <p key={i}> {user.suggestion} - {user.name} </p>
-        ))}
+        ))}*/}
 
         <h1> Upcoming Movies </h1>
         {this.state.upcomingMovies.map((movie, i) => (

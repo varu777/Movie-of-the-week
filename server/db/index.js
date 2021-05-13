@@ -62,6 +62,7 @@ async function getHomeData() {
     const movieOTW = await StatsModel.findOne({});
 
     // current pool query
+    /*
     const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
     var currentPool = [];
     for (user of unselectedUsers) {
@@ -70,6 +71,7 @@ async function getHomeData() {
             suggestion: user.suggestion
         });
     }
+    */
 
     // watched movies query
     var watchedMovies = await getMovies('recent');
