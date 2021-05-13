@@ -14,7 +14,7 @@ class CustomNavbar extends React.Component {
     logout = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:9000/logout',
+            url: 'https://localhost:9000/logout',
             withCredentials: true,
             loggedIn: this.context.loggedIn
         }).then((response) => {
