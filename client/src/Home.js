@@ -89,9 +89,9 @@ class Home extends React.Component {
 
     return (
       <>
-      <div style={{display: this.state.imgLoaded == true ? 'block' : 'none'}} className="App">
+      <div style={{display: this.state.imgLoaded == true ? 'grid' : 'none'}} className="App">
+        <div style={{gridRow: '1'}}>
         <h1 className="title">Selected Movie </h1>
-
         {this.state.isMovieSelected ? 
             <div className="motw-container borders"> 
               <h1 className="title"> {this.state.movieOTW} </h1>
@@ -111,30 +111,35 @@ class Home extends React.Component {
             : 
             <p style={{textAlign: 'center'}}> No movie selected yet for this week.</p>
         }
+        </div>
 
+        <br />
+        <div style={{gridRow: '1', textAlign: 'center'}}>
         <div className="center">
-        <h1> Statistics </h1>
+        <h1 className="title"> Statistics </h1>
         <p>Total Movies Suggested: {this.state.upcomingMovies.length + this.state.previousMovies.length} </p>
         <p>Movies Watched: {this.state.previousMovies.length} </p>
         <p>Upcoming Movies: {this.state.upcomingMovies.length} </p>
         <p>Current Pool Size: {this.state.currentPool.length} </p>
         <p>Members: 7 </p>
-
         <SuggestionForm />
-
-        {/*
-        <h1 > Current Pool </h1>
+        <h1 style={{marginTop: '15px'}}> Current Pool </h1>
         {this.state.currentPool.map((user, i) => (
           <p key={i}> {user.suggestion} - {user.name} </p>
-        ))}*/}
+        ))}
+        </div>
+        </div>
 
+        <div style={{gridRow: '2', textAlign:'center'}}>
         <h1> Upcoming Movies </h1>
         {this.state.upcomingMovies.map((movie, i) => (
           <div>
           <p key={i}> {movie.name} - {movie.addedBy} </p> 
           </div>
         ))}
-
+        </div>
+        
+        <div style={{gridRow: '2', textAlign: 'center'}}>
         <h1> Movies Watched so Far </h1>
         <label style={{marginRight: '.5vw'}}> Sort by </label>
         <select name="Name" defaultValue="Date-Descending" onChange={this.updateWatchedSort}>
@@ -147,9 +152,9 @@ class Home extends React.Component {
         {this.state.previousMovies.map((movie, i) => (
           <PreviousMovie className="watched-container" key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
         ))}
+        </div>
         <br />
-      </div>
-      </div>
+        </div>
       </>
     );
   }

@@ -62,7 +62,6 @@ async function getHomeData() {
     const movieOTW = await StatsModel.findOne({});
 
     // find user 
-    console.log(movieOTW);
     let currUser= await UserModel.findOne({_id: movieOTW.addedBy});
     currUser = currUser.username;
 
@@ -246,7 +245,6 @@ async function getSuggestions(user) {
 }
 
 async function updatePoolStatus(user, participating) {
-    var user = await UserModel.findOne({_id: user._id});
     user.participating = participating;
     await user.save();
 }

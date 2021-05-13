@@ -23,7 +23,6 @@ class Suggestions extends React.Component {
   
       .then((response) => {
         // user not signed in
-        console.log(response.data.currentChoice);
         this.setState({enteredPool: response.data.enteredPool, userMovies: response.data.userMovies, otherMovies: response.data.otherMovies, currentChoice: response.data.currentChoice, isLoading: false});
   
       })
@@ -135,19 +134,22 @@ class Suggestions extends React.Component {
 
    render() {
      if (this.state.isLoading) {
-       return <CustomNavbar loading={true} />
+       return <></>
      }
 
     return (
         <>  
-        <CustomNavbar />
         <h1 className="suggestion-title"> Current Choice </h1>
         {this.state.enteredPool == false ? 
           <div style={{textAlign: 'center'}}>
-            <p> Join the pool! </p>
-            <button style={{align: 'center'}} onClick={this.enterPool}> Enter Pool </button> 
+            <p> Suggest a movie below to join the pool! </p>
+            <button style={{align: 'center'}} onClick={this.enterPool}> Choose Randomly </button> 
           </div>
           :
+          <>
+          <div style={{textAlign: 'center'}}>
+            <p> Override this choice by suggesting a different movie. </p>
+          </div>
           <div className="suggestion-container"> 
             <p> {this.state.currentChoice.name}</p>
             <p> Date added {formatDate(this.state.currentChoice.date)} </p>
@@ -155,6 +157,7 @@ class Suggestions extends React.Component {
             <button onClick={() => {this.deleteSuggestion(this.state.currentChoice.name)}}> Delete </button>
             <button onClick={this.leavePool}> Leave Pool </button>
           </div>
+          </>
         }
         <h1 className="suggestion-title"> My Unwatched Suggestions </h1>
         {this.state.userMovies.map((movie, i) => (
@@ -162,7 +165,7 @@ class Suggestions extends React.Component {
                 <p> {movie.name} </p>
                 <p> Added on {formatDate(movie.date)} </p>
                 <button onClick={() => {this.deleteSuggestion(movie.name)}}> Delete </button>
-                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest Now </button>
+                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
             </div>
         ))}
 
@@ -172,7 +175,7 @@ class Suggestions extends React.Component {
                 <p> {movie.name} </p>
                 <p> Date added {formatDate(movie.date)} </p>
                 <p> Added by {movie.addedBy} </p>
-                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest Now </button>
+                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
             </div>
         ))}
         </>

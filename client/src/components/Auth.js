@@ -38,7 +38,6 @@ const AuthProvider = ({children}) => {
     }, [])
 
     if (loading) {
-        console.log("here");
         return (
             // render nothing if auth check hasn't finished yet
             <> </>
