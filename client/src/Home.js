@@ -28,7 +28,7 @@ class Home extends React.Component {
     // retrieve watched movies
     axios({
       method: 'get', 
-      url: "https://movieotw.herokuapp.com/HomeData",
+      url: "http://localhost:9000/HomeData",
       withCredentials: true
     })
 
@@ -72,7 +72,7 @@ class Home extends React.Component {
     // sort watched movies array by new filter
     axios({
       method: 'post',
-      url: "https://movieotw.herokuapp.com/SortWatched",
+      url: "http://localhost:9000/SortWatched",
       data: {
           sortBy: sortBy
       },

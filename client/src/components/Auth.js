@@ -15,7 +15,7 @@ const AuthProvider = ({children}) => {
     let updateAuth = function () {
         return axios({
             method: 'get', 
-            url: "https://movieotw.herokuapp.com/loginCheck",
+            url: "http://localhost:9000/loginCheck",
             withCredentials: true
           })
         .then((response) => {

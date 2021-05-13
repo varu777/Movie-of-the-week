@@ -17,7 +17,7 @@ class Suggestions extends React.Component {
    componentDidMount() {
     axios({
         method: 'get', 
-        url: "https://movieotw.herokuapp.com/loadSuggestions",
+        url: "http://localhost:9000/loadSuggestions",
         withCredentials: true
       })
   
@@ -37,7 +37,7 @@ class Suggestions extends React.Component {
         // remove movie from database
         axios({
           method: 'post', 
-          url: "https://movieotw.herokuapp.com/movie/removeSuggestion",
+          url: "http://localhost:9000/movie/removeSuggestion",
           data: {
             movie: movieName
           },
@@ -95,7 +95,7 @@ class Suggestions extends React.Component {
     // enter user in pool
     axios({
       method: 'post', 
-      url: "https://movieotw.herokuapp.com/user/enterPool",
+      url: "http://localhost:9000/user/enterPool",
       withCredentials: true
     })
 
@@ -116,7 +116,7 @@ class Suggestions extends React.Component {
       // enter user in pool
       axios({
         method: 'post', 
-        url: "https://movieotw.herokuapp.com/user/leavePool",
+        url: "http://localhost:9000/user/leavePool",
         withCredentials: true
       })
 
