@@ -62,7 +62,9 @@ async function getHomeData() {
     const movieOTW = await StatsModel.findOne({});
 
     // find user 
+    console.log(movieOTW);
     let user = await UserModel.findOne({_id: movieOTW.addedBy});
+    console.log(user);
     user = user.username;
 
     // current pool query
