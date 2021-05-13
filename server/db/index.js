@@ -64,8 +64,8 @@ async function getHomeData() {
     // find user 
     console.log(movieOTW);
     let user = await UserModel.findOne({_id: movieOTW.addedBy});
-    console.log(user);
     user = user.username;
+    console.log(user);
 
     // current pool query
     const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
