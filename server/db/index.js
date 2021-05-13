@@ -63,9 +63,8 @@ async function getHomeData() {
 
     // find user 
     console.log(movieOTW);
-    let user = await UserModel.findOne({_id: movieOTW.addedBy});
-    user = user.username;
-    console.log(user);
+    let currUser= await UserModel.findOne({_id: movieOTW.addedBy});
+    currUser = currUser.username;
 
     // current pool query
     const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
@@ -83,7 +82,7 @@ async function getHomeData() {
     // retrieve upcoming movies
     const upcomingMovies = await getMovies('upcoming');
 
-    return {movieOTW, user, upcomingMovies, currentPool, watchedMovies}
+    return {movieOTW, currUser, upcomingMovies, currentPool, watchedMovies}
 }
 
 async function getMovies(filterBy, user=new ObjectId()){
