@@ -61,6 +61,10 @@ async function getHomeData() {
     // movie of the week query
     const movieOTW = await StatsModel.findOne({});
 
+    // find user 
+    const user = await UserModel.findOne({_id: movieOTW.addedBy});
+    user = user.username;
+
     // current pool query
     const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
     var currentPool = [];
@@ -77,7 +81,7 @@ async function getHomeData() {
     // retrieve upcoming movies
     var upcomingMovies = await getMovies('upcoming');
 
-    return {movieOTW, upcomingMovies, currentPool, watchedMovies}
+    return {movieOTW, user, upcomingMovies, currentPool, watchedMovies}
 }
 
 async function getMovies(filterBy, user=new ObjectId()){
