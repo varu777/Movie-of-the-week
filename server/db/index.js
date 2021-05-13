@@ -76,6 +76,7 @@ async function getHomeData() {
 
     // retrieve upcoming movies
     var upcomingMovies = await getMovies('upcoming');
+    console.log("done");
 
     return {movieOTW, upcomingMovies, currentPool, watchedMovies}
 }
