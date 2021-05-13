@@ -49,7 +49,6 @@ router.get('/loginCheck', function (req, res) {
 router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {
-            console.log(data);
             res.jsonp({success: true, movieOTW: data.movieOTW, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
         })
         .catch((error) => {

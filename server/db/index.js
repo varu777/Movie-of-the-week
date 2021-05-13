@@ -76,7 +76,6 @@ async function getHomeData() {
 
     // retrieve upcoming movies
     var upcomingMovies = await getMovies('upcoming');
-    console.log("done");
 
     return {movieOTW, upcomingMovies, currentPool, watchedMovies}
 }
@@ -104,11 +103,8 @@ async function getMovies(filterBy, user=new ObjectId()){
     // format date properly
     for (movie of moviesQuery) {
         // find user that added movie
-        var user = movie.addedBy;
-        if (typeof user !== String) {
-            user = await UserModel.findOne({_id: movie.addedBy});
-            user = user.username;
-        }
+        user = await UserModel.findOne({_id: movie.addedBy});
+        user = user.username;
 
         // format data
         movies.push({

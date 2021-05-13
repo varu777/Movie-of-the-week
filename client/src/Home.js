@@ -34,7 +34,6 @@ class Home extends React.Component {
 
     .then((response) => {
       // get motw data
-      console.log(response.data);
       let movieOTWData = response.data.movieOTW;
 
       // display motw if it's not blank

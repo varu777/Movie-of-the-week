@@ -33,7 +33,6 @@ class CustomNavbar extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.user);
         this.setState({loggedIn: this.props.user.loggedIn});
         this.setState({currentUser: this.props.user.currentUser.username})
     }
