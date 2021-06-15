@@ -2,9 +2,12 @@ require('dotenv').config()
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
+const UpdatesModel = require('./models/Update');
+
 var bcrypt = require('bcrypt');
 var ObjectId = require('mongoose').Types.ObjectId;
 var mongoUtil = require("../utils/mongoUtil");
+const { watch } = require('./models/Movie');
 var db = mongoUtil.getDb();
 
 async function suggestMovie(movie, userId, note) {
@@ -81,7 +84,73 @@ async function getHomeData() {
     // retrieve upcoming movies
     const upcomingMovies = await getMovies('upcoming');
 
-    return {movieOTW, currUser, upcomingMovies, currentPool, watchedMovies}
+    // fetch group updates
+    const recentUpdates = await getUpdates(false);
+
+    return {movieOTW, currUser, upcomingMovies, currentPool, watchedMovies, recentUpdates}
+}
+
+async function getUpdates(all) {
+    // retrieve updates for both unwatched and watched movies (TODO: fetch using start and end index)
+    let unwatched = await MovieModel.find({watched:false}).sort({date: -1});
+    let watched   = await MovieModel.find({watched:true}).sort({date: -1});
+
+    // merge updates
+    let updatesQuery = mergeUpdates(unwatched, watched, all);
+    let updates = [];
+
+    // replace user id's with usernames
+    for (let i = 0; i < updatesQuery.length; i++) {
+        let currentUpdate = updatesQuery[i];
+
+        // find user that added movie
+        user = await UserModel.findOne({_id: currentUpdate.addedBy});
+
+        updates.push({
+            name: currentUpdate.name,
+            addedBy: user.username,
+            date: currentUpdate.date,
+            watched: currentUpdate.watched
+        });
+    }
+
+    return updates;
+}
+
+// returns list showing recent movie updates. Gets updates using merge sort approach
+function mergeUpdates(unwatched, watched, all) {
+    if (unwatched.length == 0 && watched.length == 0) {
+        return [];
+    }
+
+    let limit = all ? Number.MAX_SAFE_INTEGER : 7;
+    let accountedFor = 0;
+    let uwIdx = 0;
+    let wIdx = 0;
+    let updates = [];
+    while (accountedFor < limit && uwIdx < unwatched.length && wIdx < watched.length) {
+        if (unwatched[uwIdx].date < watched[wIdx].date) {
+            updates.push(watched[wIdx++]);
+        } else {
+            updates.push(unwatched[uwIdx++]);
+        }
+
+        accountedFor++;
+    }
+
+    // add remaining movies of unfinished array to updates list
+    let remainder = (wIdx == watched.length) ? unwatched : watched;
+    let rIdx      = (wIdx == watched.length) ? uwIdx : wIdx;
+    while (accountedFor < limit && rIdx < remainder.length) {
+        updates.push(remainder[rIdx++]);
+        accountedFor++;
+    }
+
+    return updates;
+}
+
+async function addUpdate() {
+
 }
 
 async function getMovies(filterBy, user=new ObjectId()){
