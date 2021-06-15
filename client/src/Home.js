@@ -51,13 +51,14 @@ class Home extends React.Component {
         rating: movieOTWData.rating,
         posterLink: movieOTWData.posterLink,
         runtime: movieOTWData.runtime,
-        description: movieOTWData.description,
         upcomingMovies: response.data.upcomingMovies, 
+        description: movieOTWData.description,
         currentPool: response.data.currentPool,
         recentUpdates: response.data.recentUpdates,
         isLoading: false,
         imgLoaded: false 
       });
+      console.log(this.state.upcomingMovies);
     })
     .catch((error) => {
       window.alert("Unable to load home data: " + error);
@@ -140,11 +141,11 @@ class Home extends React.Component {
 
         <div style={{gridRow: '2', textAlign:'center'}}>
         <h1> Upcoming Movies </h1>
-        {this.state.upcomingMovies.map((movie, i) => {
+        {this.state.upcomingMovies.map((movie, i) => (
           <div>
-          <p key={i}> {movie.name} - {movie.addedBy} </p> 
+            <p key={i}> {movie.name} - {movie.addedBy} </p> 
           </div>
-        })}
+        ))}
         </div>
         
         <div style={{gridRow: '2', textAlign: 'center'}}>
