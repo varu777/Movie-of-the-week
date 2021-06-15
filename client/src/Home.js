@@ -58,7 +58,6 @@ class Home extends React.Component {
         isLoading: false,
         imgLoaded: false 
       });
-      console.log(this.state.upcomingMovies);
     })
     .catch((error) => {
       window.alert("Unable to load home data: " + error);
