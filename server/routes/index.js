@@ -49,7 +49,7 @@ router.get('/loginCheck', function (req, res) {
 router.get('/HomeData', function (req, res) {
     db.getHomeData()
         .then((data) => {
-            res.jsonp({success: true, movieOTW: data.movieOTW, user: data.currUser, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool});
+            res.jsonp({success: true, movieOTW: data.movieOTW, user: data.currUser, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool, recentUpdates: data.recentUpdates});
         })
         .catch((error) => {
             console.log(error.toString());

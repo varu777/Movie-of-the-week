@@ -1,8 +1,5 @@
 import  React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import CustomNavbar from '../components/CustomNavbar';
-import { use } from 'passport';
-
 
 const LoginContext      = React.createContext({loggedin: false, currentUser: {}});
 const UpdateAuthContext = React.createContext(true);
