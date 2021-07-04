@@ -3,6 +3,7 @@ import './App.css';
 import Home from './Home';
 import Login from './pages/Login';
 import UpdateMovie from './pages/UpdateMovie';
+import WatchedMovie from './pages/WatchedMovie';
 import Suggestions from './pages/Suggestions';
 import PrivateRoute from './components/PrivateRoute';
 import { LoginContext } from './components/Auth';
@@ -47,10 +48,10 @@ const App = ({children}) => {
      <Router>
         <CustomNavbar user={loginStatus} />
         <PrivateRoute path="/"            exact render={(props) => <Home />} />
-        <Route path="/login"              exact render={(props) => <Login />} />
+        <Route        path="/login"              exact render={(props) => <Login />} />
         <PrivateRoute path="/suggestions" exact render={(props) => <Suggestions />} />
         <PrivateRoute path="/profile"     exact render={(props) => <Profile />} />
-        <PrivateRoute path="/updateMovie" exact render={(props) => <UpdateMovie />} />
+        <PrivateRoute path="/watchedMovie" exact render={(props) => <WatchedMovie />} />
       </Router>
     </>
   );

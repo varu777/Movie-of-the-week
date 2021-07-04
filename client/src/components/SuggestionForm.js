@@ -24,7 +24,7 @@ class SuggestionForm extends React.Component {
             method: 'post',
             url: "http://localhost:9000/SuggestMovie",
             data: {
-                movie: movie, 
+                movie: movie.trim(), 
                 movieNote: this.state.movieNote
             },
             withCredentials: true

@@ -8,7 +8,9 @@ var bcrypt = require('bcrypt');
 var ObjectId = require('mongoose').Types.ObjectId;
 var mongoUtil = require("../utils/mongoUtil");
 const { watch } = require('./models/Movie');
+const { database } = require('firebase-admin');
 var db = mongoUtil.getDb();
+
 
 async function suggestMovie(movie, userId, note) {
     const session = await db.startSession();
@@ -149,9 +151,6 @@ function mergeUpdates(unwatched, watched, all) {
     return updates;
 }
 
-async function addUpdate() {
-
-}
 
 async function getMovies(filterBy, user=new ObjectId()){
     // contains final list of movies
@@ -192,38 +191,20 @@ async function getMovies(filterBy, user=new ObjectId()){
     return movies;
 }
 
-async function watchedMovie() {
-    const session = await db.startSession();
+async function watchedMovie(selectedMovie) {
+    // find movie
+    let movie = await MovieModel.findOne({parsedName: parseString(selectedMovie)});
 
-    // retrieve stats
-    let watchOTW = await StatsModel.findOne({});
-    if (watchOTW.watchOTW.length === 0) throw new Error("Watch of the Week is already cleared.");
+    if (movie == null) 
+        return new Error("Movie not found.");
 
-    // retrieve user OTW info
-    let user = await UserModel.findOne({username: watchOTW.addedBy});
+    if (movie.watched) 
+        return new Error("Movie already watched.");
 
-    // retrieve movie otw info
-    let movie = await MovieModel.findOne({name: watchOTW.watchOTW});
-
-    // update user info
-    user.unwatched_movies = user.unwatched_movies - 1;
-    user.participating = user.unwatched_movies == 0 ? false : true;
-    user.selected = true;
-
-    // clear watch OTW
-    watchOTW.watchOTW = '';
-    watchOTW.addedBy = '';
-    watchOTW.watchedMovies = watchOTW.watchedMovies + 1;
-    watchOTW.selectedParticipants = watchOTW.selectedParticipants + 1;
-
-    // updating movie otw as watched
     movie.watched = true;
-    movie.date = getDate();
+    movie.date = new Date();
 
-    // write all updates to db
-    await session.withTransaction(() => {
-        return Promise.all([user.save(), watchOTW.save(), movie.save()]);
-    });
+    await movie.save();
 }
 
 async function resetUsers() {
@@ -340,6 +321,27 @@ async function updateSuggestion(prevSuggestion, newSuggestion) {
     });
 }
 
+async function updateFormat() {
+    console.log("dd");
+    let movies = MovieModel.find({});
+    for (let i = 0; i < movies.length; i++) {
+        let current = movies[i];
+        if (current.watched) {
+            current.wDate = current.date;
+            let date = new Date();
+            date.setFullYear(2021, 1, 1);
+            current.rDate = date;
+        } else {
+            current.wDate = new Date();
+            current.rDate = current.date;
+        }
+
+        await current.save();
+        console.log("updated this");
+    }
+    console.log("done");
+}
+
 async function removeSuggestion(movie) {
     await MovieModel.deleteOne({name: movie});
 }
@@ -447,4 +449,4 @@ function getDate() {
 }
 
 
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie, removeSuggestion, updatePoolStatus, updateSuggestion };
+module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie, removeSuggestion, updatePoolStatus, updateSuggestion, updateFormat };

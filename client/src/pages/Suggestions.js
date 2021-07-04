@@ -1,7 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 import axios from 'axios';
-import CustomNavbar from '../components/CustomNavbar';
 import formatDate from '../utils/dateFormatterUtil';
 import '../css/Suggestions.css';
 
@@ -159,6 +157,7 @@ class Suggestions extends React.Component {
           </div>
           </>
         }
+
         <h1 className="suggestion-title"> My Unwatched Suggestions </h1>
         {this.state.userMovies.map((movie, i) => (
             <div key={i} className="suggestion-container">
@@ -183,4 +182,4 @@ class Suggestions extends React.Component {
    }
 }
 
-export default withRouter(Suggestions);
+export default Suggestions;
