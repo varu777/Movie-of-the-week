@@ -85,6 +85,16 @@ class Home extends React.Component {
     });
   }
 
+  updateFormat = () => {
+    window.alert("starting");
+    axios({
+      method:'post',
+      url:'http://localhost:9000/updateFormat',
+      data:{},
+      withCredentials: true
+    })
+  }
+
 
   render() {
 
@@ -162,6 +172,7 @@ class Home extends React.Component {
         ))}
         </div>
         <br />
+        <button onClick={this.updateFormat}> Update </button>
         </div>
       </>
     );

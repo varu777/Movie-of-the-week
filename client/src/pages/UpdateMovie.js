@@ -75,12 +75,12 @@ class UpdateMovie extends React.Component {
     render() {
         return (
             <>
-            <CustomNavbar />
             <h1> Movie Name </h1>
             <input value={this.state.movieName} onChange={this.updateMovieName} /> 
             <br/>
 
             <h1> Added By </h1>
+            <p> Enter username of person who added movie. Username is their firstname if they haven't changed it yet. </p>
             <input value={this.state.addedBy} onChange={this.updateAddedBy} /> 
             <br/>
 
@@ -89,6 +89,7 @@ class UpdateMovie extends React.Component {
             <br/>
 
             <h1> Description </h1>
+            <p> Just copy/paste giant paragraph into here. </p>
             <input value={this.state.description} onChange={this.updateDescription} /> 
             <br/>
 
@@ -97,6 +98,7 @@ class UpdateMovie extends React.Component {
             <br/>
 
             <h1> Runtime </h1>
+            <p> Usually put it in "x hr x min" format </p>
             <input value={this.state.runtime} onChange={this.updateRuntime} /> 
             <br/>
 
@@ -105,6 +107,8 @@ class UpdateMovie extends React.Component {
             <br/>
 
             <h1> Poster Link</h1>
+            <p> I always get poster links from <a href="https://www.omdbapi.com/"> here. </a></p>
+            <p> Search for the movie in "Examples" section by title or imdb id. </p>
             <input value={this.state.posterLink} onChange={this.updatePosterLink} /> 
             <br/>
             <br/>
@@ -114,4 +118,4 @@ class UpdateMovie extends React.Component {
     }
 }
 
-export default UpdateMovie
+export default UpdateMovie;
