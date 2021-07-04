@@ -29,6 +29,7 @@ class WatchedMovie extends React.Component {
     }
 
     submitWatched = () => {
+        console.log("submitting");
         if (this.state.selectedMovie === 'Choose Movie') {
             window.alert("Invalid movie.");
             return;
