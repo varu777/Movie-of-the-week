@@ -51,7 +51,7 @@ const App = ({children}) => {
         <Route        path="/login"              exact render={(props) => <Login />} />
         <PrivateRoute path="/suggestions" exact render={(props) => <Suggestions />} />
         <PrivateRoute path="/profile"     exact render={(props) => <Profile />} />
-        <PrivateRoute path="/watchedMovie" exact render={(props) => <WatchedMovie />} />
+        <PrivateRoute path="/addWatched" exact render={(props) => <WatchedMovie />} />
       </Router>
     </>
   );

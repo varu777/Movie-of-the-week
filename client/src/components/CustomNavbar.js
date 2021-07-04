@@ -43,9 +43,9 @@ class CustomNavbar extends React.Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Nav.Link style={{color: 'white'}} href="#home">Leaderboard</Nav.Link>
-                    <Nav.Link style={{color: 'white'}} href="#suggestions">Suggestions</Nav.Link>
-                    <Nav.Link style={{color: 'white', textDecoration: 'underline'}} href="/watchedMovie">Add to Watched List</Nav.Link>
+                    <Nav.Link style={{color: 'white', textDecoration: 'underline'}} href="#home">Leaderboard</Nav.Link>
+                    <Nav.Link style={{color: 'white', textDecoration: 'underline'}} href="#suggestions">Suggestions</Nav.Link>
+                    <Nav.Link style={{color: 'white', textDecoration: 'underline'}} href="/addWatched">Add to Watched List</Nav.Link>
 
                     </Nav>
                     <Form inline>
