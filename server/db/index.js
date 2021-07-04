@@ -192,6 +192,7 @@ async function getMovies(filterBy, user=new ObjectId()){
 }
 
 async function watchedMovie(selectedMovie) {
+    console.log(selectedMovie);
     // find movie
     let movie = await MovieModel.findOne({parsedName: parseString(selectedMovie)});
 
