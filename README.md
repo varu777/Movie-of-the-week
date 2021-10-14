@@ -1,5 +1,5 @@
 # Movie of the Week
-Goal of this application is to become an open source movie tool that works similar to rotten tomatoes, imdb, etc. 
+Goal of this application is to become an open source movie tool that works similar to rotten tomatoes, imdb, etc. The tool's functionality is very limited at the moment, it only picks movies to watch for a one specific group. Decides which movie to watch from a pool of user inserted movies. 
 
 dev branch usually has the most up to date code.
 
