@@ -3,4 +3,4 @@ Goal of this application is to become an open source movie tool that works simil
 
 dev branch usually has the most up to date code.
 
-If you'd like to start working on this, please reach out to Jason Cabrera at cabrerajason7@gmail.com . 
+If you'd like to start working on this, please reach out to Jason Cabrera at cabrerajason7@gmail.com . Check out the repo's issues to find something to work on. 
