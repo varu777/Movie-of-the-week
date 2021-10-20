@@ -81,10 +81,10 @@ async function getHomeData() {
     }
 
     // watched movies query
-    const watchedMovies = await getMovies('recent');
+    const watchedMovies = await getMovies('recent', true);
 
     // retrieve upcoming movies
-    const upcomingMovies = await getMovies('upcoming');
+    const upcomingMovies = await getMovies('recent', false);
 
     // fetch group updates
     const recentUpdates = await getUpdates(false);
@@ -152,24 +152,22 @@ function mergeUpdates(unwatched, watched, all) {
 }
 
 
-async function getMovies(filterBy, user=new ObjectId()){
+async function getMovies(filterBy, isWatched, user=new ObjectId()){
     // contains final list of movies
     var movies = []
 
     // determine filter type
     var moviesQuery = [];
     if (filterBy === 'recent') {
-        moviesQuery = await MovieModel.find({watched: true}).sort({date: -1});
-    } else if (filterBy == 'upcoming') {
-        moviesQuery = await MovieModel.find({watched: false}).sort({name: 1});
+        moviesQuery = await MovieModel.find({watched: isWatched}).sort({date: -1});
     } else if (filterBy === 'oldest') {
-        moviesQuery = await MovieModel.find({watched: true}).sort({date: 1});
+        moviesQuery = await MovieModel.find({watched: isWatched}).sort({date: 1});
     } else if (filterBy === 'with') {
-        moviesQuery = await MovieModel.find({watched: false, addedBy: {$eq: user._id}}).sort({name: 1});
+        moviesQuery = await MovieModel.find({watched: isWatched, addedBy: {$eq: user._id}}).sort({name: 1});
     } else if (filterBy === 'without') {
-        moviesQuery = await MovieModel.find({watched: false, addedBy: {$ne: user._id}}).sort({name: 1});
+        moviesQuery = await MovieModel.find({watched: isWatched, addedBy: {$ne: user._id}}).sort({name: 1});
     } else { // sort by movie name
-        moviesQuery = await MovieModel.find({watched: true}).sort({name: 1});
+        moviesQuery = await MovieModel.find({watched: isWatched}).sort({name: 1});
     }
 
     // format date properly
@@ -192,7 +190,6 @@ async function getMovies(filterBy, user=new ObjectId()){
 }
 
 async function watchedMovie(selectedMovie) {
-    console.log(selectedMovie);
     // find movie
     let movie = await MovieModel.findOne({parsedName: parseString(selectedMovie)});
 
@@ -280,10 +277,10 @@ async function chooseMovie() {
 
 async function getSuggestions(user) {
     // unwatched movies from user
-    var userMovies  = await getMovies('with', user);
+    var userMovies  = await getMovies('with', false, user);
 
     // unwatched movies from everyone else
-    var otherMovies = await getMovies('without', user);
+    var otherMovies = await getMovies('without', false, user);
 
     //user's current choice
     var currentChoice = null;

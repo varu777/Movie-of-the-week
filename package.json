@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npm install && node server/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm install && npm --prefix client run start && node server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build --prefix client"
   },
   "author": "",
   "license": "ISC",

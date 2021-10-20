@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/PreviousMovie.css';
 
-class PreviousMovie extends React.Component {
+class MovieContainer extends React.Component {
     state = {
         displayReviewForm: false,
         reviewSubmitted: false,
@@ -82,4 +82,4 @@ class PreviousMovie extends React.Component {
     }
 }
 
-export default PreviousMovie;
+export default MovieContainer;

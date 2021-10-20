@@ -13,7 +13,7 @@ class WatchedMovie extends React.Component {
     componentDidMount() {
         axios({
             method: 'get',
-            url: "https://movieotw.herokuapp.com/movie/getMovies",
+            url: process.env.REACT_APP_GET_MOVIES_URL,
             withCredentials: true
         }).then((response) => {
             if (response.data.success) 
@@ -36,8 +36,8 @@ class WatchedMovie extends React.Component {
         }
             
         axios({
-            method: 'post', 
-            url: 'https://movieotw.herokuapp.com/movie/watchedMovie',
+            method: 'post',
+            url: process.env.REACT_APP_WATCHED_MOVIE_URL,
             data: {
                 movie: this.state.selectedMovie
             },

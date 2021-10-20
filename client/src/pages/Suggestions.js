@@ -15,7 +15,7 @@ class Suggestions extends React.Component {
    componentDidMount() {
     axios({
         method: 'get', 
-        url: "https://movieotw.herokuapp.com/loadSuggestions",
+        url: process.env.REACT_APP_LOAD_SUGGESTIONS_URL,
         withCredentials: true
       })
   
@@ -29,12 +29,12 @@ class Suggestions extends React.Component {
       })     
    } 
 
-   deleteSuggestion = (movieName) => {
+   removeSuggestion = (movieName) => {
      if (window.confirm("Remove " + movieName + "?")) {
         // remove movie from database
         axios({
           method: 'post', 
-          url: "https://movieotw.herokuapp.com/movie/removeSuggestion",
+          url: process.env.REACT_APP_REMOVE_SUGGESTION_URL,
           data: {
             movie: movieName
           },
@@ -67,7 +67,7 @@ class Suggestions extends React.Component {
         // update user's current suggestion
         axios({
           method: 'post', 
-          url: "https://movieotw.herokuapp.com/movie/updateSuggestion",
+          url: process.env.REACT_APP_UPDATE_SUGGESTION_URL,
           data: {
             previous: this.state.currentChoice.name,
             new: movie.name
@@ -92,7 +92,7 @@ class Suggestions extends React.Component {
     // enter user in pool
     axios({
       method: 'post', 
-      url: "https://movieotw.herokuapp.com/user/enterPool",
+      url: process.env.REACT_APP_ENTER_POOL_URL,
       withCredentials: true
     })
 
@@ -113,7 +113,7 @@ class Suggestions extends React.Component {
       // enter user in pool
       axios({
         method: 'post', 
-        url: "https://movieotw.herokuapp.com/user/leavePool",
+        url: process.env.REACT_APP_LEAVE_POOL_URL,
         withCredentials: true
       })
 
@@ -152,7 +152,7 @@ class Suggestions extends React.Component {
             <p> {this.state.currentChoice.name}</p>
             <p> Date added {formatDate(this.state.currentChoice.date)} </p>
             <p> Added by {this.state.currentChoice.addedBy} </p>
-            <button onClick={() => {this.deleteSuggestion(this.state.currentChoice.name)}}> Delete </button>
+            <button onClick={() => {this.removeSuggestion(this.state.currentChoice.name)}}> Delete </button>
             <button onClick={this.leavePool}> Leave Pool </button>
           </div>
           </>
@@ -163,7 +163,7 @@ class Suggestions extends React.Component {
             <div key={i} className="suggestion-container">
                 <p> {movie.name} </p>
                 <p> Added on {formatDate(movie.date)} </p>
-                <button onClick={() => {this.deleteSuggestion(movie.name)}}> Delete </button>
+                <button onClick={() => {this.removeSuggestion(movie.name)}}> Delete </button>
                 <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
             </div>
         ))}

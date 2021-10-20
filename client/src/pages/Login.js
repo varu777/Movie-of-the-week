@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import { AuthProvider, UpdateAuthContext } from '../components/Auth';
+import React from 'react';
+import { UpdateAuthContext } from '../components/Auth';
 import axios from 'axios';
-import CustomNavbar from '../components/CustomNavbar';
 import '../css/Login.css';
 import { withRouter } from 'react-router';
 
@@ -34,7 +33,7 @@ class Login extends React.Component {
         // attempt to sign in user
         axios({
             method: 'post',
-            url: "https://movieotw.herokuapp.com/login",
+            url: process.env.REACT_APP_LOGIN_URL,
             data: {
                 username: this.state.user,
                 password: this.state.password

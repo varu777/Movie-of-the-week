@@ -34,7 +34,7 @@ router.post('/removeSuggestion', async function (req, res) {
 
 router.get('/getMovies', async function (req, res) {
     try {
-        let movies = await db.getMovies('upcoming'); 
+        let movies = await db.getMovies('name', false); 
         res.jsonp({success: true, movies: movies});
     } catch (error) {
         res.jsonp({success: false, val: error.toString()});

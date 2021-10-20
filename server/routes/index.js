@@ -57,8 +57,8 @@ router.get('/HomeData', function (req, res) {
         }); 
 });
 
-router.post('/SortWatched', function (req, res) {
-   db.getMovies(req.body.sortBy)
+router.post('/SortMovies', function (req, res) {
+   db.getMovies(req.body.sortBy, req.body.movieType === "watched" ? true : false)
         .then((movies) => {
             res.jsonp({movies});
         })

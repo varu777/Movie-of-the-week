@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import CustomNavbar from '../components/CustomNavbar';
 
 class Profile extends React.Component {
    state = {
@@ -44,7 +43,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updateEmail',
+         url: process.env.REACT_APP_UPDATE_EMAIL_URL,
          data: {
              email: this.state.email
          },
@@ -69,7 +68,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updateUsername',
+         url: process.env.REACT_APP_UPDATE_USERNAME_URL,
          data: {
              username: this.state.username
          },
@@ -105,7 +104,7 @@ class Profile extends React.Component {
 
       axios({
          method: 'post',
-         url: 'https://movieotw.herokuapp.com/user/updatePassword',
+         url: process.env.REACT_APP_UPDATE_PASSWORD_URL,
          data: {
              newPassword: this.state.newPassword,
              currPassword: this.state.currentPassword

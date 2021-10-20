@@ -49,7 +49,7 @@ class UpdateMovie extends React.Component {
     submitUpdateMovie = () => {
         axios({
             method: 'post',
-            url: "https://movieotw.herokuapp.com/movie/updateMovie",
+            url: process.env.REACT_APP_UPDATE_MOVIE_URL,
             data: {
                 movieName: this.state.movieName,
                 addedBy: this.state.addedBy,
