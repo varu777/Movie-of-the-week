@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import './App.css';
+import './css/App.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import WatchedMovie from './pages/WatchedMovie';

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import '../css/App.css';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import SuggestionForm from '../components/SuggestionForm';
