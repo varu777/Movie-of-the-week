@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './App.css';
-import Home from './Home';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import WatchedMovie from './pages/WatchedMovie';
 import Suggestions from './pages/Suggestions';

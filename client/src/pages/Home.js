@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
+import '../App.css';
 import axios from 'axios';
 import { withRouter } from 'react-router';
-import SuggestionForm from './components/SuggestionForm';
-import MovieContainer from './components/MovieContainer';
-import formatDate from './utils/dateFormatterUtil';
+import SuggestionForm from '../components/SuggestionForm';
+import MovieContainer from '../components/MovieContainer';
+import formatDate from '../utils/dateFormatterUtil';
 
 class Home extends React.Component {
   state = {
