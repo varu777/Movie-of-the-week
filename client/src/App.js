@@ -21,18 +21,10 @@ function App() {
         <>
             <Router>
                 <CustomNavbar user={loginStatus} />
-                <PrivateRoute exact path="/">
-                    <Home />
-                </PrivateRoute>
-                <PrivateRoute exact path="/suggestions">
-                    <Suggestions />
-                </PrivateRoute>
-                <PrivateRoute exact path="/profile">
-                    <Profile />
-                </PrivateRoute>
-                <PrivateRoute exact path="/watchedMovie">
-                    <WatchedMovie />
-                </PrivateRoute>
+                <PrivateRoute exact path="/" render={() => <Home />} />
+                <PrivateRoute exact path="/suggestions" render={() => <Suggestions />} />
+                <PrivateRoute exact path="/profile" render={() => <Profile />} />
+                <PrivateRoute exact path="/watchedMovie" render={() => <WatchedMovie />} />
                 <Route exact path="/login">
                     <Login />
                 </Route>

@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db/index');
+var isLoggedIn = require('../../utils/serverUtils');
+var db = require('../../db');
 
-router.post('/updateEmail', async function (req, res) {
+router.post('/updateEmail', isLoggedIn, async function (req, res) {
     try {
         await db.updateEmail(req.user, req.body.email);
         res.jsonp({success: true});
@@ -11,7 +12,7 @@ router.post('/updateEmail', async function (req, res) {
     }
 });
 
-router.post('/updateUsername', async function (req, res) {
+router.post('/updateUsername', isLoggedIn, async function (req, res) {
     try {
         await db.updateUsername(req.user, req.body.username);
         res.jsonp({success: true});
@@ -20,7 +21,7 @@ router.post('/updateUsername', async function (req, res) {
     }
 });
 
-router.post('/updatePassword', async function (req, res) {
+router.post('/updatePassword', isLoggedIn, async function (req, res) {
     try {
         await db.updatePassword(req.user, req.body.currPassword, req.body.newPassword);
         res.jsonp({success: true});
@@ -29,7 +30,7 @@ router.post('/updatePassword', async function (req, res) {
     }
 });
 
-router.post('/enterPool', async function (req, res) {
+router.post('/enterPool', isLoggedIn, async function (req, res) {
     try {
         await db.updatePoolStatus(req.user, true);
         req.user.participating = true;
@@ -39,7 +40,7 @@ router.post('/enterPool', async function (req, res) {
     }
 });
 
-router.post('/leavePool', async function (req, res) {
+router.post('/leavePool', isLoggedIn, async function (req, res) {
     try {
         await db.updatePoolStatus(req.user, false);
         req.user.participating = false;

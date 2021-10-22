@@ -204,7 +204,7 @@ async function watchedMovie(selectedMovie) {
 }
 
 async function resetUsers() {
-    // retrieve users that have unwatched movies
+    // retrieve user that have unwatched movies
     const participants = await MovieModel.find({unwatched_movies: { $gt: 0}});
     
     // update selected status of each one to false

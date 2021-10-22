@@ -13,9 +13,9 @@ const cookieParser = require('cookie-parser');
 
 /* establishing database connection */
 mongoUtil.connectToServer(function(err, client) {
-  const router = require('./routes/index');
-  const userRouter = require('./routes/User');
-  const movieRouter = require('./routes/Movie');
+  const userRouter = require('./routes/user/index');
+  const movieRouter = require('./routes/movies/index');
+  const authRouter = require('./routes/auth/index');
 
   // report error if one exists
   if (err) console.log(err);
@@ -59,10 +59,9 @@ mongoUtil.connectToServer(function(err, client) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use('/', router);
   app.use('/user', userRouter);
-  app.use('/movie', movieRouter);
-
+  app.use('/movies', movieRouter);
+  app.use('/auth', authRouter);
 
   app.use(express.static(path.join(__dirname, '../client/build')));
   app.get('/*', (req, res) => {

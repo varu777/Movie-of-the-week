@@ -1,7 +1,7 @@
 import  React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 
-const LoginContext      = React.createContext({loggedin: false, currentUser: {}});
+const LoginContext      = React.createContext({loggedIn: false, currentUser: {}});
 const UpdateAuthContext = React.createContext(true);
 
 const AuthProvider = ({children}) => {

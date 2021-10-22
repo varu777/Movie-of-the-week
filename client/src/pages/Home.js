@@ -36,7 +36,7 @@ class Home extends React.Component {
       let user = response.data.user;
 
       // display motw if it's not blank
-      let isMovieSelected = (movieOTWData.watchOTW.length === 0) ? false : true;
+      let isMovieSelected = (movieOTWData.watchOTW.length !== 0);
       
       let movies = response.data.watchedMovies;
       this.setState({
@@ -101,7 +101,7 @@ class Home extends React.Component {
 
     return (
       <>
-      <div style={{display: this.state.imgLoaded == true ? 'grid' : 'none'}} className="App">
+      <div style={{display: this.state.imgLoaded === true ? 'grid' : 'none'}} className="App">
         <div style={{gridRow: '1', marginTop: '15px'}}>
         <h1 className="title">Selected Movie </h1>
         {this.state.isMovieSelected ? 
@@ -143,7 +143,7 @@ class Home extends React.Component {
 
         <h1 style={{marginTop: '15px'}}> Recent Updates </h1>
         {this.state.recentUpdates.map((up, i) => {
-          return up.watched == true ? <p> <a style={{color: '#90EE90'}}> Movie Watched: </a> <a style={{color:'#FF7F50'}}> {up.name} </a> was watched on {formatDate(up.date)}</p> : <p key={i}> <a style={{color: 'Salmon'}}> Movie Added: </a> <a style={{color: '#87CEFA'}}> {up.addedBy} </a>recommended <a style={{color:'#FF7F50'}}> {up.name} </a> on {formatDate(up.date)}</p>
+          return up.watched === true ? <p> <a style={{color: '#90EE90'}}> Movie Watched: </a> <a style={{color:'#FF7F50'}}> {up.name} </a> was watched on {formatDate(up.date)}</p> : <p key={i}> <a style={{color: 'Salmon'}}> Movie Added: </a> <a style={{color: '#87CEFA'}}> {up.addedBy} </a>recommended <a style={{color:'#FF7F50'}}> {up.name} </a> on {formatDate(up.date)}</p>
         })}
 
         {/*<a href='/updates'> View All >>> </a> */}
