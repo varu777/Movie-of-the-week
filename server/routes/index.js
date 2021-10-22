@@ -12,7 +12,7 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post('/SuggestMovie', isLoggedIn, function (req, res) {
-    var result = db.suggestMovie(req.body.movie, req.user._id, req.body.movieNote);
+    var result = db.suggestMovie(req.body.movie, req.user._id);
     result.then((val) => {
         res.jsonp({success: true, val: val.movie, movieIdx: val.movieIdx});
     }).catch((err) => {

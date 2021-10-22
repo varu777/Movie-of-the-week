@@ -45,7 +45,6 @@ class MovieContainer extends React.Component {
                 <p> Movie title: {this.props.movieTitle} </p>
                 <p> Suggested by: {this.props.addedBy} </p>
                 <p> Watched on: {this.props.dateWatched} </p>
-                <p> Teaser Note: {this.props.teaser} </p>
                 {/*
                 <p> Average Review: {this.props.avgReview} </p>
                 <p> Review Count: {this.props.reviewCount} </p>

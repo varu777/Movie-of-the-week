@@ -6,7 +6,6 @@ class UpdateMovie extends React.Component {
     state = {
         movieName: '',
         addedBy: '',
-        teaser: '',
         description: '',
         rating: '',
         runtime: '',
@@ -20,10 +19,6 @@ class UpdateMovie extends React.Component {
 
     updateAddedBy = (event) => {
         this.setState({addedBy: event.target.value});
-    }
-
-    updateTeaser = (event) => {
-        this.setState({teaser: event.target.value});
     }
 
     updateDescription = (event) => {
@@ -53,7 +48,6 @@ class UpdateMovie extends React.Component {
             data: {
                 movieName: this.state.movieName,
                 addedBy: this.state.addedBy,
-                teaser: this.state.teaser,
                 description: this.state.description,
                 rating: this.state.rating,
                 runtime: this.state.runtime,
@@ -82,10 +76,6 @@ class UpdateMovie extends React.Component {
             <h1> Added By </h1>
             <p> Enter username of person who added movie. Username is their firstname if they haven't changed it yet. </p>
             <input value={this.state.addedBy} onChange={this.updateAddedBy} /> 
-            <br/>
-
-            <h1> Teaser </h1>
-            <input value={this.state.teaser} onChange={this.updateTeaser} /> 
             <br/>
 
             <h1> Description </h1>

@@ -12,7 +12,6 @@ class Home extends React.Component {
     movieOTW: '',
     userOTW: '', 
     date: '',
-    noteOTW: '',
     description: '',
     posterLink: '',
     previousMovies: [],
@@ -45,7 +44,6 @@ class Home extends React.Component {
         isMovieSelected: isMovieSelected,
         movieOTW: movieOTWData.watchOTW,
         userOTW: user, 
-        noteOTW: movieOTWData.note, 
         genre: movieOTWData.genre,
         rating: movieOTWData.rating,
         posterLink: movieOTWData.posterLink,
@@ -112,8 +110,7 @@ class Home extends React.Component {
               <h4> {this.state.date} </h4>
               <p> Location: <a style={{textDecoration: 'underline'}} href={process.env.REACT_APP_ZOOM_LINK}>Zoom Link</a></p>
               <p className="addedBy"> Added by {this.state.userOTW} </p>
-              {this.state.noteOTW.length === 0 ? null : <p> Teaser: {this.state.noteOTW} </p>}
-              <img style={{height: '45%', width: '45%'}} onLoad={() => {this.setState({imgLoaded:true})}}src={this.state.posterLink}></img> 
+              <img style={{height: '45%', width: '45%'}} onLoad={() => {this.setState({imgLoaded:true})}}src={this.state.posterLink}></img>
               <div className="description-container">
                 <p style={{marginBottom: '-.5px'}}> Description: </p>
                 <p> {this.state.description} </p>
@@ -165,7 +162,7 @@ class Home extends React.Component {
         </select>
         {this.state.upcomingMovies.map((movie, i) => (
           <div>
-            <MovieContainer key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
+            <MovieContainer key={i} movieTitle={movie.name} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
           </div>
         ))}
         </div>
@@ -181,7 +178,7 @@ class Home extends React.Component {
           <option disabled={true} value={"u-rating"}>My Ratings</option>
         </select>
         {this.state.previousMovies.map((movie, i) => (
-          <MovieContainer key={i} movieTitle={movie.name} teaser={movie.teaser} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
+          <MovieContainer key={i} movieTitle={movie.name} addedBy={movie.addedBy} dateWatched={formatDate(movie.date)} />
         ))}
         </div>
         <br />

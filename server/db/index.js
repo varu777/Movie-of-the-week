@@ -12,7 +12,7 @@ const { database } = require('firebase-admin');
 var db = mongoUtil.getDb();
 
 
-async function suggestMovie(movie, userId, note) {
+async function suggestMovie(movie, userId) {
     const session = await db.startSession();
     const parsedMovie = parseString(movie);
     const formattedMovie = formatString(movie);
@@ -51,7 +51,6 @@ async function suggestMovie(movie, userId, note) {
         addedBy: userId, 
         date: new Date(),
         watched: false,
-        note: note
     });
 
     // complete all updates
@@ -179,8 +178,7 @@ async function getMovies(filterBy, isWatched, user=new ObjectId()){
         // format data
         movies.push({
             name: movie.name, 
-            teaser: movie.note, 
-            addedBy: user, 
+            addedBy: user,
             date: movie.date,
             idx: movie.idx
         });
@@ -268,7 +266,6 @@ async function chooseMovie() {
     // update stats to reflect new movie OTW
     stats.watchOTW = selectedMovie.name;
     stats.addedBy = selectedMovie.addedBy;
-    stats.note = selectedMovie.note;
 
     await stats.save();
 
@@ -376,7 +373,7 @@ async function updateUsername(user, newUsername) {
     await user.save();
 }
 
-async function updateMovie(name, addedBy, teaser, description, rating, runtime, genre, posterLink) {
+async function updateMovie(name, addedBy, description, rating, runtime, genre, posterLink) {
     // movie of the week query
     var movieOTW = await StatsModel.findOne({});
     
@@ -386,7 +383,6 @@ async function updateMovie(name, addedBy, teaser, description, rating, runtime, 
     movieOTW.posterLink  = posterLink;
     movieOTW.watchOTW    = name;
     movieOTW.addedBy     = addedBy;
-    movieOTW.note        = teaser;
     movieOTW.description = description;
     movieOTW.rating      = rating;
 

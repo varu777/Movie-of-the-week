@@ -6,7 +6,6 @@ import '../css/SuggestionForm.css';
 class SuggestionForm extends React.Component {
     state = {
         movieSuggestion: '', 
-        movieNote: '',
     };
 
     submitSuggestion = () => {
@@ -21,13 +20,12 @@ class SuggestionForm extends React.Component {
             url: process.env.REACT_APP_SUGGEST_MOVIE_URL,
             data: {
                 movie: movie.trim(), 
-                movieNote: this.state.movieNote
             },
             withCredentials: true
         })
         .then((response) => {
         if (response.data.success) {
-            this.setState({movieSuggestion:'', movieNote:''});
+            this.setState({ movieSuggestion:'' });
             window.alert("Successfully added " + response.data.val + ".\n" + "Movie ID: " + response.data.movieIdx);
         } else {
             // error occured
@@ -45,10 +43,6 @@ class SuggestionForm extends React.Component {
 
     updateUser = (event) => {
         this.setState({user: event.target.value});
-    }
-
-    updateNote = (event) => {
-        this.setState({movieNote: event.target.value});
     }
 
     showReviewForm = () => {

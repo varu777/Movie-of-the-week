@@ -4,7 +4,7 @@ var db = require('../db/index');
 
 router.post('/updateMovie', async function (req, res) {
     try {
-        await db.updateMovie(req.body.movieName, req.body.addedBy, req.body.teaser, req.body.description,
+        await db.updateMovie(req.body.movieName, req.body.addedBy, req.body.description,
             req.body.rating, req.body.runtime, req.body.genre, req.body.posterLink);
         res.jsonp({success: true});
     } catch (error) {
