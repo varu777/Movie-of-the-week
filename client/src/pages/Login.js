@@ -12,20 +12,21 @@ class Login extends React.Component {
 
     loginUser = (e) => {
         e.preventDefault();
+
         // both fields empty check
-        if (this.state.user.length == 0 && this.state.password.length == 0) {
+        if (this.state.user.length === 0 && this.state.password.length === 0) {
             window.alert("Both fields cannot be empty.");
             return;
         }
 
         // empty username check
-        if (this.state.user.length == 0) {
+        if (this.state.user.length === 0) {
             window.alert("Email/Username field cannot be empty.");
             return; 
         }
 
         // empty password check
-        if (this.state.password.length == 0) {
+        if (this.state.password.length === 0) {
             window.alert("Password field cannot be empty.");
             return;
         }
@@ -46,7 +47,6 @@ class Login extends React.Component {
                 return;
               }
 
-              localStorage.setItem('loggedIn', true); 
               let updateAuth = this.context;
               updateAuth().then(() => {
                 this.props.history.push('/');
@@ -59,11 +59,11 @@ class Login extends React.Component {
     }
 
     updateUser = (event) => {
-        this.setState({user: event.target.value});
+        this.setState({ user: event.target.value });
     }
 
     updatePass = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({ password: event.target.value });
     }
 
 
@@ -72,16 +72,23 @@ class Login extends React.Component {
         return (
             <>
                 <div className="login-container">
-                    <h1 className="title"> Login </h1>
-                    <form onSubmit={this.loginUser}>
-                        <input placeholder="Username or Email" onChange={this.updateUser} />
+                    <h1 className="title">
+                        Login
+                    </h1>
+                    <form onSubmit={ this.loginUser }>
+                        <input placeholder="Username or Email" onChange={ this.updateUser } />
                         <br/>
 
-                        <input type="password" placeholder="Password" onChange={this.updatePass} />
+                        <input type="password" placeholder="Password" onChange={ this.updatePass } />
+
                         <br/>
                         <br/>
-                        <button type="submit"> Login </button>            
+
+                        <button type="submit">
+                            Login
+                        </button>
                     </form>
+
                     <br/>
 
                 </div>
@@ -92,5 +99,4 @@ class Login extends React.Component {
 }
 
 Login.contextType = UpdateAuthContext;
-
 export default withRouter(Login);

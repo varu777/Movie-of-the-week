@@ -11,23 +11,23 @@ class Profile extends React.Component {
    }
 
    updateEmail = (event) => {
-      this.setState({email: event.target.value});
+      this.setState({ email: event.target.value });
    }
 
    updateUsername = (event) => {
-      this.setState({username: event.target.value});
+      this.setState({ username: event.target.value });
    }
 
    updateCurrentPassword = (event) => {
-      this.setState({currentPassword: event.target.value});
+      this.setState({ currentPassword: event.target.value });
    }
 
    updateNewPassword = (event) => {
-      this.setState({newPassword: event.target.value});
+      this.setState({ newPassword: event.target.value });
    }
 
    updateConfirmNewPassword = (event) => {
-      this.setState({confirmNewPassword: event.target.value});
+      this.setState({ confirmNewPassword: event.target.value });
    }
 
    submitEmailUpdate = () => {
@@ -48,10 +48,10 @@ class Profile extends React.Component {
              email: this.state.email
          },
          withCredentials: true
-       }).then((response) => {
+      }).then((response) => {
           if (response.data.success) {
             window.alert('Email has successfully updated.');
-            this.setState({email:''});
+            this.setState({ email: '' });
           } else {
             window.alert("Email did not update: " + response.data.val);
           }
@@ -76,7 +76,7 @@ class Profile extends React.Component {
        }).then((response) => {
           if (response.data.success) {
             window.alert('Username has successfully updated.');
-            this.setState({username:''});
+            this.setState({ username:'' });
           } else {
             window.alert("Username did not update, please try again.");
           }
@@ -110,12 +110,10 @@ class Profile extends React.Component {
              currPassword: this.state.currentPassword
          },
          withCredentials: true
-       }).then((response) => {
+      }).then((response) => {
           if (response.data.success) {
             window.alert('Password has successfully updated.');
-            this.setState({currentPassword:''});
-            this.setState({newPassword:''});
-            this.setState({confirmNewPassword:''});
+            this.setState({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
           } else {
             window.alert("Password did not update: " + response.data.val);
           }
@@ -127,25 +125,51 @@ class Profile extends React.Component {
    render() {
      return (
         <>
-        <h1> Update Email </h1>
-        <input value={this.state.email} onChange={this.updateEmail} /> 
-        <br/>
-        <button onClick={this.submitEmailUpdate}>Update Email </button>
-        <h1> Update Username </h1>
-        <input value={this.state.username} onChange={this.updateUsername} /> 
-        <br/>
-        <button onClick={this.submitUsernameUpdate}>Update Username</button>
-        <h1> Update Password </h1>
-        <label> Current password </label>
-        <input value={this.state.currentPassword} type="password" onChange={this.updateCurrentPassword} /> 
-        <br/>
-        <label> New Password </label> 
-        <input value={this.state.newPassword} type="password" onChange={this.updateNewPassword} /> 
-        <br/>
-        <label> Confirm New Password </label> 
-        <input value={this.state.confirmNewPassword} type="password" onChange={this.updateConfirmNewPassword} /> 
-        <br/>
-        <button onClick={this.submitPasswordUpdate}>Update Password </button>
+            <h1>
+                Update Email
+            </h1>
+            <input value={ this.state.email } onChange={ this.updateEmail } />
+
+            <br/>
+
+            <button onClick={ this.submitEmailUpdate }>
+                Update Email
+            </button>
+            <h1>
+                Update Username
+            </h1>
+            <input value={ this.state.username } onChange={ this.updateUsername } />
+
+            <br/>
+
+            <button onClick={ this.submitUsernameUpdate }>
+                Update Username
+            </button>
+            <h1>
+                Update Password
+            </h1>
+            <label>
+                Current password
+            </label>
+            <input value={ this.state.currentPassword } type="password" onChange={ this.updateCurrentPassword } />
+
+            <br/>
+
+            <label>
+                New Password
+            </label>
+            <input value={ this.state.newPassword } type="password" onChange={ this.updateNewPassword } />
+
+            <br/>
+
+            <label>
+                Confirm New Password
+            </label>
+            <input value={ this.state.confirmNewPassword } type="password" onChange={ this.updateConfirmNewPassword } />
+            <br/>
+            <button onClick={ this.submitPasswordUpdate }>
+                Update Password
+            </button>
         </>
      );
    } 

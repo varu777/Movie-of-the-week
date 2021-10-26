@@ -13,20 +13,18 @@ class Suggestions extends React.Component {
    }
 
    componentDidMount() {
-    axios({
-        method: 'get', 
-        url: process.env.REACT_APP_LOAD_SUGGESTIONS_URL,
-        withCredentials: true
-      })
-  
+       axios({
+           method: 'get',
+           url: process.env.REACT_APP_LOAD_SUGGESTIONS_URL,
+           withCredentials: true
+       })
       .then((response) => {
-        // user not signed in
-        this.setState({enteredPool: response.data.enteredPool, userMovies: response.data.userMovies, otherMovies: response.data.otherMovies, currentChoice: response.data.currentChoice, isLoading: false});
-  
+          // user not signed in
+          this.setState({ enteredPool: response.data.enteredPool, userMovies: response.data.userMovies, otherMovies: response.data.otherMovies, currentChoice: response.data.currentChoice, isLoading: false });
       })
       .catch((error) => {
-        window.alert("Unable to suggestions: " + error);
-      })     
+          window.alert("Unable to suggestions: " + error);
+      })
    } 
 
    removeSuggestion = (movieName) => {
@@ -40,27 +38,27 @@ class Suggestions extends React.Component {
           },
           withCredentials: true
         })
-    
         .then((response) => {
-          if (response.data.success) {
-            this.setState({userMovies: this.state.userMovies.filter((movie) => { return movie.name !== movieName})});
-            window.alert("Successfully removed " + movieName + ".");
-          } else {
-            window.alert(response.data.val);
-          }
+            if (response.data.success) {
+                this.setState({ userMovies: this.state.userMovies.filter((movie) => { return movie.name !== movieName}) });
+                window.alert("Successfully removed " + movieName + ".");
+            } else {
+                window.alert(response.data.val);
+            }
         })
         .catch((error) => {
-          window.alert("Unable to suggestions: " + error);
+            window.alert("Unable to suggestions: " + error);
         })     
      }
    }
 
    setAsNextChoice = (movie) => {
-     if (movie.name === this.state.currentChoice.name && this.state.enteredPool) window.alert("Movie already set as current choice.");
+     if (movie.name === this.state.currentChoice.name && this.state.enteredPool)
+         window.alert("Movie already set as current choice.");
      else if (window.confirm("Update current suggestion to " + movie.name + "?")) {
-        this.setState({enteredPool: true});
-        if (movie.name == this.state.currentChoice) {
-          window.alert('hit');
+        this.setState({ enteredPool: true });
+        if (movie.name === this.state.currentChoice) {
+          window.alert("hit");
           return;
         }
 
@@ -74,10 +72,9 @@ class Suggestions extends React.Component {
           },
           withCredentials: true
         })
-
         .then((response) => {
           if (response.data.success) {
-            this.setState({currentChoice: movie});
+            this.setState({ currentChoice: movie });
           } else {
             window.alert(response.data.val);
           }
@@ -89,96 +86,124 @@ class Suggestions extends React.Component {
    }
    
    enterPool = () => {
-    // enter user in pool
-    axios({
-      method: 'post', 
-      url: process.env.REACT_APP_ENTER_POOL_URL,
-      withCredentials: true
-    })
-
-    .then((response) => {
-      if (response.data.success) {
-        this.setState({enteredPool: true});
-      } else {
-        window.alert(response.data.val);
-      }
-    })
-    .catch((error) => {
-      window.alert("Unable to suggestions: " + error);
-    })   
+       // enter user in pool
+       axios({
+          method: 'post',
+          url: process.env.REACT_APP_ENTER_POOL_URL,
+          withCredentials: true
+       })
+       .then((response) => {
+          if (response.data.success) {
+            this.setState({enteredPool: true});
+          } else {
+            window.alert(response.data.val);
+          }
+        })
+        .catch((error) => {
+          window.alert("Unable to suggestions: " + error);
+        })
   }
 
    leavePool = () => {
-     if (window.confirm("Leave current pool?")) {
-      // enter user in pool
-      axios({
-        method: 'post', 
-        url: process.env.REACT_APP_LEAVE_POOL_URL,
-        withCredentials: true
-      })
-
-      .then((response) => {
-        if (response.data.success) {
-          this.setState({enteredPool: false});
-        } else {
-          window.alert(response.data.val);
-        }
-      })
-      .catch((error) => {
-        window.alert("Unable to suggestions: " + error);
-      })   
-     }
+       if (window.confirm("Leave current pool?")) {
+          // enter user in pool
+          axios({
+            method: 'post',
+            url: process.env.REACT_APP_LEAVE_POOL_URL,
+            withCredentials: true
+          })
+          .then((response) => {
+              if (response.data.success) {
+                  this.setState({enteredPool: false});
+              } else {
+                  window.alert(response.data.val);
+              }
+          })
+          .catch((error) => {
+              window.alert("Unable to suggestions: " + error);
+          })
+       }
    }
 
    render() {
-     if (this.state.isLoading) {
-       return <></>
-     }
+       if (this.state.isLoading) return <></>
 
-    return (
-        <>  
-        <h1 className="suggestion-title"> Current Choice </h1>
-        {this.state.enteredPool == false ? 
-          <div style={{textAlign: 'center'}}>
-            <p> Suggest a movie below to join the pool! </p>
-            <button style={{align: 'center'}} onClick={this.enterPool}> Choose Randomly </button> 
-          </div>
-          :
-          <>
-          <div style={{textAlign: 'center'}}>
-            <p> Override this choice by suggesting a different movie. </p>
-          </div>
-          <div className="suggestion-container"> 
-            <p> {this.state.currentChoice.name}</p>
-            <p> Date added {formatDate(this.state.currentChoice.date)} </p>
-            <p> Added by {this.state.currentChoice.addedBy} </p>
-            <button onClick={() => {this.removeSuggestion(this.state.currentChoice.name)}}> Delete </button>
-            <button onClick={this.leavePool}> Leave Pool </button>
-          </div>
-          </>
-        }
+       return (
+           <>
+               <h1 className="suggestion-title">
+                   Current Choice
+               </h1>
+               { this.state.enteredPool === false ?
+                    <div style={{ textAlign: 'center' }}>
+                        <p>
+                            Suggest a movie below to join the pool!
+                        </p>
+                        <button style={{ align: 'center' }} onClick={ this.enterPool }>
+                            Choose Randomly
+                        </button>
+                    </div>
+                   :
+                   <>
+                       <div style={{ textAlign: 'center' }}>
+                           <p>
+                               Override this choice by suggesting a different movie.
+                           </p>
+                       </div>
+                      <div className="suggestion-container">
+                          <p>
+                              {this.state.currentChoice.name}
+                          </p>
+                          <p>
+                              Date added { formatDate(this.state.currentChoice.date) }
+                          </p>
+                          <p>
+                              Added by { this.state.currentChoice.addedBy }
+                          </p>
+                          <button onClick={() => { this.removeSuggestion(this.state.currentChoice.name) }}>
+                              Delete
+                          </button>
+                          <button onClick={ this.leavePool }>
+                              Leave Pool
+                          </button>
+                      </div>
+                   </>
+               }
 
-        <h1 className="suggestion-title"> My Unwatched Suggestions </h1>
-        {this.state.userMovies.map((movie, i) => (
-            <div key={i} className="suggestion-container">
-                <p> {movie.name} </p>
-                <p> Added on {formatDate(movie.date)} </p>
-                <button onClick={() => {this.removeSuggestion(movie.name)}}> Delete </button>
-                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
-            </div>
-        ))}
+               <h1 className="suggestion-title">
+                   My Unwatched Suggestions
+               </h1>
+               { this.state.userMovies.map((movie, i) => (
+                   <div key={i} className="suggestion-container">
+                       <p>
+                           {movie.name}
+                       </p>
+                       <p>
+                           Added on { formatDate(movie.date) }
+                       </p>
+                       <button onClick={() => { this.removeSuggestion(movie.name) }}>
+                           Delete
+                       </button>
+                       <button onClick={() => { this.setAsNextChoice(movie) }}>
+                           Suggest
+                       </button>
+                   </div>
+                ))
+               }
 
-        <h1 className="suggestion-title"> What Everyone Else Wants to Watch </h1>
-        {this.state.otherMovies.map((movie, i) => (
-            <div key={i} className="suggestion-container">
-                <p> {movie.name} </p>
-                <p> Date added {formatDate(movie.date)} </p>
-                <p> Added by {movie.addedBy} </p>
-                <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
-            </div>
-        ))}
-        </>
-    );
+               <h1 className="suggestion-title">
+                   What Everyone Else Wants to Watch
+               </h1>
+               { this.state.otherMovies.map((movie, i) => (
+                   <div key={i} className="suggestion-container">
+                       <p> {movie.name} </p>
+                       <p> Date added {formatDate(movie.date)} </p>
+                       <p> Added by {movie.addedBy} </p>
+                       <button onClick={() => {this.setAsNextChoice(movie)}}> Suggest </button>
+                   </div>
+                 ))
+               }
+           </>
+       );
    }
 }
 

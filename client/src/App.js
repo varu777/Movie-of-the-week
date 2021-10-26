@@ -20,17 +20,15 @@ function App() {
     return (
         <>
             <Router>
-                <CustomNavbar user={loginStatus} />
-                <PrivateRoute exact path="/" render={() => <Home />} />
-                <PrivateRoute exact path="/suggestions" render={() => <Suggestions />} />
-                <PrivateRoute exact path="/profile" render={() => <Profile />} />
-                <PrivateRoute exact path="/watchedMovie" render={() => <WatchedMovie />} />
-                <Route exact path="/login">
-                    <Login />
-                </Route>
+                <CustomNavbar user={ loginStatus } />
+                <PrivateRoute exact path="/" render={() => <Home /> } />
+                <PrivateRoute exact path="/suggestions" render={() => <Suggestions /> } />
+                <PrivateRoute exact path="/profile" render={() => <Profile /> } />
+                <PrivateRoute exact path="/watchedMovie" render={() => <WatchedMovie /> } />
+                <Route exact path="/login" render={() => <Login /> } />
             </Router>
         </>
     );
-};
+}
 
 export default App;

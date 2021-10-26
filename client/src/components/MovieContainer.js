@@ -11,25 +11,24 @@ class MovieContainer extends React.Component {
     }
 
     displayReviewForm = () => {
-        this.setState({displayReviewForm: true});
+        this.setState({ displayReviewForm: true });
     }
 
     cancelReview = () => {
-        this.setState({displayReviewForm: false})
+        this.setState({ displayReviewForm: false })
     }
 
     updateReviewScore = (event) => {
-        this.setState({reviewScore: event.target.value});
+        this.setState({ reviewScore: event.target.value });
     }
 
     updateUser = (event) => {
-        this.setState({user: event.target.value});
+        this.setState({ user: event.target.value });
     }
     
     submitReview = () => {
         try {
-            var val = parseFloat(this.state.reviewScore);
-            window.alert(val);
+            window.alert(parseFloat(this.state.reviewScore));
         } catch {
             window.alert("Error");
             return;

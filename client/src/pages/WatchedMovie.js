@@ -1,5 +1,4 @@
 import React from 'react';
-import CustomNavbar from '../components/CustomNavbar';
 import axios from 'axios';
 
 class WatchedMovie extends React.Component {
@@ -17,15 +16,15 @@ class WatchedMovie extends React.Component {
             withCredentials: true
         }).then((response) => {
             if (response.data.success) 
-                this.setState({movies: response.data.movies});
+                this.setState({ movies: response.data.movies });
 
-        }).catch((error) => {window.alert(error)});
+        }).catch((error) => { window.alert(error) });
 
-        this.setState({loading: false});
+        this.setState({ loading: false });
     }
 
     handleChange = (event) => {
-        this.setState({selectedMovie: event.target.value});
+        this.setState({ selectedMovie: event.target.value });
     }
 
     submitWatched = () => {
@@ -45,36 +44,35 @@ class WatchedMovie extends React.Component {
         }).then((response) => {
             if (response.data.success) {
                 window.alert("Added " + this.state.selectedMovie + " to watched list.");
-                this.setState({movies: this.state.movies.filter(movie => movie.name.trim() !== this.state.selectedMovie)});
-                this.setState({selectedMovie: 'Choose Movie'});
+                this.setState({ movies: this.state.movies.filter(movie => movie.name.trim() !== this.state.selectedMovie) });
+                this.setState({ selectedMovie: 'Choose Movie' });
             } else {
                 window.alert(response.data.val);
             }
 
-        }).catch((error) => {window.alert(error)});
-
+        }).catch((error) => { window.alert(error) });
     }
 
     render() {
-        if (this.state.loading) {
-            return <></>;
-        }
+        if (this.state.loading) return <></>;
 
         return (
             <>
-            <h1> Movie Name </h1>
-            <select value={this.state.selectedMovie} onChange={this.handleChange}> 
-                <option selected disabled> Choose Movie </option>
-                {this.state.movies.map((movie) => (
-                    <option> {movie.name} </option>
-                ))}
-            </select>
-            <button onClick={this.submitWatched}> Submit </button>
+                <h1> Movie Name </h1>
+                <select value={ this.state.selectedMovie } onChange={ this.handleChange }>
+                    <option selected disabled>
+                        Choose Movie
+                    </option>
+                    { this.state.movies.map((movie) => (
+                        <option> {movie.name} </option>
+                    ))}
+                </select>
+                <button onClick={ this.submitWatched }>
+                    Submit
+                </button>
 
-            <br/>
+                <br/>
 
- 
-           
             </>
         );
     }
