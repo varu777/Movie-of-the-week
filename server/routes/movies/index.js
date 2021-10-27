@@ -3,66 +3,62 @@ var router = express.Router();
 var isLoggedIn = require('../../utils/serverUtils');
 var db = require('../../db/index');
 
-router.post('/suggestMovie', isLoggedIn, function (req, res) {
-    var result = db.suggestMovie(req.body.movie, req.user._id);
-    result.then((val) => {
-        res.jsonp({success: true, val: val.movie, movieIdx: val.movieIdx});
-    }).catch((err) => {
-        res.jsonp({success: false, val: err.toString()});
-    });
+router.post('/suggestMovie', isLoggedIn, async function (req, res) {
+    try {
+        let data = await db.suggestMovie(req.body.movie, req.user._id);
+        res.jsonp({ success: true, val: data.movie, movieIdx: data.movieIdx });
+    } catch (error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
 });
 
-router.get('/watchedMovie', isLoggedIn, function (req, res) {
-    db.watchedMovie()
-        .then(() => {
-            res.jsonp({success: true, val: "Movie of the Week has been cleared."});
-        })
-        .catch((error) => {
-            console.log(error);
-            res.jsonp({success: false, val: error.toString()});
-        })
+router.get('/watchedMovie', isLoggedIn, async function (req, res) {
+    try {
+        await db.watchedMovie();
+        res.jsonp({success: true, val: "Movie of the Week has been cleared."});
+    } catch (error) {
+        console.log(error);
+        res.jsonp({success: false, val: error.toString()});
+    }
 });
 
-router.get('/chooseMovie', isLoggedIn, function (req, res) {
-    db.chooseMovie()
-        .then((movie) => {
-            res.jsonp({success: true, val: movie + " has been chosen."});
-        })
-        .catch((error) => {
-            console.log(error);
-            res.jsonp({success:false, val: error.toString()});
-        });
+router.get('/chooseMovie', isLoggedIn, async function (req, res) {
+    try {
+        let movie = await db.chooseMovie();
+        res.jsonp({ success: true, vaL: movie + "has been chosen."});
+    } catch (error) {
+        console.log(error);
+        res.jsonp({success:false, val: error.toString()});
+    }
 });
 
-router.get('/homeData', isLoggedIn, function (req, res) {
-    db.getHomeData()
-        .then((data) => {
-            res.jsonp({success: true, movieOTW: data.movieOTW, user: data.currUser, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies, currentPool: data.currentPool, recentUpdates: data.recentUpdates});
-        })
-        .catch((error) => {
-            console.log(error.toString());
-            res.jsonp({success: false, val: error.toString()});
-        });
+router.get('/homeData', isLoggedIn, async function (req, res) {
+    try {
+        let data = await db.getHomeData();
+        res.jsonp({ success: true, movieOTW: data.movieOTW, user: data.currUser, watchedMovies: data.watchedMovies, upcomingMovies: data.upcomingMovies,
+            currentPool: data.currentPool, recentUpdates: data.recentUpdates  });
+    } catch (error) {
+        console.log(error.toString());
+        res.jsonp({success: false, val: error.toString()});
+    }
 });
 
-router.post('/sortMovies', isLoggedIn, function (req, res) {
-    db.getMovies(req.body.sortBy, req.body.movieType === "watched" ? true : false)
-        .then((movies) => {
-            res.jsonp({movies});
-        })
-        .catch((error) => {
-            res.jsonp({success: false, val: error.toString()});
-        });
+router.post('/sortMovies', isLoggedIn, async function (req, res) {
+    try {
+        let movies = await db.getMovies(req.body.sortBy, req.body.movieType === "watched" ? true : false);
+        res.jsonp({ movies });
+    } catch (error) {
+        res.jsonp({ success: false, val: error.toString() });
+    }
 });
 
-router.get('/loadSuggestions', isLoggedIn, function (req, res) {
-    db.getSuggestions(req.user)
-        .then(({userMovies, otherMovies, currentChoice}) => {
-            res.jsonp({enteredPool: req.user.participating, userMovies: userMovies, otherMovies: otherMovies, currentChoice: currentChoice});
-        })
-        .catch((error) => {
-            res.jsonp({success: false, val: error.toString()});
-        })
+router.get('/loadSuggestions', isLoggedIn, async function (req, res) {
+    try {
+        let data = await db.getSuggestions(req.user);
+        res.jsonp({ enteredPool: req.user.participating, userMovies: data.userMovies, otherMovies: data.otherMovies, currentChoice: data.currentChoice });
+    } catch (error) {
+        res.jsonp({success: false, val: error.toString()});
+    }
 });
 
 router.post('/updateMovie', isLoggedIn, async function (req, res) {
