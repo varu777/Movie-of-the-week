@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var isLoggedIn = require('../../utils/serverUtils');
-var db = require('../../db');
+const express = require('express');
+const router = express.Router();
+const { isLoggedIn } = require('../../utils/serverUtils');
+const db = require('../../db');
 
 router.post('/updateEmail', isLoggedIn, async function (req, res) {
     try {

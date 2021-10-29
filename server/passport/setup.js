@@ -18,7 +18,7 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new localStrategy(
   async function(username, password, done){
-    var user = await UserModel.findOne({$or: [{email: username}, {username: username}] });
+    let user = await UserModel.findOne({$or: [{email: username}, {username: username}] });
 
     // user not found check
     if (user == null) {
@@ -26,14 +26,12 @@ passport.use(new localStrategy(
     }
 
     // check if passwords match
-    var result = await bcrypt.compare(password, user.password);
-
+    let result = await bcrypt.compare(password, user.password);
     if (!result) {
         return done(null, false, { message: 'Incorrect password.' });
     }
         
     return done(null, user);
-}
-));
+}));
 
 module.exports = passport;

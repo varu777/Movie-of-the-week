@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var isLoggedIn = require('../../utils/serverUtils');
-var db = require('../../db/index');
+const express = require('express');
+const router = express.Router();
+const { isLoggedIn } = require('../../utils/serverUtils');
+const db = require('../../db/index');
 
 router.post('/suggestMovie', isLoggedIn, async function (req, res) {
     try {
@@ -45,7 +45,7 @@ router.get('/homeData', isLoggedIn, async function (req, res) {
 
 router.post('/sortMovies', isLoggedIn, async function (req, res) {
     try {
-        let movies = await db.getMovies(req.body.sortBy, req.body.movieType === "watched" ? true : false);
+        let movies = await db.getMovies(req.body.sortBy, req.body.movieType === "watched");
         res.jsonp({ movies });
     } catch (error) {
         res.jsonp({ success: false, val: error.toString() });

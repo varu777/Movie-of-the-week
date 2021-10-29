@@ -2,14 +2,11 @@ require('dotenv').config()
 const MovieModel = require('./models/Movie');
 const UserModel = require('./models/User');
 const StatsModel = require('./models/Stats');
-const UpdatesModel = require('./models/Update');
-
-var bcrypt = require('bcrypt');
-var ObjectId = require('mongoose').Types.ObjectId;
-var mongoUtil = require("../utils/mongoUtil");
-const { watch } = require('./models/Movie');
-const { database } = require('firebase-admin');
-var db = mongoUtil.getDb();
+const { parseString, formatString } = require('../utils/serverUtils');
+const bcrypt = require('bcrypt');
+const ObjectId = require('mongoose').Types.ObjectId;
+const mongoUtil = require("../utils/mongoUtil");
+const db = mongoUtil.getDb();
 
 
 async function suggestMovie(movie, userId) {
@@ -28,13 +25,13 @@ async function suggestMovie(movie, userId) {
     // retrieve stats
     let statsResult = await StatsModel.findOne({});
     if (statsResult == null) {
-        console.log("unable to retrive stats.");
+        console.log("unable to retrieve stats.");
         throw new Error("Internal server error.");
     }
 
     // update stats 
     statsResult.totalMovies = statsResult.totalMovies + 1;
-    statsResult.totalParticipants = userResult.participating == false ? statsResult.totalParticipants + 1 : statsResult.totalParticipants;
+    statsResult.totalParticipants = userResult.participating === false ? statsResult.totalParticipants + 1 : statsResult.totalParticipants;
 
     // update the user's total movie count and unwatched movie count
     userResult.total_movies = userResult.total_movies + 1;
@@ -71,8 +68,8 @@ async function getHomeData() {
 
     // current pool query
     const unselectedUsers = await UserModel.find({participating: true, selected: false}).sort('suggestion');
-    var currentPool = [];
-    for (user of unselectedUsers) {
+    let currentPool = [];
+    for (let user of unselectedUsers) {
         currentPool.push({
             name: user.username, 
             suggestion: user.suggestion
@@ -105,7 +102,7 @@ async function getUpdates(all) {
         let currentUpdate = updatesQuery[i];
 
         // find user that added movie
-        user = await UserModel.findOne({_id: currentUpdate.addedBy});
+        let user = await UserModel.findOne({_id: currentUpdate.addedBy});
 
         updates.push({
             name: currentUpdate.name,
@@ -120,7 +117,7 @@ async function getUpdates(all) {
 
 // returns list showing recent movie updates. Gets updates using merge sort approach
 function mergeUpdates(unwatched, watched, all) {
-    if (unwatched.length == 0 && watched.length == 0) {
+    if (unwatched.length === 0 && watched.length === 0) {
         return [];
     }
 
@@ -140,8 +137,8 @@ function mergeUpdates(unwatched, watched, all) {
     }
 
     // add remaining movies of unfinished array to updates list
-    let remainder = (wIdx == watched.length) ? unwatched : watched;
-    let rIdx      = (wIdx == watched.length) ? uwIdx : wIdx;
+    let remainder = (wIdx === watched.length) ? unwatched : watched;
+    let rIdx = (wIdx === watched.length) ? uwIdx : wIdx;
     while (accountedFor < limit && rIdx < remainder.length) {
         updates.push(remainder[rIdx++]);
         accountedFor++;
@@ -153,10 +150,10 @@ function mergeUpdates(unwatched, watched, all) {
 
 async function getMovies(filterBy, isWatched, user=new ObjectId()){
     // contains final list of movies
-    var movies = []
+    let movies = []
 
     // determine filter type
-    var moviesQuery = [];
+    let moviesQuery;
     if (filterBy === 'recent') {
         moviesQuery = await MovieModel.find({watched: isWatched}).sort({date: -1});
     } else if (filterBy === 'oldest') {
@@ -170,7 +167,7 @@ async function getMovies(filterBy, isWatched, user=new ObjectId()){
     }
 
     // format date properly
-    for (movie of moviesQuery) {
+    for (let movie of moviesQuery) {
         // find user that added movie
         user = await UserModel.findOne({_id: movie.addedBy});
         user = user.username;
@@ -208,7 +205,7 @@ async function resetUsers() {
     const participants = await MovieModel.find({unwatched_movies: { $gt: 0}});
     
     // update selected status of each one to false
-    for (user of participants) {
+    for (let user of participants) {
         user.selected = false;
     }
 
@@ -231,24 +228,24 @@ async function chooseMovie() {
     const stats = await StatsModel.findOne({});
     
     // all movies watched error check
-    if (stats.watchedMovies == stats.totalMovies) throw new Error("Every movie added has been watched.");
+    if (stats.watchedMovies === stats.totalMovies) throw new Error("Every movie added has been watched.");
 
     // zero participants error check
-    if (stats.totalParticipants == 0) throw new Error("Nobody is participating in the current pool.");
+    if (stats.totalParticipants === 0) throw new Error("Nobody is participating in the current pool.");
 
     // check if current pool needs to be reset
-    if (stats.selectedParticipants == stats.totalParticipants) 
+    if (stats.selectedParticipants === stats.totalParticipants)
         await resetUsers();
 
     // randomly choose user that hasn't been selected yet in the current pool
     const candidates = await UserModel.find({selected: false, unwatched_movies: {$gt: 0}});
 
-    if (candidates.length == 0) {
+    if (candidates.length === 0) {
         console.log("No candidates were found.");
-        throw new Error("Internal Server error occured.");
+        throw new Error("Internal Server error occurred.");
     }
 
-    const selectedUser = candidates[Math.floor(Math.random() * (candidates.length - 0) + 0)];
+    const selectedUser = candidates[Math.floor(Math.random() * (candidates.length - 0))];
 
     // retrieve all unwatched movies added by selected user
     const userMovies = await MovieModel.find({watched: false, addedBy: selectedUser.username});
@@ -256,7 +253,7 @@ async function chooseMovie() {
     // pick the movie with the lowest idx
     let selectedMovie = null;
     let minIdx = Number.MAX_SAFE_INTEGER;
-    for (movie of userMovies) {
+    for (let movie of userMovies) {
         if (movie.idx < minIdx) {
             selectedMovie = movie;
             minIdx = movie.idx;
@@ -274,14 +271,14 @@ async function chooseMovie() {
 
 async function getSuggestions(user) {
     // unwatched movies from user
-    var userMovies  = await getMovies('with', false, user);
+    let userMovies  = await getMovies('with', false, user);
 
     // unwatched movies from everyone else
-    var otherMovies = await getMovies('without', false, user);
+    let otherMovies = await getMovies('without', false, user);
 
     //user's current choice
-    var currentChoice = null;
-    for (movie of userMovies) {
+    let currentChoice = null;
+    for (let movie of userMovies) {
         if (currentChoice == null || movie.idx < currentChoice.idx)
             currentChoice = movie;
     }
@@ -298,8 +295,8 @@ async function updateSuggestion(prevSuggestion, newSuggestion) {
     const session = await db.startSession();
 
     // retrieving movie data
-    var prevMovie = await MovieModel.findOne({name: prevSuggestion});
-    var newMovie  = await MovieModel.findOne({name: newSuggestion});
+    let prevMovie = await MovieModel.findOne({name: prevSuggestion});
+    let newMovie  = await MovieModel.findOne({name: newSuggestion});
 
     if (prevMovie == null || newMovie == null) {
         throw new Error("One of the movie searches came back null");
@@ -317,7 +314,6 @@ async function updateSuggestion(prevSuggestion, newSuggestion) {
 }
 
 async function updateFormat() {
-    console.log("dd");
     let movies = MovieModel.find({});
     for (let i = 0; i < movies.length; i++) {
         let current = movies[i];
@@ -332,9 +328,7 @@ async function updateFormat() {
         }
 
         await current.save();
-        console.log("updated this");
     }
-    console.log("done");
 }
 
 async function removeSuggestion(movie) {
@@ -351,16 +345,13 @@ async function updateEmail(user, newEmail) {
 
 async function updatePassword(user, oldPassword, newPassword) {
     // check if passwords match
-    var result = await bcrypt.compare(oldPassword, user.password);
+    let result = await bcrypt.compare(oldPassword, user.password);
 
     if (!result) 
         throw new Error("Incorrect password entered.")
-    
 
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(newPassword, salt);
-
-    user.password = hash;
+    user.password = await bcrypt.hash(newPassword, salt);
 
     // save change
     await user.save();
@@ -375,72 +366,22 @@ async function updateUsername(user, newUsername) {
 
 async function updateMovie(name, addedBy, description, rating, runtime, genre, posterLink) {
     // movie of the week query
-    var movieOTW = await StatsModel.findOne({});
+    let movieOTW = await StatsModel.findOne({});
     
     // update stats 
-    movieOTW.runtime     = runtime;
-    movieOTW.genre       = genre;
-    movieOTW.posterLink  = posterLink;
-    movieOTW.watchOTW    = name;
-    movieOTW.addedBy     = addedBy;
+    movieOTW.runtime = runtime;
+    movieOTW.genre = genre;
+    movieOTW.posterLink = posterLink;
+    movieOTW.watchOTW = name;
+    movieOTW.addedBy = addedBy;
     movieOTW.description = description;
-    movieOTW.rating      = rating;
+    movieOTW.rating = rating;
 
     // save change
     await movieOTW.save();
 }
 
-
-function parseString(movie) {
-  // cleaning string for duplicate check
-  var punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
-  const letters = movie.toLowerCase().split('');
-
-  // removing punctuation and whitespace from movie name
-  const parsedArray = letters.filter(function(letter) {
-  return punctuation.indexOf(letter) == -1; 
-  });
-  
-  // invalid length check
-  if (parsedArray.length >= 40) {
-      throw new Error("Movie length exceeded.");
-  }
-
-  // combining filtered movie array into string
-  parsedMovie = "";
-  for (i in parsedArray) {
-      parsedMovie += parsedArray[i];
-  }   
-
-  return parsedMovie;
-}
-
-function formatString(movie) {
-  var formattedString = "";
-  var split_movies = movie.split(" ");
-
-  for (var i = 0; i < split_movies.length; i++) {
-      formattedString += (split_movies[i].charAt(0).toUpperCase() + split_movies[i].slice(1));
-      if (i != split_movies.length - 1)
-          formattedString += " ";
-  }
-
-  return formattedString;
-}
-
-function getDate() {
-  // create date instance
-  var date = new Date().toString();
-  var split_date = date.split(" ");
-  date = "";
-  for (i in split_date) {
-      if (i >= 1 && i <= 3) {
-          date += (i == 3) ? split_date[i] : split_date[i] + " ";
-      }
-  }
-
-  return date;
-}
-
-
-module.exports = { suggestMovie, getHomeData, watchedMovie, chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername, updatePassword, updateMovie, removeSuggestion, updatePoolStatus, updateSuggestion, updateFormat };
+module.exports = { suggestMovie, getHomeData, watchedMovie,
+    chooseMovie, getMovies, getSuggestions, updateEmail, updateUsername,
+    updatePassword, updateMovie, removeSuggestion, updatePoolStatus,
+    updateSuggestion, updateFormat };
